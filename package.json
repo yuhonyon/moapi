@@ -60,6 +60,7 @@
     "mobx": "^3.4.1",
     "mobx-react": "^4.3.5",
     "mobx-react-router": "^4.0.1",
+    "mockjs": "^1.0.1-beta3",
     "mongoose": "^4.11.11",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "3.2.0",

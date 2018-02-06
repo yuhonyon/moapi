@@ -43,6 +43,7 @@ class Interface extends React.Component {
     this.addValue={type:type,key:key,value:null}
   }
   render() {
+    console.log(this.props.interfaces.resMock)
     return (<div className={Style.wrapper}>
       <LeadInModal onClose={() => {
           this.setState({resLeadInModalShow: false})
@@ -89,13 +90,13 @@ class Interface extends React.Component {
             }}>预览</Button>
         </ButtonGroup>
       </div>
-      <EditableTable data={this.props.interfaces.details.res.toJS()}></EditableTable>
+      <EditableTable onOpenAddValue={this.openAddValue} data={this.props.interfaces.details.res.toJS()}></EditableTable>
       {
         this.state.resPreview &&< div className = {
           Style.codeWrapper
         } >
-          <CodeEditor title="请求模板"></CodeEditor>
-        <CodeEditor title="请求属性"></CodeEditor>
+          <CodeEditor code={this.props.interfaces.resMock} title="请求模板"></CodeEditor>
+          <CodeEditor code={this.props.interfaces.resMock}  title="请求属性"></CodeEditor>
         </div>
       }
 
@@ -119,8 +120,8 @@ class Interface extends React.Component {
         this.state.reqPreview &&< div className = {
           Style.codeWrapper
         } >
-          <CodeEditor title="响应模板"></CodeEditor>
-        <CodeEditor title="响应属性"></CodeEditor>
+          <CodeEditor code={this.props.interfaces.reqMock}  title="响应模板"></CodeEditor>
+        <CodeEditor code={this.props.interfaces.reqMock}  title="响应属性"></CodeEditor>
         </div>
       }
     </div>)

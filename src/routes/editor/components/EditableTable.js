@@ -106,14 +106,19 @@ class EditableTable extends React.Component{
     render:(text,record)=>this.renderOperate(text,record)
   }
   state = { data };
+
+
+
   renderOperate(text,record){
     if(!this.props.interfaces.editable){
       return null
     }
     return (
       <div>
-        <Button type="danger" shape="circle" icon="delete" />
-        {(record.type==='Array'||record.type==='Object')&&<Button type="primary" shape="circle" icon="plus-circle-o"/>}
+        <Button type="danger" shape="circle" icon="delete" onClick={()=>{
+            this.handleDel(record.key)
+          }} />
+      {(record.type==='Array'||record.type==='Object')&&<Button type="primary" shape="circle" icon="plus-circle-o" onClick={()=>{this.props.onOpenAddValue(this.props.isReq?'req':'res',record.key)}} />}
       </div>
     )
   }
@@ -125,6 +130,35 @@ class EditableTable extends React.Component{
                 identify={identify}
               />
   }
+
+
+
+  handleDel(key){
+
+    const newData = [...this.props.data];
+    const keys=key.split('-');
+    let curKey='';
+    let target={children:newData};
+
+    for(let i =0;i< keys.length;i++){
+      curKey+=keys[i];
+      if(i===keys.length-1){
+        let index = target.children.findIndex(item => curKey === item.key);
+        target.children.splice(index,1)
+      }else{
+        target = target.children.filter(item => curKey === item.key)[0];
+      }
+
+      curKey+="-"
+
+    }
+
+    this.props.interfaces.change(this.props.isReq?'req':'res',target.children)
+
+  }
+
+
+
   handleChange(value, key, column) {
     const newData = [...this.props.data];
     const keys=key.split('-');
@@ -137,7 +171,10 @@ class EditableTable extends React.Component{
     }
     if (target) {
       target[column] = value;
-      this.props.interfaces.changeReq(newData)
+      if(column==='type'&&(value!=='Array'||value!=='Object')){
+        target.children=null;
+      }
+      this.props.interfaces.change(this.props.isReq?'req':'res',newData)
     }
   }
   componentDidMount(){
@@ -145,15 +182,12 @@ class EditableTable extends React.Component{
       this.columns.splice(2,1);
     }
   }
-  componentWillReceiveProps(nextProps){
-    console.log(this.props.interfaces.editable,nextProps.interfaces.editable,1)
-    if(this.props.interfaces.editable!==nextProps.interfaces.editable){
-      if(nextProps.interfaces.editable){
+  componentWillUpdate(nextProps){
+      if(this.props.interfaces.editable&&this.columns[this.columns.length-1].key!=='operate'){
         this.columns.push(this.operate)
-      }else{
+      }else if(!this.props.interfaces.editable&&this.columns[this.columns.length-1].key==='operate'){
         this.columns.splice(-1,1);
       }
-    }
   }
   render(){
 

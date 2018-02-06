@@ -1,4 +1,5 @@
-import {observable, action, useStrict} from 'mobx';
+import {observable, action, useStrict,computed,autorun} from 'mobx';
+import Mock from 'mockjs';
 //import axios from 'axios';
 useStrict(true);
 
@@ -43,6 +44,53 @@ class Interface {
       mockValue: 12,
       description: ''
     }]
+  };
+
+  @computed get resMock() {
+       let data={};
+       for(let item of this.details.res){
+         data[item.name+"|"+item.mockNum]=this.formatMock(item)
+       }
+       return JSON.stringify(data,null,2);
+   }
+
+   @computed get reqMock() {
+        let data={};
+        for(let item of this.details.res){
+          data[item.name+"|"+item.mockNum]=this.formatMock(item)
+        }
+        return JSON.stringify(data,null,2);
+    }
+
+    // @autorun resCode(){
+    //   return Mock.mock(this.resMock)
+    // }
+
+  formatMock(item){
+    if(!item.children||item.children.length===0){
+      if(this.mockValue){
+        return this.mockValue
+      }else if(item.type==='Array'){
+        return []
+      }else if(item.type==='Object'){
+        return {}
+      }else if(item.type==='String'){
+        return ""
+      }else if(item.type==='Number'){
+        return 0
+      }
+      return ""
+    }
+    let data={};
+    for(let child of item.children){
+      data[child.name+"|"+child.mockNum]=this.formatMock(child);
+    }
+
+    if(item.mockType==='Array'){
+       return [data]
+    }else{
+      return data;
+    }
   }
 
   formatCode(key, value,id) {
@@ -97,20 +145,13 @@ class Interface {
   }
 
   @action.bound
-  changeRes(code) {
+  change(type,code) {
     if (typeof code === 'string') {
       code = JSON.parse(code)
     }
-    this.details.res=code;
+    this.details[type]=code;
   }
 
-  @action.bound
-  changeReq(code) {
-    if (typeof code === 'string') {
-      code = JSON.parse(code)
-    }
-    this.details.req=code;
-  }
 
   @action.bound
   addValue({type,key,value}) {
@@ -129,6 +170,9 @@ class Interface {
     }
     if (target) {
       value.key=key+"-"+value.key;
+      if(!target.children){
+        target.children=[];
+      }
       target.children.push(value)
     }
   }
