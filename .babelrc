@@ -1,0 +1,25 @@
+{
+  "presets": [
+    "es2015",
+    "stage-0",
+    "react"
+  ],
+  "plugins": [
+    "transform-decorators-legacy",
+    "syntax-dynamic-import",
+    "transform-class-properties",
+     [
+       "transform-runtime",
+      {
+        "helpers": false,
+        "polyfill": false,
+        "regenerator": true,
+        "moduleName": "babel-runtime"
+      }
+    ],
+    ["import", {
+      "libraryName": "antd",
+      "style": true,
+    }]
+  ]
+}
