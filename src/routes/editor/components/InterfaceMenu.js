@@ -2,6 +2,7 @@
 import React from 'react';
 import { Menu } from 'antd';
 import { Link  } from 'react-router-dom'
+import Style from './InterfaceMenu.less'
 export default class InterfaceMenu extends React.Component {
   state = {
 
@@ -11,7 +12,7 @@ export default class InterfaceMenu extends React.Component {
   }
   render() {
     return (
-      <Menu
+      <Menu className={Style.menu}
         onClick={this.handleClick}
         style={{ width: 200 }}
         defaultSelectedKeys={['1']}

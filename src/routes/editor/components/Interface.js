@@ -1,7 +1,7 @@
 import React from "react";
 import EditableTable from './EditableTable'
 import AddValueModal from './AddValueModal'
-import CodeEditor from './CodeEditor'
+import ShowCode from './ShowCode'
 import LeadInModal from './LeadInModal'
 import {Button} from 'antd'
 import Style from './Interface.less'
@@ -32,7 +32,7 @@ class Interface extends React.Component {
     this.props.interfaces.leadInRes(code);
   }
   reqLeadInOk=(code)=>{
-    //console.log(code)
+    this.props.interfaces.leadInReq(code);
   }
   addValueSuccess=(value)=>{
     this.addValue.value=value;
@@ -77,10 +77,10 @@ class Interface extends React.Component {
       </div>
       <div className={Style.buttonGroup}>
         <ButtonGroup >
-          <Button onClick={()=>{this.openAddValue('res',null)}}>新建</Button>
-          <Button onClick={() => {
+          {this.props.interfaces.editable&&<Button onClick={()=>{this.openAddValue('res',null)}}>新建</Button>}
+          {this.props.interfaces.editable&&<Button onClick={() => {
               this.setState({resLeadInModalShow: true})
-            }}>导入</Button>
+            }}>导入</Button>}
           <Button type={this.state.resPreview
               ? 'primary'
               : ''} onClick={() => {
@@ -95,17 +95,17 @@ class Interface extends React.Component {
         this.state.resPreview &&< div className = {
           Style.codeWrapper
         } >
-          <CodeEditor code={this.props.interfaces.resMock} title="请求模板"></CodeEditor>
-          <CodeEditor code={this.props.interfaces.resCode}  title="请求属性"></CodeEditor>
+          <ShowCode code={this.props.interfaces.resMock} title="请求模板"></ShowCode>
+          <ShowCode code={this.props.interfaces.resCode}  title="请求属性"></ShowCode>
         </div>
       }
 
       <div className={Style.buttonGroup}>
         <ButtonGroup >
-          <Button>新建</Button>
-          <Button onClick={() => {
-              this.setState({resLeadInModalShow: true})
-            }}>导入</Button>
+          {this.props.interfaces.editable&&<Button onClick={()=>{this.openAddValue('req',null)}}>新建</Button>}
+          {this.props.interfaces.editable&&<Button onClick={() => {
+              this.setState({reqLeadInModalShow: true})
+            }}>导入</Button>}
           <Button type={this.state.reqPreview
               ? 'primary'
               : ''} onClick={() => {
@@ -120,8 +120,8 @@ class Interface extends React.Component {
         this.state.reqPreview &&< div className = {
           Style.codeWrapper
         } >
-          <CodeEditor code={this.props.interfaces.reqMock}  title="响应模板"></CodeEditor>
-        <CodeEditor code={this.props.interfaces.reqMock}  title="响应属性"></CodeEditor>
+          <ShowCode code={this.props.interfaces.reqMock}  title="响应模板"></ShowCode>
+          <ShowCode code={this.props.interfaces.reqMock}  title="响应属性"></ShowCode>
         </div>
       }
     </div>)

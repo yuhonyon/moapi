@@ -71,7 +71,7 @@ class EditableTable extends React.Component{
     title: '类型',
     dataIndex: 'type',
     key: 'type',
-    render:(text,record)=>this.renderColumns(text,record,'type',['Object','Number','Array','Boolean','String','Long','Enum','Long[]','Number[]','String[]'])
+    render:(text,record)=>this.renderColumns(text,record,'type',['Object','Number','Array','Boolean','String'])
   }, {
     title: '必填',
     dataIndex: 'required',
