@@ -32,7 +32,7 @@ class Interface extends React.Component {
     this.props.interfaces.leadInRes(code);
   }
   reqLeadInOk=(code)=>{
-    console.log(code)
+    //console.log(code)
   }
   addValueSuccess=(value)=>{
     this.addValue.value=value;
@@ -43,7 +43,7 @@ class Interface extends React.Component {
     this.addValue={type:type,key:key,value:null}
   }
   render() {
-    console.log(this.props.interfaces.resMock)
+    //console.log(this.props.interfaces.resMock)
     return (<div className={Style.wrapper}>
       <LeadInModal onClose={() => {
           this.setState({resLeadInModalShow: false})
@@ -96,7 +96,7 @@ class Interface extends React.Component {
           Style.codeWrapper
         } >
           <CodeEditor code={this.props.interfaces.resMock} title="请求模板"></CodeEditor>
-          <CodeEditor code={this.props.interfaces.resMock}  title="请求属性"></CodeEditor>
+          <CodeEditor code={this.props.interfaces.resCode}  title="请求属性"></CodeEditor>
         </div>
       }
 

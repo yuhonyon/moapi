@@ -1,4 +1,4 @@
-import {observable, action, useStrict,computed,autorun} from 'mobx';
+import {observable, action, useStrict,computed,autorunAsync} from 'mobx';
 import Mock from 'mockjs';
 //import axios from 'axios';
 useStrict(true);
@@ -46,6 +46,9 @@ class Interface {
     }]
   };
 
+  @observable resCode='';
+  @observable reqCode='';
+
   @computed get resMock() {
        let data={};
        for(let item of this.details.res){
@@ -62,9 +65,7 @@ class Interface {
         return JSON.stringify(data,null,2);
     }
 
-    // @autorun resCode(){
-    //   return Mock.mock(this.resMock)
-    // }
+
 
   formatMock(item){
     if(!item.children||item.children.length===0){
@@ -144,18 +145,54 @@ class Interface {
     this.details.req=this.details.req.slice().concat(newCode)
   }
 
+
   @action.bound
-  change(type,code) {
-    if (typeof code === 'string') {
-      code = JSON.parse(code)
+  changeField(type,value, key, column) {
+    const data = this.details[type];
+    const keys=key.split('-');
+    let curKey='';
+    let target={children:data};
+    for(let i =0;i< keys.length;i++){
+      curKey+=keys[i];
+      target = target.children.filter(item => curKey === item.key)[0];
+      curKey+="-"
     }
-    this.details[type]=code;
+    if (target) {
+      target[column] = value;
+      if(column==='type'&&(value!=='Array'||value!=='Object')){
+        target.children=null;
+      }
+    }
+    this.details[type]=data;
   }
+
+  @action.bound
+  delField(type,key) {
+    const data = this.details[type];
+    const keys=key.split('-');
+    let curKey='';
+    let target={children:data};
+
+    for(let i =0;i< keys.length;i++){
+      curKey+=keys[i];
+      if(i===keys.length-1){
+        let index = target.children.findIndex(item => curKey === item.key);
+        target.children.splice(index,1)
+      }else{
+        target = target.children.filter(item => curKey === item.key)[0];
+      }
+
+      curKey+="-"
+
+    }
+    this.details[type]=data;
+  }
+
+
 
 
   @action.bound
   addValue({type,key,value}) {
-    console.log(type,key,value)
     if(!key){
       this.details[type].push(value)
       return;
@@ -177,7 +214,15 @@ class Interface {
     }
   }
 
+  @action.bound
+  changeCode(type) {
+    if(type==='res'){
+      this.resCode= JSON.stringify(Mock.mock(JSON.parse(this.resMock)),null,2)
+    }else{
+      this.reqCode= JSON.stringify(Mock.mock(JSON.parse(this.reqMock)),null,2)
+    }
 
+  }
 
 
 
@@ -191,4 +236,10 @@ class Interface {
   }
 }
 
-export default new Interface()
+const interfaces= new Interface()
+
+// autorun(()=>{
+//     interfaces.changeCode('res')
+//     interfaces.changeCode('req')
+// })
+export default interfaces

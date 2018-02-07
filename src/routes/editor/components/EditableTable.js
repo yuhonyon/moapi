@@ -135,47 +135,16 @@ class EditableTable extends React.Component{
 
   handleDel(key){
 
-    const newData = [...this.props.data];
-    const keys=key.split('-');
-    let curKey='';
-    let target={children:newData};
 
-    for(let i =0;i< keys.length;i++){
-      curKey+=keys[i];
-      if(i===keys.length-1){
-        let index = target.children.findIndex(item => curKey === item.key);
-        target.children.splice(index,1)
-      }else{
-        target = target.children.filter(item => curKey === item.key)[0];
-      }
 
-      curKey+="-"
-
-    }
-
-    this.props.interfaces.change(this.props.isReq?'req':'res',target.children)
+    this.props.interfaces.delField(this.props.isReq?'req':'res',key)
 
   }
 
 
 
   handleChange(value, key, column) {
-    const newData = [...this.props.data];
-    const keys=key.split('-');
-    let curKey='';
-    let target={children:newData};
-    for(let i =0;i< keys.length;i++){
-      curKey+=keys[i];
-      target = target.children.filter(item => curKey === item.key)[0];
-      curKey+="-"
-    }
-    if (target) {
-      target[column] = value;
-      if(column==='type'&&(value!=='Array'||value!=='Object')){
-        target.children=null;
-      }
-      this.props.interfaces.change(this.props.isReq?'req':'res',newData)
-    }
+    this.props.interfaces.changeField(this.props.isReq?'req':'res',value, key, column)
   }
   componentDidMount(){
     if(this.props.isReq){

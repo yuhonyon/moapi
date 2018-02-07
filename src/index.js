@@ -9,6 +9,7 @@ import store from './store';
 import {Provider} from 'mobx-react';
 import {RouterStore} from 'mobx-react-router';
 const routerStore = new RouterStore();
+
 store.router=routerStore;
 ReactDOM.render(<Provider {...store}>
   <BrowserRouter>
