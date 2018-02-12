@@ -54,7 +54,7 @@ app.use(json());
 app.use(logger());
 app.use(session(app));
 app.use(require('koa-static')(path.join(__dirname ,'/public')));
-app.use(require('koa-static')(path.join(__dirname ,'../build')));
+//app.use(require('koa-static')(path.join(__dirname ,'../build')));
 app.use(views(path.join(__dirname , '/views'), {extension: 'ejs'}));
 
 // logger
