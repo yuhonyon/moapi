@@ -72,7 +72,9 @@
     "react-ace": "^5.9.0",
     "react-dev-utils": "^5.0.0",
     "react-dom": "^16.2.0",
+    "react-infinite-scroller": "^1.1.4",
     "react-router-dom": "^4.2.2",
+    "reqwest": "^2.0.5",
     "style-loader": "0.19.0",
     "sw-precache-webpack-plugin": "0.11.4",
     "url-loader": "0.6.2",
@@ -86,7 +88,7 @@
   "scripts": {
     "db": "sudo mongod",
     "server": "./node_modules/.bin/nodemon  server/bin/www",
-    "dev": "./node_modules/.bin/nodemon server/bin/www&npm run db&npm run start",
+    "dev": "npm run start",
     "prd": "npm run build&&pm2 start server/bin/www&npm run db",
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",

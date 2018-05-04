@@ -4,7 +4,7 @@ const uuidv4 = require('uuid/v4');
 const xss = require('xss');
 
 exports.signup = async(ctx, next) => {
-  ctx.checkBody('nickname').notEmpty("昵称不能为空");
+  //ctx.checkBody('nickname').notEmpty("昵称不能为空");
   ctx.checkBody('password').notEmpty("密码不能为空");
   ctx.checkBody('phone').isMobilePhone("无效的手机号", ['zh-CN']);
   if (ctx.errors) {
@@ -12,13 +12,12 @@ exports.signup = async(ctx, next) => {
     ctx.body = ctx.errors;
     return;
   }
-  var phone = xss(ctx.request.body.phone.trim());
-  var nickname = xss(ctx.request.body.nickname.trim());
-  var password = xss(ctx.request.body.password.trim());
-  var user = await User.findOne({phone: phone}).exec();
-
+  let phone = xss(ctx.request.body.phone.trim());
+  let nickname = xss(ctx.request.body.nickname.trim());
+  let password = xss(ctx.request.body.password.trim());
+  let user = await User.findOne({phone: phone}).exec();
   if (!user) {
-    var accessToken = uuidv4();
+    let accessToken = uuidv4();
 
     user = new User({nickname: nickname, phone: phone, password: password, accessToken: accessToken});
   } else {
@@ -50,9 +49,9 @@ exports.signin = async(ctx, next) => {
     ctx.body = ctx.errors;
     return;
   }
-  var phone = xss(ctx.request.body.phone.trim());
-  var password = xss(ctx.request.body.password.trim());
-  var user = await User.findOne({phone: phone}).exec();
+  let phone = xss(ctx.request.body.phone.trim());
+  let password = xss(ctx.request.body.password.trim());
+  let user = await User.findByPhone({phone: phone});
 
   if (!user) {
 
@@ -62,7 +61,7 @@ exports.signin = async(ctx, next) => {
       msg: "该手机号尚未注册"
     };
   } else if (user.password === password) {
-    var accessToken = uuidv4();
+    let accessToken = uuidv4();
     User.update({
       phone: phone
     }, {
@@ -88,8 +87,8 @@ exports.signin = async(ctx, next) => {
 
 exports.signout = async(ctx, next) => {
 
-    var accessToken = ctx.request.query.accesstoken||ctx.request.body.accesstoken||ctx.request.header.accesstoken;
-  var user = await User.findOne({accessToken: accessToken}).exec();
+    let accessToken = ctx.request.query.accesstoken||ctx.request.body.accesstoken||ctx.request.header.accesstoken;
+  let user = await User.findOne({accessToken: accessToken}).exec();
 
   if (!user) {
 
@@ -99,7 +98,7 @@ exports.signout = async(ctx, next) => {
       msg: "用户不存在"
     };
   } else {
-    var _accessToken = uuidv4();
+    let _accessToken = uuidv4();
     User.update({
       accessToken: accessToken
     }, {
@@ -145,8 +144,8 @@ exports.deleteUser = async(ctx, next) => {
     ctx.body = ctx.errors;
     return;
   }
-  var phone = xss(ctx.request.body.phone.trim());
-  var user = await User.findOne({phone: phone}).exec();
+  let phone = xss(ctx.request.body.phone.trim());
+  let user = await User.findOne({phone: phone}).exec();
   if (!user) {
     ctx.status = 400;
     ctx.body = {

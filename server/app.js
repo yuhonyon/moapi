@@ -18,7 +18,7 @@ const path = require('path');
 var mongoose = require('mongoose');
 var bluebird = require('bluebird');
 mongoose.Promise = bluebird;
-mongoose.connect('mongodb://127.0.0.1:27017/koadb',{useMongoClient: true});
+mongoose.connect('mongodb://97.64.36.18:27017/moapi',{useMongoClient: true});
 const modelsPath = path.join(__dirname, '/models');
 var walk = function(modelPath) {
   fs.readdirSync(modelPath).forEach(function(file) {

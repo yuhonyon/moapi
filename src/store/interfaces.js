@@ -43,6 +43,18 @@ class Interface {
       mockNum: "33",
       mockValue: 12,
       description: ''
+    }],
+    remarks:[{
+      name:"小二",
+      message:"添加字段use",
+      timeStamp:234213412343,
+      version:"v1.7"
+    },
+    {
+      name:"小二",
+      message:"添加字段use",
+      timeStamp:234213412343,
+      version:"v1.7"
     }]
   };
 
