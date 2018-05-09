@@ -2,7 +2,6 @@ import React from "react";
 import { Form, Icon, Input, Button, Checkbox } from 'antd';
 import Style from "./LoginForm.less";
 import {inject, observer} from 'mobx-react';
-import {withRouter} from "react-router-dom";
 
 const FormItem = Form.Item;
 
@@ -13,9 +12,7 @@ class LoginForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.user.signin(values).then(()=>{
-          this.props.history.push("/");
-        })
+        this.props.user.signup(values)
       }
     });
   }
@@ -40,9 +37,9 @@ class LoginForm extends React.Component {
           </FormItem>
           <FormItem>
             <Button type="primary" htmlType="submit" className={Style.submit}>
-              登录
+              注册
             </Button>
-            <a href="/signup">注册</a>
+            <a href="/login">登录</a>
           </FormItem>
         </Form>
       </div>
@@ -52,4 +49,4 @@ class LoginForm extends React.Component {
 
 const WrappedNormalLoginForm = Form.create()(LoginForm);
 
-export default withRouter(WrappedNormalLoginForm);
+export default WrappedNormalLoginForm;

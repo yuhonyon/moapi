@@ -1,12 +1,13 @@
-import asyncComponent from '../components/AsyncComponent'
+import AsyncComponent from '../components/AsyncComponent'
+import RenderComponent from '../components/RenderComponent'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import React from 'react'
 
 
 const Routes = () => (
   <Switch>
-    <Route path="/project" component={asyncComponent(() => import('./project'))} />
-    <Route path="/editor/:projectId" component={asyncComponent(() => import('./editor'))} />
+    <Route path="/project" component={AsyncComponent(() => import('./project'))} />
+    <Route path="/editor/:projectId" render={props=><RenderComponent {...props} component={()=>import('./editor')} ></RenderComponent>} />
     <Redirect from="*" to="/project" />
   </Switch>
 )

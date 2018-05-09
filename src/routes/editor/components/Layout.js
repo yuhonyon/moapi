@@ -1,18 +1,42 @@
 import React from "react";
 import Header from './Header'
 import ModuleMenu from './ModuleMenu'
-import Module from './Module'
-import { Switch, Route } from 'react-router-dom'
-function Editor(props){
-  return (
-    <div>
-      <Header></Header>
-      <ModuleMenu rootPath={props.match.url}></ModuleMenu>
-      <Switch>
-        <Route path="/editor/:projectId/:moudleId" component={Module} />
-      </Switch>
-    </div>
-  )
+import InterfaseMenu from './InterfaseMenu'
+import Interfase from './Interfase'
+import Style from './Layout.less'
+import {inject, observer} from 'mobx-react';
+
+@inject("project")
+@observer
+class Editor extends React.Component {
+  state={
+
+  }
+
+  componentDidMount(){
+    this.props.project.getProjectInfo(this.props.match.params.projectId)
+  }
+
+  render(){
+    return(
+      <div className={Style.wrapper}>
+        <Header></Header>
+        <ModuleMenu
+          modules={this.props.project.data.modules} interfaseId={this.props.project.interfaseId}></ModuleMenu>
+        <div className={Style.content}>
+          <div className={Style.menu}>
+            <InterfaseMenu
+              interfases={this.props.project.interfases} moduleId={this.props.project.moduleId}></InterfaseMenu>
+          </div>
+          <div className={Style.main}>
+            <Interfase></Interfase> 
+          </div>
+        </div>
+      </div>
+    )
+  }
 }
 
-export default Editor;
+
+
+export default Editor

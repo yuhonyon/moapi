@@ -1,12 +1,14 @@
 import {observable, action, useStrict,computed} from 'mobx';
 import Mock from 'mockjs';
+import fetchApi from  '@/api';
+
 //import axios from 'axios';
 useStrict(true);
 
-class Interface {
+class Interfase {
   @observable editable = false ;
   @observable showLeadInModal = false ;
-  @observable details = {
+  @observable data = {
     name: '全局/业务方',
     methods: "GET",
     url: 'aaa/bbb',
@@ -64,7 +66,7 @@ class Interface {
 
   @computed get resMock() {
        let data={};
-       for(let item of this.details.res){
+       for(let item of this.data.res){
 
          data[item.name+(item.mockNum&&"|"+item.mockNum)]=this.formatMock(item)
        }
@@ -73,7 +75,7 @@ class Interface {
 
    @computed get reqMock() {
         let data={};
-        for(let item of this.details.res){
+        for(let item of this.data.res){
           data[item.name+(item.mockNum&&"|"+item.mockNum)]=this.formatMock(item)
         }
         return JSON.stringify(data,null,2);
@@ -132,16 +134,28 @@ class Interface {
   }
   }
 
+
+
   formatCode(key, value,id) {
+    function judgeType(value){
+      if(!value){return 'String'}
+      if(value.constructor === Array){
+        return "Array"
+      }else if(value.constructor===Date){
+        return "Date"
+      }else{
+        return (typeof value).replace(/./,$=>$.toUpperCase())
+      }
+    }
     let data = {
       key:id,
       name: key,
-      type: value?typeof value:"String",
+      type: judgeType(value),
       required: false,
-      mockType: value?typeof value:"String",
-      mockNum: null,
-      mockValue: value,
-      description: null
+      mockType: judgeType(value),
+      mockNum: '',
+      mockValue: (typeof value==='object'||value===null)?'':value,
+      description: ''
     }
     if (value&&typeof value === 'object') {
       data.children = [];
@@ -150,7 +164,6 @@ class Interface {
       }
       let num=0;
       for (let i in value) {
-        console.log(i)
         num++;
         data.children.push(this.formatCode(i,value[i],id+'-'+num))
       }
@@ -168,7 +181,7 @@ class Interface {
     for (let i in code) {
       newCode.push(this.formatCode(i, code[i],id+i))
     }
-    this.details.res=this.details.res.toJS().concat(newCode)
+    this.data.res=this.data.res.toJS().concat(newCode)
     this.changeCode('res')
   }
 
@@ -182,14 +195,14 @@ class Interface {
     for (let i in code) {
       newCode.push(this.formatCode(i, code[i],id+i))
     }
-    this.details.req=this.details.req.slice().concat(newCode)
+    this.data.req=this.data.req.slice().concat(newCode)
     this.changeCode('req')
   }
 
 
   @action.bound
   changeField(type,value, key, column) {
-    const data = this.details[type].slice();
+    const data = this.data[type].slice();
     const keys=key.split('-');
     let curKey='';
     let target={children:data};
@@ -209,7 +222,7 @@ class Interface {
 
     }
 
-    this.details[type]=data;
+    this.data[type]=data;
 
     this.changeCode(type)
 
@@ -217,7 +230,7 @@ class Interface {
 
   @action.bound
   delField(type,key) {
-    const data = this.details[type].slice();
+    const data = this.data[type].slice();
     const keys=key.split('-');
     let curKey='';
     let target={children:data};
@@ -234,7 +247,7 @@ class Interface {
       curKey+="-"
 
     }
-    this.details[type]=data;
+    this.data[type]=data;
     this.changeCode(type)
   }
 
@@ -244,12 +257,12 @@ class Interface {
   @action.bound
   addValue({type,key,value}) {
     if(!key){
-      this.details[type].push(value)
+      this.data[type].push(value)
       return;
     }
     const keys=key.split('-');
     let curKey='';
-    let target={children:this.details[type].slice()};
+    let target={children:this.data[type].slice()};
     for(let i =0;i< keys.length;i++){
       curKey+=keys[i];
       target = target.children.filter(item => curKey === item.key)[0];
@@ -293,10 +306,18 @@ class Interface {
   closeEditable() {
     this.editable = false;
   }
+
+
+  @action.bound
+  getInterfaseData(data) {
+      this.data={...data};
+  }
+
+
 }
 
-const interfaces= new Interface()
-interfaces.changeCode('res')
-interfaces.changeCode('req')
+const interfases= new Interfase()
+interfases.changeCode('res')
+interfases.changeCode('req')
 
-export default interfaces
+export default interfases

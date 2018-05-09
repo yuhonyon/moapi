@@ -57,7 +57,7 @@ const data = [{
   ]
 }];
 
-@inject("interfaces")
+@inject("interfases")
 @observer
 class EditableTable extends React.Component{
 
@@ -110,7 +110,7 @@ class EditableTable extends React.Component{
 
 
   renderOperate(text,record){
-    if(!this.props.interfaces.editable){
+    if(!this.props.interfases.editable){
       return null
     }
     return (
@@ -124,7 +124,7 @@ class EditableTable extends React.Component{
   }
   renderColumns(text,record,column,identify){
       return <EditableCell
-                editable={this.props.interfaces.editable}
+                editable={this.props.interfases.editable}
                 value={text}
                 onChange={value=>this.handleChange(value,record.key,column)}
                 identify={identify}
@@ -137,14 +137,14 @@ class EditableTable extends React.Component{
 
 
 
-    this.props.interfaces.delField(this.props.isReq?'req':'res',key)
+    this.props.interfases.delField(this.props.isReq?'req':'res',key)
 
   }
 
 
 
   handleChange(value, key, column) {
-    this.props.interfaces.changeField(this.props.isReq?'req':'res',value, key, column)
+    this.props.interfases.changeField(this.props.isReq?'req':'res',value, key, column)
   }
   componentDidMount(){
     if(this.props.isReq){
@@ -152,9 +152,9 @@ class EditableTable extends React.Component{
     }
   }
   componentWillUpdate(nextProps){
-      if(this.props.interfaces.editable&&this.columns[this.columns.length-1].key!=='operate'){
+      if(this.props.interfases.editable&&this.columns[this.columns.length-1].key!=='operate'){
         this.columns.push(this.operate)
-      }else if(!this.props.interfaces.editable&&this.columns[this.columns.length-1].key==='operate'){
+      }else if(!this.props.interfases.editable&&this.columns[this.columns.length-1].key==='operate'){
         this.columns.splice(-1,1);
       }
   }
@@ -163,12 +163,12 @@ class EditableTable extends React.Component{
     // if(this.props.isReq&&this.columns[2].key==="required"){
     //   this.columns.splice(2,1);
     // }
-    // if(!this.props.interfaces.editable&&this.columns[this.columns.length-1].key==='operate'){
+    // if(!this.props.interfases.editable&&this.columns[this.columns.length-1].key==='operate'){
     //   this.columns.splice(-1,1);
     // }else if(this.columns[this.columns.length-1].key!=='operate'){
     //   this.columns.push(this.operate)
     // }
-    return <Table size="small" className={Style.table} pagination={false} columns={this.columns} bordered dataSource={this.props.data} toRender={this.props.interfaces.editable} />
+    return <Table size="small" className={Style.table} pagination={false} columns={this.columns} bordered dataSource={this.props.data} toRender={this.props.interfases.editable} />
   }
 }
 

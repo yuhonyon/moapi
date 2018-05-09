@@ -1,12 +1,10 @@
 import React from 'react'
 
-export default function asyncComponent(importComponent) {
-  class AsyncComponent extends React.Component {
+export default class RenderComponent extends React.Component {
     state = { component: null }
 
     async componentDidMount() {
-      const { default: component } = await importComponent()
-
+      const { default: component } = await this.props.component()
       this.setState({
         component: component
       })
@@ -24,6 +22,3 @@ export default function asyncComponent(importComponent) {
         : null
     }
   }
-
-  return AsyncComponent
-}

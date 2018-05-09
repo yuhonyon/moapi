@@ -7,11 +7,11 @@ import {LocaleProvider} from 'antd';
 import {BrowserRouter,Switch, Route, Redirect } from 'react-router-dom'
 import store from './store';
 import {Provider} from 'mobx-react';
-import {RouterStore} from 'mobx-react-router';
-import asyncComponent from './components/AsyncComponent'
-const routerStore = new RouterStore();
 
-store.router=routerStore;
+import asyncComponent from './components/AsyncComponent'
+
+
+
 ReactDOM.render(<Provider {...store}>
   <BrowserRouter>
     <LocaleProvider locale={zhCN}>
