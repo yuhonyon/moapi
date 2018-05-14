@@ -111,9 +111,9 @@ instance.interceptors.response.use( (response)=> {
     removeLoading()
     if (error.code === 'ECONNABORTED') {
         _message('网络连接超时');
-    }else if (error.message == 'Request failed with status code 403'){
+    }else if (error.message === 'Request failed with status code 403'){
         setTimeout(() => {
-            //app.$router.replace('./');
+            window.location.href=window.location.host+"/login"
         }, 1000)
     }else if(error.response&&error.response.data){
       setTimeout(function(){

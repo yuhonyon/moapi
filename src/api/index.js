@@ -27,8 +27,33 @@ const fetchApi={
     })
   },
 
-  fetchCreateInterfase(params){
+  fetchAddInterfase(params){
     return http.post(`/interfase`,params).then(data=>{
+      return data;
+    })
+  },
+
+  fetchDeleteInterfase(interfaseId){
+    return http.delete(`/interfase/${interfaseId}`).then(data=>{
+      return data;
+    })
+  },
+
+
+  fetchUpdateModule(moduleId,params){
+    return http.put(`/module/${moduleId}`,params).then(data=>{
+      return data;
+    })
+  },
+
+  fetchAddModule(params){
+    return http.post(`/module`,params).then(data=>{
+      return data;
+    })
+  },
+
+  fetchDeleteModule(moduleId){
+    return http.delete(`/module/${moduleId}`).then(data=>{
       return data;
     })
   },
@@ -37,7 +62,14 @@ const fetchApi={
     return http.get(`/project/${id}`).then(data=>{
       return data;
     })
-  }
+  },
+
+  fetchGetInterfaseRecord(interfaseId){
+    return http.get(`/record/interfase/${interfaseId}`).then(data=>{
+      return data;
+    })
+  },
+
 }
 
 

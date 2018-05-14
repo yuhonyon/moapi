@@ -1,58 +1,47 @@
-import { Modal,List, message, Avatar, Spin } from 'antd';
+import { Modal,List, Spin } from 'antd';
 import React from 'react'
-import reqwest from 'reqwest';
+import fetchApi from '@/api';
 import Style from './RecordModal.less'
 import InfiniteScroll from 'react-infinite-scroller';
+import {inject, observer} from 'mobx-react';
 
-const fakeDataUrl = 'https://randomuser.me/api/?results=5&inc=name,gender,email,nat&noinfo';
-
-
+@inject("interfases")
+@observer
 class RecordModal extends React.Component {
   state = {
-    data: [],
+    records: [],
     loading: false,
     hasMore: true,
   }
   handleCancel = (e) => {
     this.props.onClose();
   }
-  getData = (callback) => {
-    reqwest({
-      url: fakeDataUrl,
-      type: 'json',
-      method: 'get',
-      contentType: 'application/json',
-      success: (res) => {
-        callback(res);
-      },
-    });
-  }
-  componentDidMount() {
-    this.getData((res) => {
+  fetchData = () => {
+    fetchApi.fetchGetInterfaseRecord(this.props.interfases.data.id).then(data=>{
+      let records = this.state.records;
       this.setState({
-        data: res.results,
+        records: records.concat(data),
+        loading: false,
       });
-    });
+    })
+  }
+  componentWillReceiveProps(nextProps){
+    if(nextProps.visible&&nextProps.visible!==this.props.visible){
+      this.fetchData()
+    }
   }
   handleInfiniteOnLoad = () => {
-    let data = this.state.data;
     this.setState({
       loading: true,
     });
-    if (data.length > 14) {
+    if (this.state.records.length > 20) {
       this.setState({
         hasMore: false,
         loading: false,
       });
       return;
     }
-    this.getData((res) => {
-      data = data.concat(res.results);
-      this.setState({
-        data,
-        loading: false,
-      });
-    });
+    this.fetchData();
   }
   render() {
     return (
@@ -72,14 +61,14 @@ class RecordModal extends React.Component {
               useWindow={false}
             >
               <List
-                dataSource={this.state.data}
+                dataSource={this.state.records}
                 renderItem={item => (
                   <List.Item key={item.id}>
                     <List.Item.Meta
-                      title={<a href="https://ant.design">{item.name.last}</a>}
-                      description={item.email}
+                      title={<a href="https://ant.design">{item.creator}</a>}
+                      description={item.type+item.message}
                     />
-                    <div>Content</div>
+                    <div>{item.createdAt}</div>
                   </List.Item>
                 )}
               >

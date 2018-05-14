@@ -4,7 +4,7 @@ import AddValueModal from './AddValueModal'
 import RecordModal from './RecordModal'
 import ShowCode from './ShowCode'
 import LeadInModal from './LeadInModal'
-import {Button,List,Radio,message} from 'antd'
+import {Button,List,Radio,message,Modal,Input} from 'antd'
 import Style from './Interfase.less'
 import {inject, observer} from 'mobx-react';
 import {toJS} from 'mobx';
@@ -22,13 +22,32 @@ class Interfase extends React.Component {
     addValueModalShow:false,
     recordModalShow:false,
     resPreview: true,
-    reqPreview: true
+    reqPreview: true,
   }
   addValue={}
+  recordMessage=""
 
   saveInterfase = () => {
     this.props.interfases.closeEditable()
     this.fetchSaveInterfase()
+    this.setState({recordMessage:""})
+  }
+
+  handleRecordInputChange=(e)=>{
+    this.setState({recordMessage:e.target.value})
+  }
+  addRecord=()=>{
+    Modal.confirm({
+      title:'添加修改记录',
+      okText:"保存",
+      content:<Input defaultValue={this.state.recordMessage} onChange={this.handleRecordInputChange} ></Input>,
+      onOk:()=>{
+        this.saveInterfase()
+      },
+      onCancel:()=>{
+        this.setState({recordMessage:""})
+      }
+    })
   }
   edit = () => {
     this.props.interfases.openEditable()
@@ -55,8 +74,9 @@ class Interfase extends React.Component {
   }
 
   fetchSaveInterfase() {
-    console.log(this.props.interfases.data)
-    fetchApi.fetchUpdateInterfase(this.props.interfases.data.id,toJS(this.props.interfases.data)).then(data=>{
+    const data=toJS(this.props.interfases.data);
+    data.recordMessage=this.state.recordMessage;
+    fetchApi.fetchUpdateInterfase(this.props.interfases.data.id,data).then(()=>{
         message.success('保存成功');
     })
   }
@@ -98,7 +118,7 @@ class Interfase extends React.Component {
             this.props.interfases.editable
               ? <ButtonGroup >
                   <Button onClick={this.saveInterfase} type="primary">直接保存</Button>
-                  <Button onClick={this.saveInterfase} type="primary">保存</Button>
+                  <Button onClick={this.addRecord} type="primary">保存</Button>
                   <Button onClick={this.cancel}>&emsp;&emsp;取消&emsp;&emsp;</Button>
                 </ButtonGroup>
               : <Button onClick={this.edit} type="primary">&emsp;&emsp;编辑&emsp;&emsp;</Button>
@@ -106,24 +126,7 @@ class Interfase extends React.Component {
         </div>
       </div>
 
-      <div className={Style.title}>
-        <h3>备注</h3>
-        {this.props.interfases.editable&&<Button className={Style.titleBtn} size="small" type="primary">添加</Button>}
-      </div>
 
-      <List
-      size="small"
-      bordered
-      dataSource={this.props.interfases.data.remarks}
-      renderItem={item => (
-        <List.Item actions={[<a>编辑</a>, <a>删除</a>]}>
-          <List.Item.Meta
-                title={<div>{item.version}&emsp;{item.timeStamp}</div>}
-                description={item.message}
-              />
-          <div>{item.name}</div>
-        </List.Item>)}
-      />
 
       <div className={Style.title}>
         <h3>请求参数</h3>
@@ -143,7 +146,7 @@ class Interfase extends React.Component {
           </ButtonGroup>
         </div>
       </div>
-      <EditableTable onOpenAddValue={this.openAddValue} data={this.props.interfases.data.res.toJS()}></EditableTable>
+      <EditableTable onOpenAddValue={this.openAddValue} data={toJS(this.props.interfases.data.res)}></EditableTable>
       {
         this.state.resPreview &&< div className = {
           Style.codeWrapper
@@ -173,7 +176,7 @@ class Interfase extends React.Component {
           </ButtonGroup>
         </div>
       </div>
-      <EditableTable isReq data={this.props.interfases.data.req.toJS()}></EditableTable>
+      <EditableTable isReq data={toJS(this.props.interfases.data.req)}></EditableTable>
       {
         this.state.reqPreview &&< div className = {
           Style.codeWrapper
@@ -182,6 +185,25 @@ class Interfase extends React.Component {
           <ShowCode code={this.props.interfases.reqMock}  title="响应属性"></ShowCode>
         </div>
       }
+
+      <div className={Style.title}>
+        <h3>备注</h3>
+        {this.props.interfases.editable&&<Button className={Style.titleBtn} size="small" type="primary">添加</Button>}
+      </div>
+
+      <List
+      size="small"
+      bordered
+      dataSource={this.props.interfases.data.remarks}
+      renderItem={item => (
+        <List.Item actions={[<a>编辑</a>, <a>删除</a>]}>
+          <List.Item.Meta
+                title={<div>{item.version}&emsp;{item.timeStamp}</div>}
+                description={item.message}
+              />
+          <div>{item.name}</div>
+        </List.Item>)}
+      />
     </div>)
   }
 }

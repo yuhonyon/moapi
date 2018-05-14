@@ -10,7 +10,7 @@ class Interfase {
   @observable showLeadInModal = false ;
   @observable data = {
     name: '全局/业务方',
-    methods: "GET",
+    method: "GET",
     url: 'aaa/bbb',
     res: [
       {
@@ -65,6 +65,9 @@ class Interfase {
   timer=null;
 
   @computed get resMock() {
+       if(!this.data.res){
+         return "";
+       }
        let data={};
        for(let item of this.data.res){
 
@@ -74,6 +77,9 @@ class Interfase {
    }
 
    @computed get reqMock() {
+       if(!this.data.res){
+         return "";
+       }
         let data={};
         for(let item of this.data.res){
           data[item.name+(item.mockNum&&"|"+item.mockNum)]=this.formatMock(item)

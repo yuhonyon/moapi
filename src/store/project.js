@@ -1,6 +1,7 @@
 import { observable, action ,useStrict,computed,runInAction} from 'mobx';
 import fetchApi from  '@/api'
 import interfases from './interfases'
+import Config from "../config"
 useStrict(true);
 
 
@@ -10,6 +11,7 @@ class Project {
   @observable module = {};
   @observable interfases = [];
   @observable interfase = {};
+
 
 
   @observable data={
@@ -28,17 +30,29 @@ class Project {
     record:[]
   }
 
-  @computed get modules() {
-       return this.data.modules
+  @computed get mdDownloadUrl() {
+       return Config.baseURL+'project/md/'+this.projectId
    }
+   @computed get docUrl() {
+        return Config.baseURL+'project/doc/'+this.projectId
+    }
+
+   @computed get modules() {
+        return this.data.modules
+    }
+
+   @computed get projectId() {
+        return this.data.id
+    }
 
   @action.bound
   getProjectInfo(projectId){
-    fetchApi.fetchGetProjectInfo(projectId).then(data=>{
+    return  fetchApi.fetchGetProjectInfo(projectId).then(data=>{
       runInAction(()=>{
         this.data=data;
         this.selectInterfase()
       })
+      return data;
     })
   }
   @action.bound
@@ -66,6 +80,74 @@ class Project {
 
     interfases.getInterfaseData(this.interfase)
   }
+
+  @action.bound
+  deleteInterfase(interfaseId){
+    return  fetchApi.fetchDeleteInterfase(interfaseId).then(data=>{
+      this.getProjectInfo(this.data.id);
+      if(interfaseId===this.interfaseId){
+        this.selectInterfase(this.moduleId);
+      }
+      return data;
+    })
+  }
+
+  @action.bound
+  updateInterfase(interfaseId,interfase){
+    this.selectInterfase(interfase.moduleId,interfaseId)
+    return fetchApi.fetchUpdateInterfase(interfaseId,interfase).then(data=>{
+      this.getProjectInfo(this.projectId)
+      return data;
+    })
+  }
+
+
+  @action.bound
+  addInterfase(interfase){
+    return fetchApi.fetchAddInterfase(interfase).then(data=>{
+      this.getProjectInfo(data.projectId).then(()=>{
+        this.selectInterfase(data.moduleId,data.id)
+      })
+      return data;
+    })
+  }
+
+
+
+  @action.bound
+  deleteModule(moduleId){
+    return  fetchApi.fetchDeleteModule(moduleId).then(data=>{
+      this.getProjectInfo(this.projectId);
+      if(moduleId===this.moduleId&&this.modules.length){
+        this.selectInterfase(this.modules[0].id);
+      }
+      return data;
+    })
+  }
+
+  @action.bound
+  updateModule(moduleId,module){
+    this.selectInterfase(moduleId)
+    return fetchApi.fetchUpdateModule(moduleId,module).then(data=>{
+      this.getProjectInfo(this.projectId)
+      return data;
+    })
+  }
+
+
+  @action.bound
+  addModule(module){
+    return fetchApi.fetchAddModule(module).then(data=>{
+      this.getProjectInfo(this.projectId).then(()=>{
+        this.selectInterfase(data.id)
+      })
+      return data;
+    })
+  }
+
+
+
+
 }
 
 
