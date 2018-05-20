@@ -9,60 +9,18 @@ class Interfase {
   @observable editable = false ;
   @observable showLeadInModal = false ;
   @observable data = {
-    name: '全局/业务方',
-    method: "GET",
-    url: 'aaa/bbb',
+    name: '',
+    method: "",
+    url: '',
     res: [
-      {
-        key:'1',
-        name: 'list1',
-        type: 'Array',
-        required: true,
-        mockType: 'Array',
-        mockNum: "1",
-        mockValue: 12,
-        description: '',
-        children:[
-          {
-            key:"1-2",
-            name: 'list12',
-            type: 'String',
-            required: true,
-            mockType: 'String',
-            mockNum: "1-124",
-            mockValue: 12,
-            description: ''
-          }
-        ]
-      }
+
     ],
-    req: [{
-      key:"2",
-      name: 'list1',
-      type: 'Object',
-      required: true,
-      mockType: 'String',
-      mockNum: "33",
-      mockValue: 12,
-      description: ''
-    }],
-    remarks:[{
-      name:"小二",
-      message:"添加字段use",
-      timeStamp:234213412343,
-      version:"v1.7"
-    },
-    {
-      name:"小二",
-      message:"添加字段use",
-      timeStamp:234213412343,
-      version:"v1.7"
-    }]
+    req: []
   };
 
   @observable resCode='';
   @observable reqCode='';
-  timer=null;
+  timer={res:null,req:null};
 
   @computed get resMock() {
        if(!this.data.res){
@@ -81,7 +39,7 @@ class Interfase {
          return "";
        }
         let data={};
-        for(let item of this.data.res){
+        for(let item of this.data.req){
           data[item.name+(item.mockNum&&"|"+item.mockNum)]=this.formatMock(item)
         }
         return JSON.stringify(data,null,2);
@@ -166,8 +124,15 @@ class Interfase {
     if (value&&typeof value === 'object') {
       data.children = [];
       if(value.constructor === Array){
-        value=value[0];
+        if(typeof value[0]==='string'){
+          data.mockValue=JSON.stringify(value);
+          return data;
+        }else{
+          value=value[0];
+        }
+
       }
+
       let num=0;
       for (let i in value) {
         num++;
@@ -203,6 +168,12 @@ class Interfase {
     }
     this.data.req=this.data.req.slice().concat(newCode)
     this.changeCode('req')
+  }
+
+
+  @action.bound
+  changeProxyType(val) {
+    this.data.proxyType=val;
   }
 
 
@@ -286,17 +257,17 @@ class Interfase {
 
   @action.bound
   changeCode(type) {
-    clearTimeout(this.timer)
-    this.timer=setTimeout(()=>{
+    clearTimeout(this.timer[type])
+    this.timer[type]=setTimeout(()=>{
       this.createCode(type)
     },500)
   }
 
   @action.bound
   createCode(type){
-    if(type==='res'){
+    if(type==='res'&&this.resMock){
       this.resCode= JSON.stringify(Mock.mock(JSON.parse(this.resMock)),null,2)
-    }else{
+    }else if(this.reqMock){
       this.reqCode= JSON.stringify(Mock.mock(JSON.parse(this.reqMock)),null,2)
     }
   }
@@ -317,13 +288,16 @@ class Interfase {
   @action.bound
   getInterfaseData(data) {
       this.data={...data};
+      this.editable = false;
+      interfases.changeCode('req')
+      interfases.changeCode('res')
   }
 
 
 }
 
 const interfases= new Interfase()
-interfases.changeCode('res')
-interfases.changeCode('req')
+
+
 
 export default interfases

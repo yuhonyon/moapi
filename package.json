@@ -89,7 +89,7 @@
   "scripts": {
     "db": "sudo mongod",
     "server": "./node_modules/.bin/nodemon  server/bin/www",
-    "dev": "npm run start",
+    "dev": "set NODE_ENV=development&&npm run start",
     "prd": "npm run build&&pm2 start server/bin/www&npm run db",
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",

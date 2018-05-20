@@ -1,2 +1,2 @@
-import Project from './App';
+import Project from './Layout';
 export default Project;

@@ -1,32 +1,73 @@
-import {observable, action, useStrict} from 'mobx';
+import {observable, action, useStrict,runInAction} from 'mobx';
 import fetchApi from "@/api"
+
 useStrict(true)
 class User {
-  @observable userInfo = [{
+  @observable userInfo = {
     nickname:"",
     phone:'',
     accessToken:'',
     type:''
-  }] ;
+  };
+
+  @observable  userList=[]
+
 
   @action.bound
-  signin(info){
-  return fetchApi.fetchSignin(info).then(data=>{
-    this.userInfo=data;
-    return data;
-  })
+  getUserInfo(){
+    let user=window.localStorage.getItem('user');
+    if(user){
+      this.userInfo=JSON.parse(user)
+    }
+  }
+
+
+  @action.bound
+  cleanUserInfo(){
+    window.localStorage.removeItem('user');
+    this.userInfo={};
   }
 
   @action.bound
-  signup(){
+  signin(info){
+    return fetchApi.fetchSignin(info).then(data=>{
+      runInAction(()=>{
+        this.userInfo=data;
+      })
+      window.localStorage.setItem('user',JSON.stringify(data))
+      fetchApi.http.updateToken(data.accessToken)
+      return data;
+    })
+  }
 
+  @action.bound
+  signup(info){
+    return fetchApi.fetchSignup(info).then(data=>{
+      runInAction(()=>{
+        this.userInfo=data;
+      })
+      window.localStorage.setItem('user',JSON.stringify(data))
+      fetchApi.http.updateToken(data.accessToken)
+      return data;
+    })
   }
 
   @action.bound
   delUser(){
 
   }
+  @action.bound
+  getUserList(){
+    return fetchApi.fetchGetUserList().then(data=>{
+      runInAction(()=>{
+        this.userList=data;
+      })
+      return data;
+    })
+  }
+
 }
 
-
-export default new User();
+const user=new User();
+user.getUserInfo()
+export default user;

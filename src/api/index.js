@@ -4,8 +4,26 @@ import http from "./http.js";
 
 
 const fetchApi={
+  http,
+  fetchGetSelfProjectList(params){
+    return http.get(`/project/self`,params).then(data=>{
+      return data;
+    })
+  },
+
+  fetchGetDevelopProjectList(params){
+    return http.get(`/project/develop`,params).then(data=>{
+      return data;
+    })
+  },
+
+  fetchGetRelateProjectList(params){
+    return http.get(`/project/relate`,params).then(data=>{
+      return data;
+    })
+  },
   fetchGetProjectList(params){
-    return http.get(`/`,params).then(data=>{
+    return http.get(`/project`,params).then(data=>{
       return data;
     })
   },
@@ -15,7 +33,13 @@ const fetchApi={
     })
   },
   fetchSignup(params){
-    return http.post(`/users`,params).then(data=>{
+    return http.post(`/users/signup`,params).then(data=>{
+      return data;
+    })
+  },
+
+  fetchGetUserList(params){
+    return http.get(`/users`,params).then(data=>{
       return data;
     })
   },
@@ -59,11 +83,33 @@ const fetchApi={
   },
 
   fetchGetProjectInfo(id){
+    return http.get(`/project/info/${id}`).then(data=>{
+      return data;
+    })
+  },
+
+  fetchGetProjectData(id){
     return http.get(`/project/${id}`).then(data=>{
       return data;
     })
   },
 
+  fetchUpdateProject(id,params){
+    return http.put(`/project/${id}`,params).then(data=>{
+      return data;
+    })
+  },
+
+  fetchDeleteProject(id){
+    return http.delete(`/project/${id}`).then(data=>{
+      return data;
+    })
+  },
+  fetchAddProject(params){
+    return http.post(`/project/`,params).then(data=>{
+      return data;
+    })
+  },
   fetchGetInterfaseRecord(interfaseId){
     return http.get(`/record/interfase/${interfaseId}`).then(data=>{
       return data;

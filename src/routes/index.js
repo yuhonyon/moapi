@@ -8,7 +8,7 @@ const Routes = () => (
   <Switch>
     <Route path="/project" component={AsyncComponent(() => import('./project'))} />
     <Route path="/editor/:projectId" render={props=><RenderComponent {...props} component={()=>import('./editor')} ></RenderComponent>} />
-    <Redirect from="*" to="/project" />
+    <Redirect from="*" to="/login" />
   </Switch>
 )
 

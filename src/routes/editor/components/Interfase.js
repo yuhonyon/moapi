@@ -1,6 +1,7 @@
 import React from "react";
 import EditableTable from './EditableTable'
 import AddValueModal from './AddValueModal'
+import AddRemarkModal from './AddRemarkModal'
 import RecordModal from './RecordModal'
 import ShowCode from './ShowCode'
 import LeadInModal from './LeadInModal'
@@ -13,13 +14,14 @@ const ButtonGroup = Button.Group;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
-@inject("interfases")
+@inject("interfases","project")
 @observer
 class Interfase extends React.Component {
   state = {
     resLeadInModalShow: false,
     reqLeadInModalShow: false,
     addValueModalShow:false,
+    addRemarkModalShow:false,
     recordModalShow:false,
     resPreview: true,
     reqPreview: true,
@@ -31,6 +33,14 @@ class Interfase extends React.Component {
     this.props.interfases.closeEditable()
     this.fetchSaveInterfase()
     this.setState({recordMessage:""})
+  }
+
+  handleAddRemarkOk=(info)=>{
+
+  }
+
+  handleAddRemark=(e)=>{
+    this.setState({addRemarkModalShow:true})
   }
 
   handleRecordInputChange=(e)=>{
@@ -73,6 +83,10 @@ class Interfase extends React.Component {
     this.setState({recordModalShow:true})
   }
 
+  handleProxyTypeChange=(e)=>{
+    this.props.interfases.changeProxyType(e.target.value)
+  }
+
   fetchSaveInterfase() {
     const data=toJS(this.props.interfases.data);
     data.recordMessage=this.state.recordMessage;
@@ -84,6 +98,9 @@ class Interfase extends React.Component {
   render() {
     //console.log(this.props.interfases.resMock)
     return (<div className={Style.wrapper}>
+      <AddRemarkModal onClose={() => {
+          this.setState({addRemarkModalShow: false})
+        }}  visible={this.state.addRemarkModalShow} onOk={this.handleAddRemarkOk}></AddRemarkModal>
       <LeadInModal onClose={() => {
           this.setState({resLeadInModalShow: false})
         }} title="导入请求属性" visible={this.state.resLeadInModalShow} onOk={this.resLeadInOk} ></LeadInModal>
@@ -101,10 +118,10 @@ class Interfase extends React.Component {
           <li>
             <h3>
               {this.props.interfases.data.name} <Button onClick={this.openRecord} type="primary" size="small">修改记录</Button>&emsp;
-              {this.props.interfases.editable&&<RadioGroup defaultValue="a">
-                <RadioButton value="a">开启mock</RadioButton>
-                <RadioButton value="b">关闭mock</RadioButton>
-                <RadioButton value="c">累计mock</RadioButton>
+              {this.props.interfases.editable&&<RadioGroup onChange={this.handleProxyTypeChange} value={this.props.interfases.data.proxyType}>
+                <RadioButton value={0}>关闭mock</RadioButton>
+                <RadioButton value={1}>开启mock</RadioButton>
+                <RadioButton value={2}>合并mock</RadioButton>
               </RadioGroup>}
             </h3>
           </li>
@@ -113,7 +130,7 @@ class Interfase extends React.Component {
           </li>
           <li>类型: {this.props.interfases.data.methods}</li>
         </ul>
-        <div>
+        {this.props.project.permission>1&&<div>
           {
             this.props.interfases.editable
               ? <ButtonGroup >
@@ -123,13 +140,43 @@ class Interfase extends React.Component {
                 </ButtonGroup>
               : <Button onClick={this.edit} type="primary">&emsp;&emsp;编辑&emsp;&emsp;</Button>
           }
-        </div>
+        </div>}
       </div>
 
 
 
       <div className={Style.title}>
         <h3>请求参数</h3>
+        <div className={Style.titleRight}>
+          <ButtonGroup >
+            {this.props.interfases.editable&&this.props.project.permission>2&&<Button onClick={()=>{this.openAddValue('req',null)}}>新建</Button>}
+            {this.props.interfases.editable&&<Button onClick={() => {
+                this.setState({reqLeadInModalShow: true})
+              }}>导入</Button>}
+            <Button type={this.state.reqPreview
+                ? 'primary'
+                : ''} onClick={() => {
+                this.setState({
+                  reqPreview: !this.state.reqPreview
+                })
+              }}>预览</Button>
+          </ButtonGroup>
+        </div>
+      </div>
+      <EditableTable permission={this.props.project.permission} isReq onOpenAddValue={this.openAddValue} data={toJS(this.props.interfases.data.req)}></EditableTable>
+      {
+        this.state.reqPreview &&< div className = {
+          Style.codeWrapper
+        } >
+          <ShowCode code={this.props.interfases.reqMock} title="请求模板"></ShowCode>
+          <ShowCode code={this.props.interfases.reqCode}  title="请求属性"></ShowCode>
+        </div>
+      }
+
+
+
+      <div className={Style.title}>
+        <h3>响应内容</h3>
         <div className={Style.titleRight}>
           <ButtonGroup >
             {this.props.interfases.editable&&<Button onClick={()=>{this.openAddValue('res',null)}}>新建</Button>}
@@ -146,49 +193,19 @@ class Interfase extends React.Component {
           </ButtonGroup>
         </div>
       </div>
-      <EditableTable onOpenAddValue={this.openAddValue} data={toJS(this.props.interfases.data.res)}></EditableTable>
+      <EditableTable permission={this.props.project.permission} data={toJS(this.props.interfases.data.res)}></EditableTable>
       {
         this.state.resPreview &&< div className = {
           Style.codeWrapper
         } >
-          <ShowCode code={this.props.interfases.resMock} title="请求模板"></ShowCode>
-          <ShowCode code={this.props.interfases.resCode}  title="请求属性"></ShowCode>
-        </div>
-      }
-
-
-
-      <div className={Style.title}>
-        <h3>响应内容</h3>
-        <div className={Style.titleRight}>
-          <ButtonGroup >
-            {this.props.interfases.editable&&<Button onClick={()=>{this.openAddValue('req',null)}}>新建</Button>}
-            {this.props.interfases.editable&&<Button onClick={() => {
-                this.setState({reqLeadInModalShow: true})
-              }}>导入</Button>}
-            <Button type={this.state.reqPreview
-                ? 'primary'
-                : ''} onClick={() => {
-                this.setState({
-                  reqPreview: !this.state.reqPreview
-                })
-              }}>预览</Button>
-          </ButtonGroup>
-        </div>
-      </div>
-      <EditableTable isReq data={toJS(this.props.interfases.data.req)}></EditableTable>
-      {
-        this.state.reqPreview &&< div className = {
-          Style.codeWrapper
-        } >
-          <ShowCode code={this.props.interfases.reqMock}  title="响应模板"></ShowCode>
-          <ShowCode code={this.props.interfases.reqMock}  title="响应属性"></ShowCode>
+          <ShowCode code={this.props.interfases.resMock}  title="响应模板"></ShowCode>
+          <ShowCode code={this.props.interfases.resCode}  title="响应属性"></ShowCode>
         </div>
       }
 
       <div className={Style.title}>
         <h3>备注</h3>
-        {this.props.interfases.editable&&<Button className={Style.titleBtn} size="small" type="primary">添加</Button>}
+        {this.props.project.permission>2&&<Button onClick={this.handleAddRemark} className={Style.titleBtn} size="small" type="primary">添加</Button>}
       </div>
 
       <List

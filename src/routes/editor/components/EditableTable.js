@@ -5,10 +5,24 @@ import {inject,observer} from 'mobx-react';
 const Option = Select.Option;
 const { TextArea } = Input;
 
+const editablePermission=(editable,permission,isReq,column)=>{
+  if(!editable){
+    return false;
+  }
+  if(permission>2){
+    return true;
+  }
+  if(isReq||permission===1){
+    return false;
+  }
+  if(column==="mockType"||column==="mockNum"||column==="mockValue"){
+    return true;
+  }
+  return false;
+}
 
 
-
-const EditableCell = ({ editable, value, onChange,identify }) => {
+const EditableCell = ({ editable, value, onChange,identify,column }) => {
   let cell;
   if(!editable){
     if(typeof value==='boolean'){
@@ -124,10 +138,11 @@ class EditableTable extends React.Component{
   }
   renderColumns(text,record,column,identify){
       return <EditableCell
-                editable={this.props.interfases.editable}
+                editable={editablePermission(this.props.interfases.editable,this.props.permission,this.props.isReq,column)}
                 value={text}
                 onChange={value=>this.handleChange(value,record.key,column)}
                 identify={identify}
+                column={column}
               />
   }
 
@@ -147,7 +162,7 @@ class EditableTable extends React.Component{
     this.props.interfases.changeField(this.props.isReq?'req':'res',value, key, column)
   }
   componentDidMount(){
-    if(this.props.isReq){
+    if(!this.props.isReq){
       this.columns.splice(2,1);
     }
   }

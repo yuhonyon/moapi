@@ -1,20 +1,24 @@
 import { Menu ,Button,Icon,Modal,message} from 'antd';
 import React from 'react';
-import { Link  } from 'react-router-dom'
 import {inject, observer} from 'mobx-react';
 import Style from './ModuleMenu.less'
 import {toJS} from 'mobx';
 import AddModuleModal from './AddModuleModal';
 import EditModuleModal from './EditModuleModal';
+import {withRouter} from "react-router-dom";
 
 @inject("project")
 @observer
-export default class MoudleMenu extends React.Component {
+class MoudleMenu extends React.Component {
   state = {
     selectedKey:this.props.project.moduleId+'',
     addModuleModalShow:false,
     editModuleModalShow:false,
     editModuleInfo:{}
+  }
+
+  componentWillReceiveProps(){
+    this.setState({'selectedKey':this.props.project.moduleId+''});
   }
 
 
@@ -70,6 +74,12 @@ export default class MoudleMenu extends React.Component {
     this.setState({'selectedKey':e.key});
     let module=e.item.props.module;
     this.props.project.selectInterfase(module.id)
+
+
+    this.props.history.push({
+      pathname: `/editor/${this.props.project.projectId}`,
+      search: `?moduleId=${e.item.props.module.id}`
+    })
   }
   render() {
     return (
@@ -78,26 +88,33 @@ export default class MoudleMenu extends React.Component {
         <EditModuleModal module={this.state.editModuleInfo}  onClose={this.closeEditModuleModal} onOk={this.handleEditModuleModalOk} visible={this.state.editModuleModalShow}></EditModuleModal>
         <Menu
           onClick={this.handleMenuClick}
-          selectedKeys={[this.selectedKey]}
+          selectedKeys={[this.state.selectedKey]}
           mode="horizontal"
         >
           {
             this.props.project.modules.map(item=>{
               return (
                 <Menu.Item key={item.id} module={item}>
-                    <Link to={{
-                                pathname: `/editor/${this.props.project.data.id}`,
-                                search: `?moduleId=${item.id}`
-                              }}>{item.name}<Button module={item} onClick={this.handleModuleEdit.bind(this,item)} shape="circle" icon="form" /><Button module={item} onClick={this.handleModuleDelete.bind(this,item.id)} shape="circle" icon="delete" /></Link>
+                      {item.name}&nbsp;
+                      {this.props.project.permission>2&&<span className={Style.icon}>
+                        <Icon interfase={item} onClick={this.handleModuleEdit.bind(this,item)}  type="form" />
+                        <Icon interfase={item} onClick={this.handleModuleDelete.bind(this,item.id)}  type="delete" />
+                      </span>}
                 </Menu.Item>
               )
             })
           }
 
+          {
+            this.props.project.modules.length===0&&<Menu.Item key="demo" >空</Menu.Item>
+          }
+
 
         </Menu>
-        <button onClick={this.openAddModuleModal} className={Style.addBtn}><Icon type="plus-circle-o" />新增模块</button>
+        {this.props.project.permission>2&&<Button onClick={this.openAddModuleModal} className={Style.addBtn}><Icon type="plus-circle-o" />新增模块</Button>}
       </div>
     );
   }
 }
+
+export default withRouter(MoudleMenu)

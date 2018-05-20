@@ -1,14 +1,10 @@
-import { Modal,Form, Input, Select } from 'antd';
+import { Modal,Form, Input,Select } from 'antd';
 import React from 'react'
 import {inject, observer} from 'mobx-react';
-
-
-
-
-
-const Option=Select.Option;
 const FormItem=Form.Item;
 const TextArea=Input.TextArea
+const Option=Select.Option
+
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -20,38 +16,17 @@ const formItemLayout = {
   },
 };
 
+
 @inject("user")
 @inject("project")
 @observer
-class EditProjectModal extends React.Component {
-
-  componentDidMount(){
-    if(this.props.user.userList.length===0){
-      this.props.user.getUserList()
-    }
-
-  }
-
-  componentWillReceiveProps(nextProps){
-    if(nextProps.visible&&nextProps.visible!==this.props.visible){
-      this.props.form.setFieldsValue({
-        name: this.props.project.info.name,
-        admin: this.props.project.info.admin.id,
-        developers: this.props.project.info.developers.toJS().map(item=>item.id),
-        guests: this.props.project.info.guests.toJS().map(item=>item.id),
-        reporters: this.props.project.info.reporters.toJS().map(item=>item.id),
-        proxy: this.props.project.info.proxy,
-        description: this.props.project.info.description
-      })
-    }
-  }
+class AddProjectModal extends React.Component {
 
   handleOk = (e) => {
     this.props.form.validateFields((err, values) => {
       if (err) {
         return
       }
-
       this.props.onOk(values);
       this.props.form.resetFields()
       this.props.onClose();
@@ -68,7 +43,7 @@ class EditProjectModal extends React.Component {
       <div>
         <Modal
           width={640}
-          title="编辑项目"
+          title="添加项目"
           visible={this.props.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
@@ -76,35 +51,18 @@ class EditProjectModal extends React.Component {
           <Form>
             <FormItem
               {...formItemLayout}
-              label="项目名称"
+              label="名称"
             >
               {getFieldDecorator('name', {
                 rules: [{
                   required: true, message: '必填',
                 }],
               })(
-                <Input  disabled={this.props.project.info.permission<3} />
+                <Input />
               )}
             </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label="管理员"
-            >
-              {getFieldDecorator('admin', {
-                initialValue: ''
-              })(
-                <Select
-                  disabled
-                  showSearch
-                  optionFilterProp=""
-                  filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
-                >
-                  {this.props.user.userList.map(user=>(
-                    <Option key={user.id} value={user.id}>{user.name}</Option>
-                  ))}
-                </Select>
-              )}
-            </FormItem>
+
+
             <FormItem
               {...formItemLayout}
               label="开发者"
@@ -114,7 +72,6 @@ class EditProjectModal extends React.Component {
               })(
                 <Select
                   showSearch
-                  disabled={this.props.project.info.permission!=4}
                   mode="multiple"
                   optionFilterProp="children"
                   filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
@@ -135,7 +92,6 @@ class EditProjectModal extends React.Component {
               })(
                 <Select
                   showSearch
-                  disabled={this.props.project.info.permission<3}
                   mode="multiple"
                   optionFilterProp="children"
                   filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
@@ -156,7 +112,6 @@ class EditProjectModal extends React.Component {
               })(
                 <Select
                   showSearch
-                  disabled={this.props.project.info.permission<3}
                   mode="multiple"
                   optionFilterProp="children"
                   filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
@@ -196,4 +151,4 @@ class EditProjectModal extends React.Component {
   }
 }
 
-export default Form.create()(EditProjectModal);
+export default Form.create()(AddProjectModal);

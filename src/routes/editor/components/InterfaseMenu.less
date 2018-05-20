@@ -6,7 +6,9 @@
 .menu{
   li{
     border-bottom: 1px solid #eee;
+    margin: 0!important;
   }
+
 }
 .addBtn{
   background: transparent;
@@ -15,4 +17,19 @@
   padding:5px 20px;
   width:100%;
   cursor: pointer;
+}
+
+.icon{
+  float: right;
+  display: none;
+}
+:global(.ant-menu-item-selected){
+  .icon{
+    display:  block;
+  }
+}
+:global(.ant-menu-item:hover){
+  .icon{
+    display:  block;
+  }
 }

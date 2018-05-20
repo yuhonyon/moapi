@@ -7,17 +7,21 @@ import {inject, observer} from 'mobx-react';
 import AddInterfaseModal from './AddInterfaseModal';
 import EditInterfaseModal from './EditInterfaseModal';
 import {toJS} from 'mobx';
-
+import {withRouter} from "react-router-dom";
 
 
 @inject("project")
 @observer
-export default class InterfaseMenu extends React.Component {
+class InterfaseMenu extends React.Component {
   state = {
-    selectedKey:this.props.project.moduleId+'',
+    selectedKey:this.props.project.interfaseId+'',
     addInterfaseModalShow:false,
     editInterfaseModalShow:false,
     editInterfaseInfo:{}
+  }
+
+  componentWillReceiveProps(){
+    this.setState({'selectedKey':this.props.project.interfaseId+''});
   }
 
   openAddInterfaseModal=()=>{
@@ -59,16 +63,21 @@ export default class InterfaseMenu extends React.Component {
   handleMenuClick = (e) => {
     this.setState({'selectedKey':e.key});
     let interfaseInfo=e.item.props.interfase;
-    this.props.project.selectInterfase(interfaseInfo.moduleId,interfaseInfo.id)
+    this.props.project.selectInterfase(interfaseInfo.moduleId,interfaseInfo.id);
+
+    this.props.history.push({
+                pathname: `/editor/${this.props.project.data.id}`,
+                search: `?moduleId=${e.item.props.interfase.moduleId}&interfaseId=${e.item.props.interfase.id}`
+              })
   }
 
   handleInterfaseEdit=(interfase,e)=>{
-    e.preventDefault();
+    e.stopPropagation();
     this.openEditInterfaseModal(toJS(interfase))
   }
 
   handleInterfaseDelete=(interfaseId,e)=>{
-    e.preventDefault();
+    e.stopPropagation();
 
     Modal.confirm({
       title: '删除提醒',
@@ -88,17 +97,18 @@ export default class InterfaseMenu extends React.Component {
         <Menu className={Style.menu}
           onClick={this.handleMenuClick}
           style={{ width: 200 }}
-          selectedKeys={[this.selectedKey]}
+          selectedKeys={[this.state.selectedKey]}
           mode="inline"
         >
           {
             this.props.project.interfases.map(item=>{
               return (
                 <Menu.Item key={item.id} interfase={item}>
-                    <Link to={{
-                                pathname: `/editor/${this.props.project.data.id}`,
-                                search: `?moduleId=${item.moduleId}&interfaseId=${item.id}`
-                              }}>{item.name}<Button interfase={item} onClick={this.handleInterfaseEdit.bind(this,item)} shape="circle" icon="form" /><Button interfase={item} onClick={this.handleInterfaseDelete.bind(this,item.id)} shape="circle" icon="delete" /> </Link>
+                    {item.name}&emsp;
+                    {this.props.project.permission>2&&<span className={Style.icon}>
+                        <Icon interfase={item} onClick={this.handleInterfaseEdit.bind(this,item)}  type="form" />
+                        <Icon interfase={item} onClick={this.handleInterfaseDelete.bind(this,item.id)}  type="delete" />
+                      </span>}
                 </Menu.Item>
               )
             })
@@ -106,8 +116,10 @@ export default class InterfaseMenu extends React.Component {
 
 
         </Menu>
-        <button onClick={this.openAddInterfaseModal} className={Style.addBtn}><Icon type="plus-circle-o" />新增接口</button>
+        {this.props.project.permission>2&&<Button onClick={this.openAddInterfaseModal} className={Style.addBtn}><Icon type="plus-circle-o" />新增接口</Button>}
       </div>
     );
   }
 }
+
+export default withRouter(InterfaseMenu)

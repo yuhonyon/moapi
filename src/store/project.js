@@ -1,9 +1,9 @@
-import { observable, action ,useStrict,computed,runInAction} from 'mobx';
-import fetchApi from  '@/api'
+import {observable, action, useStrict, computed, runInAction} from 'mobx';
+import fetchApi from '@/api'
 import interfases from './interfases'
 import Config from "../config"
+import {getQuery} from '../utils'
 useStrict(true);
-
 
 class Project {
   @observable moduleId = null;
@@ -12,133 +12,146 @@ class Project {
   @observable interfases = [];
   @observable interfase = {};
 
+  @observable info={}
 
-
-  @observable data={
-    creator:{},
-    id:null,
-    description:'',
-    modules:[{
-      name:"院内",
-      id:1,
-      interfases:[{
-        name:"接口一",
-        id:1
-      }]
-    }],
-    members:[],
-    record:[]
+  @observable data = {
+    admin: {},
+    id: null,
+    description: '',
+    modules: [
+      {
+        name: "院内",
+        id: 1,
+        interfases: [
+          {
+            name: "接口一",
+            id: 1
+          }
+        ]
+      }
+    ],
+    members: [],
+    record: []
   }
 
   @computed get mdDownloadUrl() {
-       return Config.baseURL+'project/md/'+this.projectId
-   }
-   @computed get docUrl() {
-        return Config.baseURL+'project/doc/'+this.projectId
-    }
+    return Config.baseURL + 'project/md/' + this.projectId
+  }
+  @computed get docUrl() {
+    return Config.baseURL + 'project/doc/' + this.projectId
+  }
 
-   @computed get modules() {
-        return this.data.modules
-    }
+  @computed get serverUrl() {
+    return Config.baseURL + 'project/server/' + this.projectId
+  }
 
-   @computed get projectId() {
-        return this.data.id
-    }
+  @computed get mockUrl() {
+    return Config.baseURL + 'project/mock/' + this.projectId
+  }
 
-  @action.bound
-  getProjectInfo(projectId){
-    return  fetchApi.fetchGetProjectInfo(projectId).then(data=>{
-      runInAction(()=>{
-        this.data=data;
-        this.selectInterfase()
+  @computed get modules() {
+    return this.data.modules
+  }
+
+  @computed get projectId() {
+    return this.data.id
+  }
+
+  @computed get permission() {
+    return this.info.permission
+  }
+
+  @action.bound getProjectData(projectId) {
+    return fetchApi.fetchGetProjectData(projectId).then(data => {
+      runInAction(() => {
+        this.data = data;
+        this.selectInterfase(Number(getQuery(window.location.search, "moduleId")), Number(getQuery(window.location.search, "interfaseId")));
       })
       return data;
     })
   }
-  @action.bound
-  selectInterfase(moduleId,interfaseId){
-    if(!moduleId){
 
-      this.moduleId=this.modules.length&&this.modules[0].id;
-      this.module=this.modules.length&&this.modules[0];
-      this.interfases=this.module.interfases||[];
-      this.interfase=(this.interfases.length&&this.interfases[0])||{};
-      this.interfaseId=this.interfase.id||null;
-    }else if(moduleId&&!interfaseId){
-      this.module=this.modules.find(val=>val.id===moduleId)||{}
-      this.moduleId=moduleId;
-      this.interfases=this.module.interfases||[];
-      this.interfase=(this.interfases.length&&this.interfases[0])||{};
-      this.interfaseId=this.interfase.id||null;
-    }else{
-      this.moduleId=moduleId;
-      this.module=this.modules.find(val=>val.id===moduleId)||{}
-      this.interfases=this.module.interfases||[];
-      this.interfaseId=interfaseId;
-      this.interfase=this.interfases.find(val=>val.id===interfaseId)||{}
+  @action.bound getProjectInfo(projectId) {
+    return fetchApi.fetchGetProjectInfo(projectId).then(data => {
+      runInAction(() => {
+        this.info = data;
+      })
+      return data;
+    })
+  }
+  @action.bound selectInterfase(moduleId, interfaseId) {
+    if (!moduleId) {
+
+      this.moduleId = this.modules.length && this.modules[0].id;
+      this.module = this.modules.length && this.modules[0];
+      this.interfases = this.module.interfases || [];
+      this.interfase = (this.interfases.length && this.interfases[0]) || {};
+      this.interfaseId = this.interfase.id || null;
+    } else if (moduleId && !interfaseId) {
+      this.module = this.modules.find(val => val.id === moduleId) || {}
+      this.moduleId = moduleId;
+      this.interfases = this.module.interfases || [];
+      this.interfase = (this.interfases.length && this.interfases[0]) || {};
+      this.interfaseId = this.interfase.id || null;
+    } else {
+      this.moduleId = moduleId;
+      this.module = this.modules.find(val => val.id === moduleId) || {}
+      this.interfases = this.module.interfases || [];
+      this.interfaseId = interfaseId;
+      this.interfase = this.interfases.find(val => val.id === interfaseId) || {}
     }
 
     interfases.getInterfaseData(this.interfase)
   }
 
-  @action.bound
-  deleteInterfase(interfaseId){
-    return  fetchApi.fetchDeleteInterfase(interfaseId).then(data=>{
-      this.getProjectInfo(this.data.id);
-      if(interfaseId===this.interfaseId){
+  @action.bound deleteInterfase(interfaseId) {
+    return fetchApi.fetchDeleteInterfase(interfaseId).then(data => {
+      this.getProjectData(this.data.id);
+      if (interfaseId === this.interfaseId) {
         this.selectInterfase(this.moduleId);
       }
       return data;
     })
   }
 
-  @action.bound
-  updateInterfase(interfaseId,interfase){
-    this.selectInterfase(interfase.moduleId,interfaseId)
-    return fetchApi.fetchUpdateInterfase(interfaseId,interfase).then(data=>{
-      this.getProjectInfo(this.projectId)
+  @action.bound updateInterfase(interfaseId, interfase) {
+    this.selectInterfase(interfase.moduleId, interfaseId)
+    return fetchApi.fetchUpdateInterfase(interfaseId, interfase).then(data => {
+      this.getProjectData(this.projectId)
       return data;
     })
   }
 
-
-  @action.bound
-  addInterfase(interfase){
-    return fetchApi.fetchAddInterfase(interfase).then(data=>{
-      this.getProjectInfo(data.projectId).then(()=>{
-        this.selectInterfase(data.moduleId,data.id)
+  @action.bound addInterfase(interfase) {
+    return fetchApi.fetchAddInterfase(interfase).then(data => {
+      this.getProjectData(data.projectId).then(() => {
+        this.selectInterfase(data.moduleId, data.id)
       })
       return data;
     })
   }
 
-
-
-  @action.bound
-  deleteModule(moduleId){
-    return  fetchApi.fetchDeleteModule(moduleId).then(data=>{
-      this.getProjectInfo(this.projectId);
-      if(moduleId===this.moduleId&&this.modules.length){
+  @action.bound deleteModule(moduleId) {
+    return fetchApi.fetchDeleteModule(moduleId).then(data => {
+      this.getProjectData(this.projectId);
+      if (moduleId === this.moduleId && this.modules.length) {
         this.selectInterfase(this.modules[0].id);
       }
       return data;
     })
   }
 
-  @action.bound
-  updateModule(moduleId,module){
+  @action.bound updateModule(moduleId, module) {
     this.selectInterfase(moduleId)
-    return fetchApi.fetchUpdateModule(moduleId,module).then(data=>{
-      this.getProjectInfo(this.projectId)
+    return fetchApi.fetchUpdateModule(moduleId, module).then(data => {
+      this.getProjectData(this.projectId)
       return data;
     })
   }
 
-
-  @action.bound
-  addModule(module){
-    return fetchApi.fetchAddModule(module).then(data=>{
-      this.getProjectInfo(this.projectId).then(()=>{
+  @action.bound addModule(module) {
+    return fetchApi.fetchAddModule(module).then(data => {
+      this.getProjectData(this.projectId).then(() => {
         this.selectInterfase(data.id)
       })
       return data;
@@ -146,9 +159,17 @@ class Project {
   }
 
 
+  @action.bound updateProject(projectId, project) {
+    return fetchApi.fetchUpdateProject(projectId, project).then(data => {
+      this.getProjectInfo(this.projectId)
+      return data;
+    })
+  }
+
+
+
 
 
 }
-
 
 export default new Project()

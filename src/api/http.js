@@ -4,7 +4,7 @@ import {message} from "antd"
 //getToken
 const getToken=()=>{
   if (localStorage.getItem('user')) {
-        return JSON.parse(localStorage.getItem('user')).token
+        return JSON.parse(localStorage.getItem('user')).accessToken
     }
     return ''
 }
@@ -73,15 +73,15 @@ const removeLoading=function(){
 const instance = axios.create({
   baseURL: Config.baseURL,
   timeout: 5000,
-  headers: {'X-auth-token': getToken(),"Content-Type":"application/json"}
+  headers: {'accesstoken': getToken(),"Content-Type":"application/json"}
 });
 
 instance.updateToken = (token) => {
-    instance.defaults.headers['X-auth-token'] = token||getToken()
+    instance.defaults.headers['accesstoken'] = token||getToken()
 }
 
 instance.interceptors.request.use( (config) =>{
-    if(!config.headers['X-auth-token']){
+    if(!config.headers['accesstoken']){
       instance.updateToken()
     }
     config=addRequesting(config);
