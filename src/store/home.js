@@ -10,6 +10,9 @@ class Home {
 
   @action.bound
   getRecordList(){
+    if(this.watchProjectList.length===0){
+      return;
+    }
     let params={projectIds:this.watchProjectList.map(item=>item.id)};
     return fetchApi.fetchGetProjectsRecordList(params).then(data=>{
       runInAction(()=>{
