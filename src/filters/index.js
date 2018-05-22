@@ -40,3 +40,13 @@ export const parseDate=(date, fmt = "yyyy-MM-dd HH:mm:ss")=> {
   }
   return fmt;
 }
+
+export  const recordType=(type)=>{
+  if(type==="ADD_INTERFASE"){
+    return "新增接口"
+  }else if(type==="Delete_INTERFASE"){
+    return "删除接口"
+  }else{
+    return "修改接口"
+  }
+}

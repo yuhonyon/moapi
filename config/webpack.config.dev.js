@@ -11,7 +11,8 @@ const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const getClientEnvironment = require('./env');
 const paths = require('./paths');
-
+const packageInfo = require('./../package.json');
+const theme=packageInfo.theme;
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
 const publicPath = '/';
@@ -190,7 +191,10 @@ module.exports = {
                 },
               },
               {
-                loader: require.resolve('less-loader') // compiles Less to CSS
+                loader: require.resolve('less-loader'), // compiles Less to CSS
+                options:{
+                  "modifyVars":theme
+                }
               }
             ],
           },
@@ -226,7 +230,10 @@ module.exports = {
                 },
               },
               {
-                loader: require.resolve('less-loader') // compiles Less to CSS
+                loader: require.resolve('less-loader'),
+                options:{
+                  "modifyVars":theme
+                }
               }
             ],
           },

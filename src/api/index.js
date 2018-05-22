@@ -110,6 +110,28 @@ const fetchApi={
       return data;
     })
   },
+  fetchAddWatchProject(params){
+    return http.post(`/users/watch-project/`,params).then(data=>{
+      return data;
+    })
+  },
+  fetchGetWatchProjectList(params){
+    return http.get(`/users/watch-project/`,params).then(data=>{
+      return data;
+    })
+  },
+
+  fetchGetProjectsRecordList(params){
+    return http.get(`/record/`,params).then(data=>{
+      return data;
+    })
+  },
+
+  fetchDeleteWatchProject(params){
+    return http.put(`/users/watch-project/`,params).then(data=>{
+      return data;
+    })
+  },
   fetchGetInterfaseRecord(interfaseId){
     return http.get(`/record/interfase/${interfaseId}`).then(data=>{
       return data;

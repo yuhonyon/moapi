@@ -46,6 +46,10 @@ const extractTextPluginOptions = shouldUseRelativeAssetPaths
     { publicPath: Array(cssFilename.split('/').length).join('../') }
   : {};
 
+
+const packageInfo = require('./../package.json');
+const theme=packageInfo.theme;
+
 // This is the production configuration.
 // It compiles slowly and is focused on producing a fast and minimal bundle.
 // The development configuration is different and lives in a separate file.
@@ -209,7 +213,10 @@ module.exports = {
                       },
                     },
                     {
-                      loader: require.resolve('less-loader') // compiles Less to CSS
+                      loader: require.resolve('less-loader'),
+                      options:{
+                        "modifyVars":theme
+                      }
                     }
                   ],
                 },
@@ -260,7 +267,10 @@ module.exports = {
                       },
                     },
                     {
-                      loader: require.resolve('less-loader') // compiles Less to CSS
+                      loader: require.resolve('less-loader'),
+                      options:{
+                        "modifyVars":theme
+                      }
                     }
                   ],
                 },

@@ -106,7 +106,7 @@ class Project {
 
   @action.bound deleteInterfase(interfaseId) {
     return fetchApi.fetchDeleteInterfase(interfaseId).then(data => {
-      this.getProjectData(this.data.id);
+      this.getProjectData(this.projectId);
       if (interfaseId === this.interfaseId) {
         this.selectInterfase(this.moduleId);
       }
@@ -124,8 +124,8 @@ class Project {
 
   @action.bound addInterfase(interfase) {
     return fetchApi.fetchAddInterfase(interfase).then(data => {
-      this.getProjectData(data.projectId).then(() => {
-        this.selectInterfase(data.moduleId, data.id)
+      this.getProjectData(interfase.projectId).then(() => {
+        this.selectInterfase(interfase.moduleId, interfase.id)
       })
       return data;
     })

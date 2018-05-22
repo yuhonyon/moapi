@@ -29,8 +29,8 @@ handleLogout=()=>{
       <div className={Style.wrapper}>
         <div className={Style.logo}/>
         <div className={Style.menu}>
-          <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']} >
-            <Menu.Item key="1"><Link to="/project" >首页</Link></Menu.Item>
+          <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']} >
+            <Menu.Item key="1"><Link to="/home" >首页</Link></Menu.Item>
             <Menu.Item key="2"><Link to="/project" >仓库</Link></Menu.Item>
             <Menu.Item key="3"><Link to="/project" >教程</Link></Menu.Item>
           </Menu>

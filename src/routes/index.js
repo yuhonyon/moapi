@@ -6,8 +6,10 @@ import React from 'react'
 
 const Routes = () => (
   <Switch>
-    <Route path="/project" component={AsyncComponent(() => import('./project'))} />
-    <Route path="/editor/:projectId" render={props=><RenderComponent {...props} component={()=>import('./editor')} ></RenderComponent>} />
+    <Route path="/project/:projectId" render={props=><RenderComponent {...props} component={()=>import('./project')} ></RenderComponent>} />
+    <Route path="/project" component={AsyncComponent(() => import('./projectList'))} />
+    <Route path="/home" component={AsyncComponent(() => import('./home'))} />
+
     <Redirect from="*" to="/login" />
   </Switch>
 )

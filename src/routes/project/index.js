@@ -1,2 +1,2 @@
-import Project from './Layout';
-export default Project;
+import Editor from './components/Layout';
+export default Editor;
