@@ -1,6 +1,7 @@
 import React  from 'react';
 import {Icon,Select} from 'antd';
 import EditProjectModal from './EditProjectModal'
+import TemplateModal from './TemplateModal'
 import {inject, observer} from 'mobx-react';
 import Style from "./Header.less"
 
@@ -11,11 +12,18 @@ const Option =Select.Option;
 @observer
 class Header extends React.Component {
   state={
-    editProjectModalShow:false
+    editProjectModalShow:false,
+    templateModalShow:false
   }
 
   openEditProjectModal=()=>{
     this.setState({editProjectModalShow:true})
+  }
+  openTemplateModal=()=>{
+    this.setState({templateModalShow:true})
+  }
+  closeTemplateModal=()=>{
+    this.setState({templateModalShow:false})
   }
   closeEditProjectModal=()=>{
     this.setState({editProjectModalShow:false})
@@ -23,11 +31,15 @@ class Header extends React.Component {
   handleUpdateProjectOk=(info)=>{
     this.props.project.updateProject(this.props.project.projectId,info)
   }
+  handleUpdateTemplateOk=(info)=>{
+    this.props.project.updateProject(this.props.project.projectId,{template:info})
+  }
 
   render(){
     return(
       <div className={Style.wrapper}>
         <EditProjectModal  onOk={this.handleUpdateProjectOk} onClose={this.closeEditProjectModal}  visible={this.state.editProjectModalShow} ></EditProjectModal>
+        <TemplateModal onOk={this.handleUpdateTemplateOk} onClose={this.closeTemplateModal}  visible={this.state.templateModalShow}></TemplateModal>
         <div  className={Style.title}>
           <h1>{this.props.project.info.name}</h1>
           {/* <Select defaultValue="">
@@ -39,6 +51,8 @@ class Header extends React.Component {
 
         <div className={Style.operation}>
           {this.props.project.permission>1&&<a onClick={this.openEditProjectModal} href="###"><Icon type="edit" />编辑</a>}
+
+          {this.props.project.permission>2&&<a onClick={this.openTemplateModal} href="###"><Icon type="edit" />模板</a>}
 
 
           <a download href={this.props.project.mdDownloadUrl}><Icon type="edit" />下载Markdown</a>

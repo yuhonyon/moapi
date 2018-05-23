@@ -2,6 +2,7 @@ import React from "react";
 import EditableTable from './EditableTable'
 import AddValueModal from './AddValueModal'
 import AddRemarkModal from './AddRemarkModal'
+import HeadersTable from './HeadersTable'
 import RecordModal from './RecordModal'
 import ShowCode from './ShowCode'
 import LeadInModal from './LeadInModal'
@@ -37,6 +38,10 @@ class Interfase extends React.Component {
 
   handleAddRemarkOk=(info)=>{
 
+  }
+
+  handleAddHeader=()=>{
+    this.props.interfases.addHeadersRow()
   }
 
   handleAddRemark=(e)=>{
@@ -89,6 +94,7 @@ class Interfase extends React.Component {
 
   fetchSaveInterfase() {
     const data=toJS(this.props.interfases.data);
+    data.headers=data.headers.filter(item=>!!item.name);
     data.recordMessage=this.state.recordMessage;
     fetchApi.fetchUpdateInterfase(this.props.interfases.data.id,data).then(()=>{
         message.success('保存成功');
@@ -142,6 +148,17 @@ class Interfase extends React.Component {
           }
         </div>}
       </div>
+
+
+
+      <div className={Style.title}>
+        <h3>Headers</h3>
+        <div className={Style.titleRight}>
+        {this.props.interfases.editable&&this.props.project.permission>2&&<Button onClick={()=>{this.handleAddHeader()}}>新建</Button>}
+        </div>
+      </div>
+      <HeadersTable permission={this.props.project.permission}
+data={toJS(this.props.interfases.data.headers)}></HeadersTable>
 
 
 

@@ -48,28 +48,7 @@ const EditableCell = ({ editable, value, onChange,identify,column }) => {
 
 
 
-const data = [{
-  key: '0',
-  name: 'list',
-  type: 'Object',
-  required: true,
-  mockType: 'String',
-  mockNum: 1,
-  mockValue: "12",
-  description: '注意是打发斯蒂芬',
-  children:[
-    {
-      key: '0-0',
-      name: 'list',
-      type: 'String',
-      required: true,
-      mockType: 'String',
-      mockNum: 1,
-      mockValue: "12",
-      description: '注意是打发斯蒂芬'
-    }
-  ]
-}];
+const data = [];
 
 @inject("interfases")
 @observer

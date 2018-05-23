@@ -15,6 +15,8 @@ class Interfase {
     res: [
 
     ],
+    headers:[
+    ],
     req: []
   };
 
@@ -204,6 +206,27 @@ class Interfase {
     this.changeCode(type)
 
   }
+
+
+  @action.bound
+  changeHeadersField(value,key, column) {
+    const data = this.data.headers.slice();
+    let index=data.findIndex(item=>item.key===key);
+    this.data.headers[index][column]=value;
+  }
+  @action.bound
+  delHeadersRow(key) {
+    const data = this.data.headers.slice();
+    let index=data.findIndex(item=>item.key===key);
+    data.splice(index,1)
+    this.data.headers=data;
+  }
+  @action.bound
+  addHeadersRow() {
+    this.data.headers.push({name:"",key:Date.now(),description:"",value:""});
+  }
+
+
 
   @action.bound
   delField(type,key) {
