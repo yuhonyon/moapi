@@ -9,18 +9,28 @@ import {inject, observer} from 'mobx-react';
 @observer
 class RecordModal extends React.Component {
   state = {
-    records: [],
+    records: {
+      data:[],
+      total:1000
+    },
     loading: false,
     hasMore: true,
   }
   handleCancel = (e) => {
     this.props.onClose();
   }
+  params={
+    page:1,
+    pageSize:10
+  }
   fetchData = () => {
-    fetchApi.fetchGetInterfaseRecord(this.props.interfases.data.id).then(data=>{
+    fetchApi.fetchGetInterfaseRecord(this.props.interfases.data.id,this.params).then(data=>{
+      this.params.page++;
       let records = this.state.records;
+      records.data=records.data.concat(data.data);
+      records.total=data.total;
       this.setState({
-        records: records.concat(data),
+        records:records ,
         loading: false,
       });
     })
@@ -34,7 +44,7 @@ class RecordModal extends React.Component {
     this.setState({
       loading: true,
     });
-    if (this.state.records.length > 20) {
+    if (this.state.records.data.length >= this.state.records.total) {
       this.setState({
         hasMore: false,
         loading: false,
@@ -61,7 +71,7 @@ class RecordModal extends React.Component {
               useWindow={false}
             >
               <List
-                dataSource={this.state.records}
+                dataSource={this.state.records.data}
                 renderItem={item => (
                   <List.Item key={item.id}>
                     <List.Item.Meta

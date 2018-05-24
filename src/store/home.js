@@ -9,13 +9,16 @@ class Home {
 
 
   @action.bound
-  getRecordList(){
+  getRecordList(params={page:1,pageSize:50}){
     if(this.watchProjectList.length===0){
       return;
     }
-    let params={projectIds:this.watchProjectList.map(item=>item.id)};
+    params={projectIds:this.watchProjectList.map(item=>item.id),...params};
     return fetchApi.fetchGetProjectsRecordList(params).then(data=>{
       runInAction(()=>{
+        if(params.page&&params.page>1){
+          data.data=data.data.concat(this.recordList.data.slice())
+        }
         this.recordList=data;
       })
       return data;

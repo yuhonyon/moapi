@@ -15,7 +15,7 @@ function CoreLayout(props){
     <div className="app-footer" style={{
         textAlign: 'center'
       }}>
-      Ant Design ©2016 Created by Ant UED
+
     </div>
   </div>);
 }

@@ -12,7 +12,11 @@ class Project {
   @observable interfases = [];
   @observable interfase = {};
 
-  @observable info={}
+  @observable info={
+    admin:{
+      name:null
+    }
+  }
 
   @observable data = {
     admin: {},

@@ -128,7 +128,10 @@ class AddProjectModal extends React.Component {
               label="代理地址"
             >
               {getFieldDecorator('proxy', {
-                initialValue: ''
+                initialValue: '',
+                rules: [{
+                  required: true, message: '必填',
+                }],
               })(
                 <Input />
               )}

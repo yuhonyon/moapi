@@ -132,8 +132,8 @@ const fetchApi={
       return data;
     })
   },
-  fetchGetInterfaseRecord(interfaseId){
-    return http.get(`/record/interfase/${interfaseId}`).then(data=>{
+  fetchGetInterfaseRecord(interfaseId,params){
+    return http.get(`/record/interfase/${interfaseId}`,params).then(data=>{
       return data;
     })
   },

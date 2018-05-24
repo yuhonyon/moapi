@@ -4,6 +4,7 @@ import EditProjectModal from './EditProjectModal'
 import TemplateModal from './TemplateModal'
 import {inject, observer} from 'mobx-react';
 import Style from "./Header.less"
+import { Link  } from 'react-router-dom'
 
 const Option =Select.Option;
 
@@ -41,7 +42,7 @@ class Header extends React.Component {
         <EditProjectModal  onOk={this.handleUpdateProjectOk} onClose={this.closeEditProjectModal}  visible={this.state.editProjectModalShow} ></EditProjectModal>
         <TemplateModal onOk={this.handleUpdateTemplateOk} onClose={this.closeTemplateModal}  visible={this.state.templateModalShow}></TemplateModal>
         <div  className={Style.title}>
-          <h1>{this.props.project.info.name}</h1>
+          <h1><Link to="/project">{this.props.project.info.admin.name}</Link><span>/</span>{this.props.project.info.name}</h1>
           {/* <Select defaultValue="">
             <Option value="">所有版本</Option>
             <Option value="1.7">版本1.7</Option>
