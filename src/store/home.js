@@ -13,7 +13,7 @@ class Home {
     if(this.watchProjectList.length===0){
       return;
     }
-    params={projectIds:this.watchProjectList.map(item=>item.id),...params};
+    params={projectIds:this.watchProjectList.map(item=>item.id).join(","),...params};
     return fetchApi.fetchGetProjectsRecordList(params).then(data=>{
       runInAction(()=>{
         if(params.page&&params.page>1){
