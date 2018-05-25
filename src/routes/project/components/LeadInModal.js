@@ -1,9 +1,16 @@
 import { Modal, Button,message } from 'antd';
 import React from 'react'
-
 import AceEditor from 'react-ace';
 import 'brace/mode/json';
 import 'brace/theme/github';
+import 'brace/ext/language_tools';
+import 'brace/ext/searchbox';
+const ace = require('brace');
+const mockSnippets = require('./snippers/mock.snippers')
+ace.define('ace/snippets/json', ['require', 'exports', 'module'], function (e, t) {
+  t.snippetText = mockSnippets
+  t.scope = 'json'
+})
 const code=`{}`
 class LeadInModal extends React.Component {
   state={code:code}

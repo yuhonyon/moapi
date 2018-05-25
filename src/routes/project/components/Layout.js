@@ -31,7 +31,7 @@ class Editor extends React.Component {
                 interfases={this.props.project.interfases} moduleId={this.props.project.moduleId}></InterfaseMenu>
             </div>
             <div className={Style.main}>
-              <Interfase></Interfase>
+              {this.props.project.interfases.length!==0?<Interfase></Interfase>:"该模块下无接口数据"}
             </div>
           </div>:"无数据"
         }

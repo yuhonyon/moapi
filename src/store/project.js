@@ -104,8 +104,9 @@ class Project {
       this.interfaseId = interfaseId;
       this.interfase = this.interfases.find(val => val.id === interfaseId) || {}
     }
-
-    interfases.getInterfaseData(this.interfase)
+    if(this.interfase.id){
+      interfases.getInterfaseData(this.interfase)
+    }
   }
 
   @action.bound deleteInterfase(interfaseId) {

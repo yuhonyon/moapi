@@ -1,6 +1,7 @@
 import {observable, action, useStrict,computed} from 'mobx';
 import Mock from 'mockjs';
-import fetchApi from  '@/api';
+import project from './project'
+import Config from '@/config'
 
 //import axios from 'axios';
 useStrict(true);
@@ -45,6 +46,36 @@ class Interfase {
           data[item.name+(item.mockNum&&"|"+item.mockNum)]=this.formatMock(item)
         }
         return JSON.stringify(data,null,2);
+    }
+
+    @computed get headerTest() {
+        if(!this.data.headers.length===0){
+          return "";
+        }
+         let data=[];
+         for(let item of this.data.headers){
+           data.push({"enabled":true,"key":item.name,"value":item.value})
+         }
+         return encodeURI(JSON.stringify(data));
+     }
+
+     @computed get reqTest() {
+           let method=this.data.method.toUpperCase();
+          if(!this.data.req.length===0){
+            return ""
+          }
+          let data=[];
+          let mockData=JSON.parse(this.reqMock);
+          for(let key in mockData){
+            data.push({"enabled":true,"key":key,"value":mockData[key]})
+          }
+          return (method==="POST"||method==="PUT")?"&body=":"&queryParameters="+encodeURI(JSON.stringify(data));
+      }
+
+    @computed get testUrl(){
+      console.log(this.data)
+      return `${Config.baseURL}project/test/${project.projectId}${this.data.url}#!method=${this.data.method.toUpperCase()}&headers=${this.headerTest}${this.reqTest}`
+
     }
 
 

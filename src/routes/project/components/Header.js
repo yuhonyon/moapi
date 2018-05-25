@@ -1,5 +1,5 @@
 import React  from 'react';
-import {Icon,Select} from 'antd';
+import {Icon,Select,Modal} from 'antd';
 import EditProjectModal from './EditProjectModal'
 import TemplateModal from './TemplateModal'
 import {inject, observer} from 'mobx-react';
@@ -9,7 +9,7 @@ import { Link  } from 'react-router-dom'
 const Option =Select.Option;
 
 
-@inject("project")
+@inject("project","interfases")
 @observer
 class Header extends React.Component {
   state={
@@ -34,6 +34,13 @@ class Header extends React.Component {
   }
   handleUpdateTemplateOk=(info)=>{
     this.props.project.updateProject(this.props.project.projectId,{template:info})
+  }
+
+  handleShowMockUrl=()=>{
+    Modal.info({
+     title: '在线mock地址',
+     content: this.props.project.mockUrl+" + 接口url",
+   });
   }
 
   render(){
@@ -62,7 +69,9 @@ class Header extends React.Component {
 
           <a download  href={this.props.project.serverUrl}><Icon type="edit" />生成server</a>
 
-          <a target="_blank" href={this.props.project.mockUrl}><Icon type="edit" />在线mock地址</a>
+          <a target="_blank" href={this.props.interfases.testUrl}><Icon type="edit" />接口测试</a>
+
+          <a href="javascript:void(0);" onClick={this.handleShowMockUrl}><Icon type="edit" />在线mock地址</a>
         </div>
 
         {/* <a onClick={this.openEditProjectModal} href="###"><Icon type="edit" />导出</a>

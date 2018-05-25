@@ -132,7 +132,7 @@ class Interfase extends React.Component {
             </h3>
           </li>
           <li>地址:
-            <a href="">{this.props.interfases.data.url}</a>
+            <a target="_blank" href={this.props.interfases.testUrl}>{this.props.interfases.data.url}</a>
           </li>
           <li>类型: {this.props.interfases.data.methods}</li>
         </ul>
