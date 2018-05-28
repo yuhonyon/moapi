@@ -44,9 +44,25 @@ export const parseDate=(date, fmt = "yyyy-MM-dd HH:mm:ss")=> {
 export  const recordType=(type)=>{
   if(type==="ADD_INTERFASE"){
     return "新增接口"
-  }else if(type==="Delete_INTERFASE"){
+  }else if(type==="DELETE_INTERFASE"){
     return "删除接口"
-  }else{
+  }else if(type==="UPDATE_INTERFASE"){
     return "修改接口"
+  }else if(type==="ADD_REMARK"){
+    return "添加了备注"
+  }else if(type ==="DELETE_REMARK"){
+    return "删除了备注"
+  }else if(type==="ADD_MODULE"){
+    return "新增模块"
+  }else if(type==="DELETE_MODULE"){
+    return "删除模块"
+  }else if(type==="UPDATE_MODULE"){
+    return "修改模块"
+  }else if(type==="ADD_PROEJECT"){
+    return "新增项目"
+  }else if(type==="DELETE_PROEJECT"){
+    return "删除项目"
+  }else if(type==="UPDATE_PROEJECT"){
+    return "修改项目"
   }
 }

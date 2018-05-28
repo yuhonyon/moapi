@@ -2,6 +2,7 @@ import {observable, action, useStrict,computed} from 'mobx';
 import Mock from 'mockjs';
 import project from './project'
 import Config from '@/config'
+import fetchApi from '@/api'
 
 //import axios from 'axios';
 useStrict(true);
@@ -18,12 +19,17 @@ class Interfase {
     ],
     headers:[
     ],
+    remarks:[],
     req: []
   };
 
   @observable resCode='';
   @observable reqCode='';
   timer={res:null,req:null};
+
+  @computed get remarks(){
+    return this.data.remarks
+  }
 
   @computed get resMock() {
        if(!this.data.res){
@@ -351,6 +357,20 @@ class Interfase {
     this.data.versions.push(version);
   }
 
+  @action.bound
+  addRemork(info){
+    return fetchApi.fetchAddRemork(info).then((data)=>{
+      project.getProjectData(this.data.projectId)
+      return data;
+    })
+  }
+  @action.bound
+  deleteRemark(id){
+    return fetchApi.fetchDeleteRemork(id).then((data)=>{
+      project.getProjectData(this.data.projectId)
+      return data;
+    })
+  }
 
   @action.bound
   getInterfaseData(data) {

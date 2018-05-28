@@ -138,6 +138,17 @@ const fetchApi={
     })
   },
 
+  fetchAddRemork(params){
+    return http.post(`/remark/`,params).then(data=>{
+      return data;
+    })
+  },
+  fetchDeleteRemork(id){
+    return http.delete(`/remark/${id}`).then(data=>{
+      return data;
+    })
+  }
+
 }
 
 

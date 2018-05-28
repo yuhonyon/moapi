@@ -4,7 +4,7 @@ import fetchApi from "@/api"
 useStrict(true)
 class User {
   @observable userInfo = {
-    nickname:"",
+    name:"",
     phone:'',
     accessToken:'',
     type:''

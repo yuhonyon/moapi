@@ -1,9 +1,11 @@
 import { Modal,List, Spin } from 'antd';
 import React from 'react'
 import fetchApi from '@/api';
+
 import Style from './RecordModal.less'
 import InfiniteScroll from 'react-infinite-scroller';
 import {inject, observer} from 'mobx-react';
+import {parseDate,recordType} from "@/filters"
 
 @inject("interfases")
 @observer
@@ -38,6 +40,18 @@ class RecordModal extends React.Component {
   componentWillReceiveProps(nextProps){
     if(nextProps.visible&&nextProps.visible!==this.props.visible){
       this.fetchData()
+    }
+  }
+  formatDate(date){
+    let diffdate=Date.now()-new Date(date).getTime();
+    if(diffdate<60000){
+      return parseInt(diffdate/1000)+"秒前";
+    }else if(diffdate<60000*60){
+      return parseInt(diffdate/60000)+"分钟前";
+    }else if(diffdate<60000*60*24){
+      return parseDate(diffdate,"HH小时mm分钟前");
+    }else{
+      return parseDate(date,"yyyy-MM-dd HH:mm");
     }
   }
   handleInfiniteOnLoad = () => {
@@ -75,10 +89,10 @@ class RecordModal extends React.Component {
                 renderItem={item => (
                   <List.Item key={item.id}>
                     <List.Item.Meta
-                      title={<a href="https://ant.design">{item.creator}</a>}
-                      description={item.type+item.message}
+                      title={<span>{item.creator}{recordType(item.type)}</span>}
+                      description={<p>{item.type==="DELETE_REMARK"?<s>{item.message}</s>:(item.message||"直接保存")}</p>}
                     />
-                    <div>{item.createdAt}</div>
+                    {this.formatDate(item.createdAt)}
                   </List.Item>
                 )}
               >

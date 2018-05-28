@@ -143,6 +143,8 @@ class Project {
   @action.bound
   updateInterfase(interfaseId, interfase) {
     this.selectInterfase(interfase.moduleId, interfaseId)
+    delete interfase.remarks;
+    console.log(interfase)
     return fetchApi.fetchUpdateInterfase(interfaseId, interfase).then(data => {
       this.getProjectData(this.projectId)
       return data;
@@ -193,7 +195,7 @@ class Project {
   @action.bound
   updateProject(projectId, project) {
     return fetchApi.fetchUpdateProject(projectId, project).then(data => {
-      this.getProjectInfo(this.projectId)
+
       return data;
     })
   }

@@ -6,11 +6,12 @@ import HeadersTable from './HeadersTable'
 import RecordModal from './RecordModal'
 import ShowCode from './ShowCode'
 import LeadInModal from './LeadInModal'
-import {Button,List,Radio,message,Modal,Input,Select} from 'antd'
+import {Button,List,Radio,message,Modal,Input,Select,Icon} from 'antd'
 import Style from './Interfase.less'
 import {inject, observer} from 'mobx-react';
 import {toJS} from 'mobx';
 import fetchApi from '@/api'
+import {parseDate} from '@/filters'
 const ButtonGroup = Button.Group;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -39,7 +40,7 @@ class Interfase extends React.Component {
   }
 
   handleAddRemarkOk=(info)=>{
-
+    this.props.interfases.addRemork({interfaseId:this.props.interfases.data.id,...info})
   }
 
   handleAddHeader=()=>{
@@ -48,6 +49,15 @@ class Interfase extends React.Component {
 
   handleAddRemark=(e)=>{
     this.setState({addRemarkModalShow:true})
+  }
+  handleDeleteRemark=(id)=>{
+    Modal.confirm({
+      title:'警告?',
+      content:'确认删除备注?',
+      onOk:()=>{
+        this.props.interfases.deleteRemark(id)
+      },
+    })
   }
 
   handleRecordInputChange=(e)=>{
@@ -118,11 +128,11 @@ class Interfase extends React.Component {
     this.props.interfases.changeProxyType(e.target.value)
   }
 
-  fetchSaveInterfase() {
+  fetchSaveInterfase=()=> {
     const data=toJS(this.props.interfases.data);
     data.headers=data.headers.filter(item=>!!item.name);
     data.recordMessage=this.state.recordMessage;
-    fetchApi.fetchUpdateInterfase(this.props.interfases.data.id,data).then(()=>{
+    this.props.project.updateInterfase(this.props.interfases.data.id,data).then(()=>{
         message.success('保存成功');
     })
   }
@@ -252,18 +262,17 @@ data={toJS(this.props.interfases.data.headers)}></HeadersTable>
         <h3>备注</h3>
         {this.props.project.permission>2&&<Button onClick={this.handleAddRemark} className={Style.titleBtn} size="small" type="primary">添加</Button>}
       </div>
-
       <List
       size="small"
       bordered
-      dataSource={this.props.interfases.data.remarks}
+      dataSource={toJS(this.props.interfases.remarks.slice())}
       renderItem={item => (
-        <List.Item actions={[<a>编辑</a>, <a>删除</a>]}>
+        <List.Item actions={[<Icon onClick={this.handleDeleteRemark.bind(this,item.id)} type="delete"></Icon>]}>
           <List.Item.Meta
-                title={<div>{item.version}&emsp;{item.timeStamp}</div>}
+                title={<div>{item.version}&emsp;{item.creator}</div>}
                 description={item.message}
               />
-          <div>{item.name}</div>
+          <div>{parseDate(item.createdAt)}</div>
         </List.Item>)}
       />
     </div>)

@@ -1,5 +1,6 @@
 import { Modal,Form, Input,Select } from 'antd';
 import React from 'react'
+import {inject, observer} from 'mobx-react';
 const FormItem=Form.Item;
 const TextArea=Input.TextArea
 const Option=Select.Option;
@@ -15,6 +16,8 @@ const formItemLayout = {
   },
 };
 
+@inject("interfases")
+@observer
 class AddRemarkModal extends React.Component {
 
   handleOk = (e) => {
@@ -49,14 +52,17 @@ class AddRemarkModal extends React.Component {
               label="版本"
             >
               {getFieldDecorator('version', {
-                initialValue: '1.7',
+                initialValue: this.props.interfases.curVersion||this.props.interfases.data.versions[this.props.interfases.data.versions.length-1],
                 rules: [{
                   required: true, message: '必填',
                 }],
               })(
                 <Select >
-                  <Option value="1.7">v1.7</Option>
-                  <Option value="1.6">1.6</Option>
+                  {
+                    this.props.interfases.data.versions.map(item=>(
+                      <Option key={item} value={item}>{item}</Option>
+                    ))
+                  }
                 </Select>
               )}
             </FormItem>
@@ -66,7 +72,7 @@ class AddRemarkModal extends React.Component {
               {...formItemLayout}
               label="备注"
             >
-              {getFieldDecorator('remark', {
+              {getFieldDecorator('message', {
                 initialValue: ''
               })(
                 <TextArea />

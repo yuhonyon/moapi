@@ -20,7 +20,7 @@ class Layout extends React.Component {
   formatDate(date){
     let diffdate=Date.now()-new Date(date).getTime();
     if(diffdate<60000){
-      return diffdate/1000+"秒前";
+      return parseInt(diffdate/1000)+"秒前";
     }else if(diffdate<60000*60){
       return parseInt(diffdate/60000)+"分钟前";
     }else if(diffdate<60000*60*24){
@@ -69,22 +69,25 @@ class Layout extends React.Component {
 )}</span>]}>
             <Link to="/project">{item.creator}</Link> &nbsp;{recordType(item.type)}&nbsp;
             <span>
-              <Link to={`project/${item.projectId}`}>
-                {item.projectName}
-              </Link>
+              {item.type==="DELETE_PROJECT"?<s>{item.projectName}</s>:
+              (<Link to={`project/${item.projectId}`}>
+              {item.projectName}
+              </Link>)}
             </span>
             {item.moduleId&&<span>
                 &nbsp;/&nbsp;
-                <Link to={`project/${item.projectId}?moduleId=${item.moduleId}`}>
+                {item.type==="DELETE_MODULE"?<s>{item.moduleName}</s>:
+                (<Link to={`project/${item.projectId}?moduleId=${item.moduleId}`}>
                   {item.moduleName}
-                </Link>
+                </Link>)}
               </span>
             }
             {item.interfaseId&&<span>
               &nbsp;/&nbsp;
-              <Link to={`project/${item.projectId}?moduleId=${item.moduleId}&interfaseId=${item.interfaseId}`}>
+              {item.type==="DELETE_INTERFASE"?<s>{item.interfaseName}</s>:
+              (<Link to={`project/${item.projectId}?moduleId=${item.moduleId}&interfaseId=${item.interfaseId}`}>
                 {item.interfaseName}
-              </Link>
+              </Link>)}
             </span>}
           </List.Item>
         )}

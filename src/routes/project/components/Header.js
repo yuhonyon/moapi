@@ -31,10 +31,14 @@ class Header extends React.Component {
     this.setState({editProjectModalShow:false})
   }
   handleUpdateProjectOk=(info)=>{
-    this.props.project.updateProject(this.props.project.projectId,info)
+    this.props.project.updateProject(this.props.project.projectId,info).then(()=>{
+      this.props.project.getProjectInfo(this.props.project.projectId)
+    })
   }
   handleUpdateTemplateOk=(info)=>{
-    this.props.project.updateProject(this.props.project.projectId,{template:info})
+    this.props.project.updateProject(this.props.project.projectId,{template:info}).then(()=>{
+      this.props.project.getProjectInfo(this.props.project.projectId)
+    })
   }
   handlerAddVersion=()=>{
     this.addVersion="";
