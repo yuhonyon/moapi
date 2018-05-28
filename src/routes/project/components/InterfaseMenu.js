@@ -101,7 +101,7 @@ class InterfaseMenu extends React.Component {
           mode="inline"
         >
           {
-            this.props.project.interfases.map(item=>{
+            this.props.project.inVersionInterfases.map(item=>{
               return (
                 <Menu.Item key={item.id} interfase={item}>
                     {item.name}&emsp;

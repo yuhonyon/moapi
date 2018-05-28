@@ -24,7 +24,13 @@ userMenu = (
     </Menu>
   )
 
-com
+lang=(localStorage.getItem("lang")||"zh-CN")==="zh-CN"?"English":"中文";
+
+
+changeLang=()=>{
+  localStorage.setItem("lang",this.lang==="中文"?"zh-CN":"en-US");
+  window.location.reload();
+}
 
   render(){
     return (
@@ -37,12 +43,13 @@ com
             <Menu.Item key="/course"><Link to="/course" >教程</Link></Menu.Item>
           </Menu>
         </div>
-        <div className={Style.user} >
+        <div className={Style.right} >
           <Dropdown overlay={this.userMenu}>
             <span >
               {this.props.user.userInfo.name}
             </span>
           </Dropdown>
+          <a href="###" onClick={this.changeLang}>{this.lang}</a>
         </div>
 
       </div>

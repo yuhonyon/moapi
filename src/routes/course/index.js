@@ -29,6 +29,14 @@ class Course extends React.Component {
         </ul>
 
 
+        <h3>测试接口:</h3>
+        <ul>
+          <li>项目详情里 点击"测试接口"或者接口url</li>
+          <li>在线文档里 点击接口url</li>
+          <li>需要测试真实接口 要先关闭mock</li>
+        </ul>
+
+
         <h3>获取mock server方法:</h3>
         <ul>
           <li>在线地址:http://moapi.yfyld.top/project/mock/:projectId+接口url</li>

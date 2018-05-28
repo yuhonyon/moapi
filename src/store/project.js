@@ -11,11 +11,13 @@ class Project {
   @observable module = {};
   @observable interfases = [];
   @observable interfase = {};
+  @observable curVersion = "";
 
   @observable info={
     admin:{
       name:null
-    }
+    },
+    versions:[]
   }
 
   @observable data = {
@@ -38,44 +40,61 @@ class Project {
     record: []
   }
 
-  @computed get mdDownloadUrl() {
+  @computed
+  get inVersionInterfases() {
+    if(!this.curVersion){return this.interfases};
+    return this.interfases.slice().filter(item=>(
+      item.versions.includes(this.curVersion)
+    ))
+  }
+  @computed
+  get mdDownloadUrl() {
     return Config.baseURL + 'project/md/' + this.projectId
   }
-  @computed get docUrl() {
+  @computed
+  get docUrl() {
     return Config.baseURL + 'project/doc/' + this.projectId
   }
 
-  @computed get serverUrl() {
+  @computed
+  get serverUrl() {
     return Config.baseURL + 'project/server/' + this.projectId
   }
 
-  @computed get mockUrl() {
+  @computed
+  get mockUrl() {
     return Config.baseURL + 'project/mock/' + this.projectId
   }
 
-  @computed get modules() {
+  @computed
+  get modules() {
     return this.data.modules
   }
 
-  @computed get projectId() {
+  @computed
+  get projectId() {
     return this.data.id
   }
 
-  @computed get permission() {
+  @computed
+  get permission() {
     return this.info.permission
   }
 
-  @action.bound getProjectData(projectId) {
+  @action.bound
+  getProjectData(projectId) {
     return fetchApi.fetchGetProjectData(projectId).then(data => {
       runInAction(() => {
         this.data = data;
+        //v
         this.selectInterfase(Number(getQuery(window.location.search, "moduleId")), Number(getQuery(window.location.search, "interfaseId")));
       })
       return data;
     })
   }
 
-  @action.bound getProjectInfo(projectId) {
+  @action.bound
+  getProjectInfo(projectId) {
     return fetchApi.fetchGetProjectInfo(projectId).then(data => {
       runInAction(() => {
         this.info = data;
@@ -83,7 +102,8 @@ class Project {
       return data;
     })
   }
-  @action.bound selectInterfase(moduleId, interfaseId) {
+  @action.bound
+  selectInterfase(moduleId, interfaseId) {
     if (!moduleId) {
 
       this.moduleId = this.modules.length && this.modules[0].id;
@@ -109,7 +129,8 @@ class Project {
     }
   }
 
-  @action.bound deleteInterfase(interfaseId) {
+  @action.bound
+  deleteInterfase(interfaseId) {
     return fetchApi.fetchDeleteInterfase(interfaseId).then(data => {
       this.getProjectData(this.projectId);
       if (interfaseId === this.interfaseId) {
@@ -119,7 +140,8 @@ class Project {
     })
   }
 
-  @action.bound updateInterfase(interfaseId, interfase) {
+  @action.bound
+  updateInterfase(interfaseId, interfase) {
     this.selectInterfase(interfase.moduleId, interfaseId)
     return fetchApi.fetchUpdateInterfase(interfaseId, interfase).then(data => {
       this.getProjectData(this.projectId)
@@ -127,7 +149,8 @@ class Project {
     })
   }
 
-  @action.bound addInterfase(interfase) {
+  @action.bound
+  addInterfase(interfase) {
     return fetchApi.fetchAddInterfase(interfase).then(data => {
       this.getProjectData(interfase.projectId).then(() => {
         this.selectInterfase(interfase.moduleId, interfase.id)
@@ -136,7 +159,8 @@ class Project {
     })
   }
 
-  @action.bound deleteModule(moduleId) {
+  @action.bound
+  deleteModule(moduleId) {
     return fetchApi.fetchDeleteModule(moduleId).then(data => {
       this.getProjectData(this.projectId);
       if (moduleId === this.moduleId && this.modules.length) {
@@ -146,7 +170,8 @@ class Project {
     })
   }
 
-  @action.bound updateModule(moduleId, module) {
+  @action.bound
+  updateModule(moduleId, module) {
     this.selectInterfase(moduleId)
     return fetchApi.fetchUpdateModule(moduleId, module).then(data => {
       this.getProjectData(this.projectId)
@@ -154,7 +179,8 @@ class Project {
     })
   }
 
-  @action.bound addModule(module) {
+  @action.bound
+  addModule(module) {
     return fetchApi.fetchAddModule(module).then(data => {
       this.getProjectData(this.projectId).then(() => {
         this.selectInterfase(data.id)
@@ -164,13 +190,28 @@ class Project {
   }
 
 
-  @action.bound updateProject(projectId, project) {
+  @action.bound
+  updateProject(projectId, project) {
     return fetchApi.fetchUpdateProject(projectId, project).then(data => {
       this.getProjectInfo(this.projectId)
       return data;
     })
   }
 
+  @action.bound
+  addVersion(version) {
+    const versions=this.info.versions;
+    versions.push(version)
+    return fetchApi.fetchUpdateProject(this.projectId, {version:version,versions:versions}).then(data => {
+      this.getProjectInfo(this.projectId)
+      return data;
+    })
+  }
+
+  @action.bound
+  changeCurVersion(version) {
+    this.curVersion=version
+  }
 
 
 

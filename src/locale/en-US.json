@@ -1,0 +1,21 @@
+{
+  "login": {
+    "signin": "signin",
+    "signup": "signup",
+    "name": "name",
+    "rules": {
+      "name": "Please enter your user name",
+      "phone": "Please enter the phone number",
+      "password": "Please enter the password"
+    },
+    "placeholder": {
+      "name": "user name",
+      "phone": "phone number",
+      "password": "password"
+    },
+    "message": {
+      "signup": "Registered successfully",
+      "signin": "Login successful"
+    }
+  }
+}

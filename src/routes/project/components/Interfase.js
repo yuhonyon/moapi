@@ -6,7 +6,7 @@ import HeadersTable from './HeadersTable'
 import RecordModal from './RecordModal'
 import ShowCode from './ShowCode'
 import LeadInModal from './LeadInModal'
-import {Button,List,Radio,message,Modal,Input} from 'antd'
+import {Button,List,Radio,message,Modal,Input,Select} from 'antd'
 import Style from './Interfase.less'
 import {inject, observer} from 'mobx-react';
 import {toJS} from 'mobx';
@@ -14,6 +14,7 @@ import fetchApi from '@/api'
 const ButtonGroup = Button.Group;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
+const Option=Select.Option;
 
 @inject("interfases","project")
 @observer
@@ -29,6 +30,7 @@ class Interfase extends React.Component {
   }
   addValue={}
   recordMessage=""
+  addVersion=""
 
   saveInterfase = () => {
     this.props.interfases.closeEditable()
@@ -64,6 +66,30 @@ class Interfase extends React.Component {
       }
     })
   }
+  handlerAddVersion=()=>{
+    this.addVersion="";
+    const ref =Modal.confirm({
+      title: '添加版本标记',
+      content: (
+        <Select defaultValue={this.addVersion} style={{width:200}} onChange={value=>(this.addVersion=value)}>
+          {
+            this.props.project.info.versions.slice().map(version=>(<Option value={version} key={version}>{version}</Option>))
+          }
+        </Select>
+      ),
+      iconType:"plus-circle",
+      okText: '添加',
+      cancelText: '取消',
+      onOk:()=>{
+        ref.destroy();
+        if(this.addVersion===""||this.props.interfases.data.versions.includes(this.addVersion)){
+          return;
+        }
+        this.props.interfases.addVersion(this.addVersion)
+      }
+    });
+  }
+
   edit = () => {
     this.props.interfases.openEditable()
   }
@@ -135,6 +161,8 @@ class Interfase extends React.Component {
             <a target="_blank" href={this.props.interfases.testUrl}>{this.props.interfases.data.url}</a>
           </li>
           <li>类型: {this.props.interfases.data.methods}</li>
+          <li>相关版本: {this.props.interfases.data.versions.slice().join("、")}&nbsp;{this.props.interfases.editable&&this.props.project.permission>2&&<Button onClick={this.handlerAddVersion} size="small">添加版本标记</Button>}</li>
+          <li>简介: {this.props.interfases.data.description}</li>
         </ul>
         {this.props.project.permission>1&&<div>
           {

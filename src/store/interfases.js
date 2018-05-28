@@ -338,6 +338,11 @@ class Interfase {
     this.editable = false;
   }
 
+  @action.bound
+  addVersion(version) {
+    this.data.versions.push(version);
+  }
+
 
   @action.bound
   getInterfaseData(data) {
