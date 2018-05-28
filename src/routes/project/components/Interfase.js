@@ -160,7 +160,7 @@ class Interfase extends React.Component {
           <li>地址:
             <a target="_blank" href={this.props.interfases.testUrl}>{this.props.interfases.data.url}</a>
           </li>
-          <li>类型: {this.props.interfases.data.methods}</li>
+          <li>类型: {this.props.interfases.data.method}</li>
           <li>相关版本: {this.props.interfases.data.versions.slice().join("、")}&nbsp;{this.props.interfases.editable&&this.props.project.permission>2&&<Button onClick={this.handlerAddVersion} size="small">添加版本标记</Button>}</li>
           <li>简介: {this.props.interfases.data.description}</li>
         </ul>
