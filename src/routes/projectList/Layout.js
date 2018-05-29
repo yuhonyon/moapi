@@ -33,8 +33,9 @@ class Layout extends React.Component {
     this.setState({editProjectModalShow:false})
   }
   handleChange=(key)=>{
-    this.setState({"tabsKey":key});
-    this.fetchProjectList()
+    this.setState({"tabsKey":key},()=>{
+      this.fetchProjectList()
+    });
   }
 
   fetchProjectList(){
