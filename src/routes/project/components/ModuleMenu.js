@@ -92,7 +92,7 @@ class MoudleMenu extends React.Component {
           mode="horizontal"
         >
           {
-            this.props.project.modules.map(item=>{
+            this.props.project.inVersionModules.map(item=>{
               return (
                 <Menu.Item key={item.id} module={item}>
                       {item.name}&nbsp;
@@ -111,7 +111,7 @@ class MoudleMenu extends React.Component {
 
 
         </Menu>
-        {this.props.project.permission>2&&<Button onClick={this.openAddModuleModal} className={Style.addBtn}><Icon type="plus-circle-o" />新增模块</Button>}
+        {this.props.project.permission>2&&!this.props.project.curVersion&&<Button onClick={this.openAddModuleModal} className={Style.addBtn}><Icon type="plus-circle-o" />新增模块</Button>}
       </div>
     );
   }

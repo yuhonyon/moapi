@@ -14,13 +14,11 @@ class Interfase {
     name: '',
     method: "",
     url: '',
-    res: [
-
-    ],
-    headers:[
-    ],
+    res: [],
+    headers:[],
     remarks:[],
-    req: []
+    req: [],
+    versions:[]
   };
 
   @observable resCode='';
@@ -87,7 +85,9 @@ class Interfase {
       }
 
     @computed get testUrl(){
-      console.log(this.data)
+      if(!this.data.id){
+        return ""
+      }
       return `${Config.baseURL}project/test/${project.projectId}${this.data.url}#!method=${this.data.method.toUpperCase()}&headers=${this.headerTest}${this.reqTest}`
 
     }

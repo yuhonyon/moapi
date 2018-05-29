@@ -6,7 +6,7 @@ import HeadersTable from './HeadersTable'
 import RecordModal from './RecordModal'
 import ShowCode from './ShowCode'
 import LeadInModal from './LeadInModal'
-import {Button,List,Radio,message,Modal,Input,Select,Icon} from 'antd'
+import {Button,List,Radio,message,Modal,Input,Select,Icon,Switch} from 'antd'
 import Style from './Interfase.less'
 import {inject, observer} from 'mobx-react';
 import {toJS} from 'mobx';
@@ -31,12 +31,13 @@ class Interfase extends React.Component {
   }
   addValue={}
   recordMessage=""
+  forceSave=false
   addVersion=""
 
   saveInterfase = () => {
     this.props.interfases.closeEditable()
     this.fetchSaveInterfase()
-    this.setState({recordMessage:""})
+    this.recordMessage=""
   }
 
   handleAddRemarkOk=(info)=>{
@@ -60,19 +61,19 @@ class Interfase extends React.Component {
     })
   }
 
-  handleRecordInputChange=(e)=>{
-    this.setState({recordMessage:e.target.value})
-  }
+
   addRecord=()=>{
+    this.forceSave=false;
     Modal.confirm({
       title:'添加修改记录',
       okText:"保存",
-      content:<Input defaultValue={this.state.recordMessage} onChange={this.handleRecordInputChange} ></Input>,
+      content: <div><Input defaultValue={this.recordMessage} onChange={e=>this.recordMessage=e.target.value} ></Input><br/><Switch onChange={value=>this.forceSave=value} size="small" defaultChecked={this.forceSave} />强制保存</div>,
       onOk:()=>{
         this.saveInterfase()
       },
       onCancel:()=>{
-        this.setState({recordMessage:""})
+        this.recordMessage="";
+        this.forceSave=false;
       }
     })
   }
@@ -81,11 +82,13 @@ class Interfase extends React.Component {
     const ref =Modal.confirm({
       title: '添加版本标记',
       content: (
-        <Select defaultValue={this.addVersion} style={{width:200}} onChange={value=>(this.addVersion=value)}>
-          {
-            this.props.project.info.versions.slice().map(version=>(<Option value={version} key={version}>{version}</Option>))
-          }
-        </Select>
+        <div>
+          <Select defaultValue={this.addVersion} style={{width:200}} onChange={value=>(this.addVersion=value)}>
+            {
+              this.props.project.info.versions.slice().map(version=>(<Option value={version} key={version}>{version}</Option>))
+            }
+          </Select>
+        </div>
       ),
       iconType:"plus-circle",
       okText: '添加',
@@ -131,7 +134,9 @@ class Interfase extends React.Component {
   fetchSaveInterfase=()=> {
     const data=toJS(this.props.interfases.data);
     data.headers=data.headers.filter(item=>!!item.name);
-    data.recordMessage=this.state.recordMessage;
+    data.recordMessage=this.recordMessage;
+    data.forceSave=this.forceSave
+    this.forceSave=false;
     this.props.project.updateInterfase(this.props.interfases.data.id,data).then(()=>{
         message.success('保存成功');
     })

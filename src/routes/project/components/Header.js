@@ -82,20 +82,20 @@ class Header extends React.Component {
 
 
         <div className={Style.operation}>
-          {this.props.project.permission>1&&<a onClick={this.openEditProjectModal} href="###"><Icon type="edit" />编辑</a>}
+          {this.props.project.permission>1&&<a onClick={this.openEditProjectModal} href="###"><Icon type="setting" />编辑</a>}
 
-          {this.props.project.permission>2&&<a onClick={this.openTemplateModal} href="###"><Icon type="edit" />模板</a>}
+          {this.props.project.permission>2&&<a onClick={this.openTemplateModal} href="###"><Icon type="appstore-o" />模板</a>}
 
 
-          <a download href={this.props.project.mdDownloadUrl}><Icon type="cloud-download-o" />下载Markdown</a>
+          <a download href={this.props.project.mdDownloadUrl}><Icon type="file-markdown" />下载Markdown</a>
 
-          <a target="_blank" href={this.props.project.docUrl}><Icon type="edit" />接口文档</a>
+          <a target="_blank" href={this.props.project.docUrl}><Icon type="file-text" />接口文档</a>
 
-          <a download  href={this.props.project.serverUrl}><Icon type="edit" />生成server</a>
+          <a download  href={this.props.project.serverUrl}><Icon type="cloud-download-o" />生成server</a>
 
-          <a target="_blank" href={this.props.interfases.testUrl}><Icon type="edit" />接口测试</a>
+          <a target="_blank" href={this.props.interfases.testUrl}><Icon type="tool" />接口测试</a>
 
-          <a href="javascript:void(0);" onClick={this.handleShowMockUrl}><Icon type="edit" />在线mock地址</a>
+          <a href="javascript:void(0);" onClick={this.handleShowMockUrl}><Icon type="link" />在线mock地址</a>
         </div>
 
         <div style={{float:"right"}}>

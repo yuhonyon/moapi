@@ -25,7 +25,7 @@ class Editor extends React.Component {
         <ModuleMenu
           modules={this.props.project.data.modules} interfaseId={this.props.project.interfaseId}></ModuleMenu>
         {
-          this.props.project.data.modules.length!==0?<div className={Style.content}>
+          this.props.project.inVersionModules.length!==0?<div className={Style.content}>
             <div className={Style.menu}>
               <InterfaseMenu
                 interfases={this.props.project.interfases} moduleId={this.props.project.moduleId}></InterfaseMenu>

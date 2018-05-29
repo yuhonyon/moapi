@@ -1,4 +1,4 @@
-import {observable, action, useStrict, computed, runInAction} from 'mobx';
+import {observable, action, useStrict, computed, runInAction,autorun} from 'mobx';
 import fetchApi from '@/api'
 import interfases from './interfases'
 import Config from "../config"
@@ -8,9 +8,6 @@ useStrict(true);
 class Project {
   @observable moduleId = null;
   @observable interfaseId = null;
-  @observable module = {};
-  @observable interfases = [];
-  @observable interfase = {};
   @observable curVersion = "";
 
   @observable info={
@@ -25,19 +22,30 @@ class Project {
     id: null,
     description: '',
     modules: [
-      {
-        name: "院内",
-        id: 1,
-        interfases: [
-          {
-            name: "接口一",
-            id: 1
-          }
-        ]
-      }
     ],
     members: [],
     record: []
+  }
+
+  @computed
+  get module() {
+    return this.modules.find(item=>item.id===this.moduleId)||{}
+  }
+
+  @computed
+  get interfase() {
+    return this.interfases.find(item=>item.id===this.interfaseId)||{}
+  }
+
+  @computed
+  get interfases() {
+    return this.module.interfases||[]
+  }
+
+  @computed
+  get inVersionModules() {
+    if(!this.curVersion){return this.data.modules};
+    return this.data.modules.slice().filter(item=>!!item.interfases.find(interfase=>interfase.versions.includes(this.curVersion)))
   }
 
   @computed
@@ -104,29 +112,36 @@ class Project {
   }
   @action.bound
   selectInterfase(moduleId, interfaseId) {
-    if (!moduleId) {
-
-      this.moduleId = this.modules.length && this.modules[0].id;
-      this.module = this.modules.length && this.modules[0];
-      this.interfases = this.module.interfases || [];
-      this.interfase = (this.interfases.length && this.interfases[0]) || {};
-      this.interfaseId = this.interfase.id || null;
-    } else if (moduleId && !interfaseId) {
-      this.module = this.modules.find(val => val.id === moduleId) || {}
+    if(moduleId&&interfaseId){
       this.moduleId = moduleId;
-      this.interfases = this.module.interfases || [];
-      this.interfase = (this.interfases.length && this.interfases[0]) || {};
-      this.interfaseId = this.interfase.id || null;
-    } else {
-      this.moduleId = moduleId;
-      this.module = this.modules.find(val => val.id === moduleId) || {}
-      this.interfases = this.module.interfases || [];
       this.interfaseId = interfaseId;
-      this.interfase = this.interfases.find(val => val.id === interfaseId) || {}
+      setTimeout(()=>{
+        if(this.interfase.id){
+          interfases.getInterfaseData(this.interfase)
+        }
+      },0)
+      return;
     }
-    if(this.interfase.id){
-      interfases.getInterfaseData(this.interfase)
+
+    if (!moduleId) {
+      this.moduleId = this.inVersionModules.length && this.inVersionModules[0].id;
+    } else if (moduleId) {
+      this.moduleId = moduleId;
     }
+
+    setTimeout(()=>{
+      runInAction(()=>{
+        this.interfaseId = this.inVersionInterfases.length&&this.inVersionInterfases[0].id;
+        setTimeout(()=>{
+          if(this.interfase.id){
+            interfases.getInterfaseData(this.interfase)
+          }
+        },0)
+      })
+    },0)
+
+
+
   }
 
   @action.bound
@@ -144,7 +159,6 @@ class Project {
   updateInterfase(interfaseId, interfase) {
     this.selectInterfase(interfase.moduleId, interfaseId)
     delete interfase.remarks;
-    console.log(interfase)
     return fetchApi.fetchUpdateInterfase(interfaseId, interfase).then(data => {
       this.getProjectData(this.projectId)
       return data;
@@ -212,7 +226,12 @@ class Project {
 
   @action.bound
   changeCurVersion(version) {
-    this.curVersion=version
+    this.curVersion=version;
+    if(!this.interfase.id||!this.interfase.versions.includes(version)){
+      setTimeout(()=>{
+        this.selectInterfase()
+      },0)
+    }
   }
 
 

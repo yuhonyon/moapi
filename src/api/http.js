@@ -112,12 +112,13 @@ instance.interceptors.response.use( (response)=> {
     if (error.code === 'ECONNABORTED') {
         _message('网络连接超时');
     }else if (error.message === 'Request failed with status code 403'){
+        _message('请重新登录');
         setTimeout(() => {
-            window.location.href=window.location.host+"/login"
+            window.location.href=window.location.origin+"/login"
         }, 1000)
-    }else if(error.response&&error.response.data){
+    }else if(error.response&&error.response.data&&error.response.data.message){
       setTimeout(function(){
-        _message(JSON.stringify(error.response.data))
+        _message(error.response.data.message)
       },300);
     }
 
