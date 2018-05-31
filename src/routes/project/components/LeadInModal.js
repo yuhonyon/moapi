@@ -15,6 +15,10 @@ const code=`{}`
 class LeadInModal extends React.Component {
   state={code:code}
   handleOk = (e) => {
+    if(/^\[[\s\S]*\]$/m.test(this.state.code)){
+      message.warning('不建议用数组格式数据');
+      return;
+    }
     if(!this.isJSON(this.state.code)){
        message.warning('格式错误');
        return;
@@ -60,7 +64,7 @@ class LeadInModal extends React.Component {
   render() {
     return (
       <div>
-        <Modal
+        <Modal maskClosable={false}
           width={640}
           title={<span>{this.props.title} <Button onClick={this.handleFormat} size="small">格式化</Button></span>}
           visible={this.props.visible}

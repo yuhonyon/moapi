@@ -1,5 +1,5 @@
 import React from "react";
-import {message,Modal,Button,List,Icon} from 'antd';
+import {message,Button,List,Icon} from 'antd';
 import { Link  } from 'react-router-dom'
 import Style from "./WatchList.less";
 import {inject, observer} from 'mobx-react';

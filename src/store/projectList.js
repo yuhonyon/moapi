@@ -1,4 +1,4 @@
-import { observable, action ,useStrict,computed,runInAction} from 'mobx';
+import { observable, action ,useStrict,runInAction} from 'mobx';
 import fetchApi from  '@/api'
 useStrict(true);
 

@@ -66,7 +66,7 @@ class EditProjectModal extends React.Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <div>
-        <Modal
+        <Modal maskClosable={false}
           width={640}
           title="编辑项目"
           visible={this.props.visible}
@@ -114,7 +114,7 @@ class EditProjectModal extends React.Component {
               })(
                 <Select
                   showSearch
-                  disabled={this.props.project.info.permission!=4}
+                  disabled={this.props.project.info.permission!==4}
                   mode="multiple"
                   optionFilterProp="children"
                   filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}

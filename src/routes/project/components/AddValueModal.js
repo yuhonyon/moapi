@@ -1,4 +1,4 @@
-import { Modal,Form, Input, Select,Switch } from 'antd';
+import { Modal,Form, Input, Select } from 'antd';
 import React from 'react'
 const Option=Select.Option;
 const FormItem=Form.Item;
@@ -37,7 +37,7 @@ class AddValueModal extends React.Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <div>
-        <Modal
+        <Modal maskClosable={false}
           width={640}
           title={this.props.title}
           visible={this.props.visible}

@@ -95,7 +95,7 @@ class Header extends React.Component {
 
           <a target="_blank" href={this.props.interfases.testUrl}><Icon type="tool" />接口测试</a>
 
-          <a href="javascript:void(0);" onClick={this.handleShowMockUrl}><Icon type="link" />在线mock地址</a>
+          <a  onClick={this.handleShowMockUrl}><Icon type="link" />在线mock地址</a>
         </div>
 
         <div style={{float:"right"}}>

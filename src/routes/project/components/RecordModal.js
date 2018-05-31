@@ -45,9 +45,9 @@ class RecordModal extends React.Component {
   formatDate(date){
     let diffdate=Date.now()-new Date(date).getTime();
     if(diffdate<60000){
-      return parseInt(diffdate/1000)+"秒前";
+      return parseInt(diffdate/1000,10)+"秒前";
     }else if(diffdate<60000*60){
-      return parseInt(diffdate/60000)+"分钟前";
+      return parseInt(diffdate/60000,10)+"分钟前";
     }else if(diffdate<60000*60*24){
       return parseDate(diffdate,"HH小时mm分钟前");
     }else{
@@ -70,7 +70,7 @@ class RecordModal extends React.Component {
   render() {
     return (
       <div>
-        <Modal
+        <Modal maskClosable={false}
           width={640}
           title="修改记录"
           visible={this.props.visible}

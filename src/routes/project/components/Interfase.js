@@ -10,7 +10,6 @@ import {Button,List,Radio,message,Modal,Input,Select,Icon,Switch} from 'antd'
 import Style from './Interfase.less'
 import {inject, observer} from 'mobx-react';
 import {toJS} from 'mobx';
-import fetchApi from '@/api'
 import {parseDate} from '@/filters'
 const ButtonGroup = Button.Group;
 const RadioButton = Radio.Button;

@@ -77,7 +77,7 @@ class TemplateModal extends React.Component {
   render() {
     return (
       <div>
-        <Modal
+        <Modal maskClosable={false}
           width={640}
           title={<span>接口模板 <Button onClick={this.handleFormat} size="small">格式化</Button></span>}
           visible={this.props.visible}

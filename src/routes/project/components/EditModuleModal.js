@@ -47,7 +47,7 @@ class EditModuleModal extends React.Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <div>
-        <Modal
+        <Modal maskClosable={false}
           width={640}
           title="编辑模块"
           visible={this.props.visible}

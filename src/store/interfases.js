@@ -88,7 +88,7 @@ class Interfase {
       if(!this.data.id){
         return ""
       }
-      return `${Config.baseURL}project/test/${project.projectId}${this.data.url}#!method=${this.data.method.toUpperCase()}&headers=${this.headerTest}${this.reqTest}`
+      return (`${Config.baseURL}project/test/${project.projectId}/${this.data.url}#!method=${this.data.method.toUpperCase()}&headers=${this.headerTest}${this.reqTest}`).replace(/([^:])\/\//,"$1/");
 
     }
 
@@ -194,6 +194,9 @@ class Interfase {
     if (typeof code === 'string') {
       code = JSON.parse(code)
     }
+    if(code.constructor===Array){
+      code=code[0];
+    }
     let newCode = [];
     let id=Date.now()
     for (let i in code) {
@@ -207,6 +210,9 @@ class Interfase {
   leadInReq(code) {
     if (typeof code === 'string') {
       code = JSON.parse(code)
+    }
+    if(code.constructor===Array){
+      code=code[0];
     }
     let newCode = [];
     let id=Date.now()

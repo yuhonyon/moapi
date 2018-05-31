@@ -49,7 +49,7 @@ class EditInterfaseModal extends React.Component {
     const { getFieldDecorator } = this.props.form;
     return (
       <div>
-        <Modal
+        <Modal maskClosable={false}
           width={640}
           title="编辑接口"
           visible={this.props.visible}

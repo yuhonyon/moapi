@@ -1,5 +1,5 @@
 import React from "react";
-import { Row,Col,message,Modal } from 'antd';
+import { Row,Col } from 'antd';
 import Style from "./Layout.less";
 import {inject, observer} from 'mobx-react';
 import WatchList from "./components/WatchList";
@@ -20,7 +20,7 @@ class Layout extends React.Component {
 
   render(){
     return (
-      <div >
+      <div className={Style.wrapper}>
         <Row gutter={16}>
           <Col className="gutter-row" span={16}>
             <RecordList></RecordList>

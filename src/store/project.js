@@ -1,4 +1,4 @@
-import {observable, action, useStrict, computed, runInAction,autorun} from 'mobx';
+import {observable, action, useStrict, computed, runInAction} from 'mobx';
 import fetchApi from '@/api'
 import interfases from './interfases'
 import Config from "../config"

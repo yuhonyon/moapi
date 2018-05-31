@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { Menu,Icon,message,Button,Modal } from 'antd';
-import { Link  } from 'react-router-dom'
 import Style from './InterfaseMenu.less'
 import {inject, observer} from 'mobx-react';
 import AddInterfaseModal from './AddInterfaseModal';
