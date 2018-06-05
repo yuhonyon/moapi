@@ -48,7 +48,7 @@ class EditDocModal extends React.Component {
           title={<div><span>markdown文档</span><Upload
             showUploadList={false}
             onChange={this.handleChange}
-            action={`//127.0.0.1:3014/doc/upload?token=${this.props.user.userInfo.accessToken}&projectId=${1}`}
+            action={`${config.baseURL}doc/upload?token=${this.props.user.userInfo.accessToken}&projectId=${1}`}
             >
              <Button>
                <Icon type="upload" /> 上传
