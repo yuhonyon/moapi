@@ -14,7 +14,8 @@ class Project {
     admin:{
       name:null
     },
-    versions:[]
+    versions:[],
+    docs:[]
   }
 
   @observable data = {
@@ -25,6 +26,7 @@ class Project {
     ],
     members: [],
     record: []
+
   }
 
   @computed
@@ -40,6 +42,11 @@ class Project {
   @computed
   get interfases() {
     return this.module.interfases||[]
+  }
+
+  @computed
+  get docs() {
+    return this.info.docs||[]
   }
 
   @computed
@@ -102,7 +109,7 @@ class Project {
   }
 
   @action.bound
-  getProjectInfo(projectId) {
+  getProjectInfo(projectId=this.projectId) {
     return fetchApi.fetchGetProjectInfo(projectId).then(data => {
       runInAction(() => {
         this.info = data;
@@ -233,6 +240,8 @@ class Project {
       },0)
     }
   }
+
+
 
 
 

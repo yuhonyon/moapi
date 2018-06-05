@@ -1,6 +1,7 @@
 import React  from 'react';
 import {Icon,Select,Modal,Button,Input} from 'antd';
 import EditProjectModal from './EditProjectModal'
+import EditDocModal from './EditDocModal'
 import TemplateModal from './TemplateModal'
 import {inject, observer} from 'mobx-react';
 import Style from "./Header.less"
@@ -14,12 +15,16 @@ const Option =Select.Option;
 class Header extends React.Component {
   state={
     editProjectModalShow:false,
-    templateModalShow:false
+    templateModalShow:false,
+    editDocModalShow:false
   }
   addVersion=""
 
   openEditProjectModal=()=>{
     this.setState({editProjectModalShow:true})
+  }
+  openEditDocModal=()=>{
+    this.setState({editDocModalShow:true})
   }
   openTemplateModal=()=>{
     this.setState({templateModalShow:true})
@@ -70,10 +75,19 @@ class Header extends React.Component {
    });
   }
 
+  handleUpdateDocOk=()=>{
+    
+  }
+
+  closeEditDocModal=()=>{
+    this.setState({editDocModalShow:false})
+  }
+
   render(){
     return(
       <div className={Style.wrapper}>
         <EditProjectModal  onOk={this.handleUpdateProjectOk} onClose={this.closeEditProjectModal}  visible={this.state.editProjectModalShow} ></EditProjectModal>
+        <EditDocModal  onOk={this.handleUpdateDocOk} onClose={this.closeEditDocModal}  visible={this.state.editDocModalShow} ></EditDocModal>
         <TemplateModal onOk={this.handleUpdateTemplateOk} onClose={this.closeTemplateModal}  visible={this.state.templateModalShow}></TemplateModal>
         <div  className={Style.title}>
           <h1><Link to="/project">{this.props.project.info.admin.name}</Link><span>/</span>{this.props.project.info.name}</h1>
@@ -87,7 +101,7 @@ class Header extends React.Component {
           {this.props.project.permission>2&&<a onClick={this.openTemplateModal} href="###"><Icon type="appstore-o" />模板</a>}
 
 
-          <a download href={this.props.project.mdDownloadUrl}><Icon type="file-markdown" />下载Markdown</a>
+          <a download href={this.props.project.mdDownloadUrl}><Icon type="file-markdown" />下载接口Markdown</a>
 
           <a target="_blank" href={this.props.project.docUrl}><Icon type="file-text" />接口文档</a>
 
@@ -96,6 +110,8 @@ class Header extends React.Component {
           <a target="_blank" href={this.props.interfases.testUrl}><Icon type="tool" />接口测试</a>
 
           <a  onClick={this.handleShowMockUrl}><Icon type="link" />在线mock地址</a>
+
+          <a onClick={this.openEditDocModal}><Icon type="file-markdown" />Markdown文档</a>
         </div>
 
         <div style={{float:"right"}}>

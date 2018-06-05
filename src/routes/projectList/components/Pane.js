@@ -4,6 +4,7 @@ import {Icon,Tooltip} from "antd"
 import {withRouter} from "react-router-dom";
 import {parseDate} from "@/filters"
 import config from "@/config"
+import { Link  } from 'react-router-dom'
 
 
 class Pane extends React.Component {
@@ -18,6 +19,9 @@ class Pane extends React.Component {
     e.preventDefault();
     this.props.onUpdate(this.props.project.id)
   }
+  handleDeleteDoc=(id)=>{
+    this.props.onDeleteDoc(id)
+  }
   onMockUrl=(e)=>{
     e.preventDefault();
     this.props.onMockUrl(`${config.baseURL}project/mock/${this.props.project.id}/`)
@@ -30,6 +34,17 @@ class Pane extends React.Component {
         <p>当前版本:{this.props.project.version}</p>
         <p>创建时间:{parseDate(this.props.project.createdAt)}</p>
         <p>更新时间:{parseDate(this.props.project.updatedAt)}</p>
+        <div>其他文档:
+           <ul>
+            {this.props.project.docs.map(item=>(
+              <li key={item.id}>
+                <a target="_blank" href={`${config.baseURL}doc/preview/${item.id}`}>{item.title}</a>&nbsp;
+                <Link to={`/doc/${item.id}`}><Icon type="form"></Icon></Link>
+                <Icon onClick={this.handleDeleteDoc.bind(this,item.id)} type="delete"></Icon>
+              </li>
+            ))}
+           </ul>
+        </div>
         <div className={Style.btnBox}>
           <Tooltip title="在线mock地址">
             <Icon onClick={this.onMockUrl} type="cloud-o"></Icon>

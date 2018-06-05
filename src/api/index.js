@@ -147,7 +147,28 @@ const fetchApi={
     return http.delete(`/remark/${id}`).then(data=>{
       return data;
     })
-  }
+  },
+
+  fetchGetDoc(id){
+    return http.get(`/doc/${id}`).then(data=>{
+      return data;
+    })
+  },
+  fetchAddDoc(params){
+    return http.post(`/doc/`,params).then(data=>{
+      return data;
+    })
+  },
+  fetchUpdateDoc(id,params){
+    return http.put(`/doc/${id}`,params).then(data=>{
+      return data;
+    })
+  },
+  fetchDeleteDoc(id){
+    return http.delete(`/doc/${id}`).then(data=>{
+      return data;
+    })
+  },
 
 }
 

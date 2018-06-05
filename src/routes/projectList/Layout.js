@@ -7,7 +7,7 @@ import AddProjectModal from "./components/AddProjectModal"
 import EditProjectModal from "./../project/components/EditProjectModal"
 const TabPane=Tabs.TabPane;
 
-@inject("projectList","project")
+@inject("projectList","project","doc")
 @observer
 class Layout extends React.Component {
   state={
@@ -36,6 +36,19 @@ class Layout extends React.Component {
     this.setState({"tabsKey":key},()=>{
       this.fetchProjectList()
     });
+  }
+
+  handleDeleteDoc=(docId)=>{
+    Modal.confirm({
+    title: '警告',
+    content: '确认要删除该文档吗',
+    onOk:()=> {
+      this.props.doc.deleteDoc(docId).then(()=>{
+        message.success('删除成功')
+        this.fetchProjectList()
+      })
+    },
+  });
   }
 
   fetchProjectList(){
@@ -90,13 +103,13 @@ class Layout extends React.Component {
         <Tabs activeKey={this.state.tabsKey} onChange={this.handleChange} tabBarExtraContent={<Button onClick={this.handleAddProject}>添加项目</Button>}>
           <TabPane tab="我的项目" key="self">
             {this.props.projectList.self.map(project=>(
-              <Pane onMockUrl={this.handleShowMockUrl} onDelete={this.handleDeleteProject} onUpdate={this.openEditProjectModal} self editable key={project.id} project={project}></Pane>
+              <Pane onMockUrl={this.handleShowMockUrl} onDelete={this.handleDeleteProject} onUpdate={this.openEditProjectModal} onDeleteDoc={this.handleDeleteDoc} self editable key={project.id} project={project}></Pane>
             ))}
             {this.props.projectList.self.length===0&&<div className={Style.noDataNote}>暂无项目</div>}
           </TabPane>
           <TabPane tab="参与项目" key="develop">
             {this.props.projectList.develop.map(project=>(
-              <Pane onMockUrl={this.handleShowMockUrl} onUpdate={this.openEditProjectModal} editable key={project.id} project={project}></Pane>
+              <Pane onMockUrl={this.handleShowMockUrl} onDeleteDoc={this.handleDeleteDoc} onUpdate={this.openEditProjectModal} editable key={project.id} project={project}></Pane>
             ))}
             {this.props.projectList.develop.length===0&&<div className={Style.noDataNote}>暂无项目</div>}
           </TabPane>

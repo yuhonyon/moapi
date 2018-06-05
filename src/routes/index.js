@@ -11,6 +11,8 @@ const Routes = () => (
     <Route path="/project" component={AsyncComponent(() => import('./projectList'))} />
     <Route path="/home" component={AsyncComponent(() => import('./home'))} />
 
+    <Route path="/doc/:docId" component={AsyncComponent(() => import('./doc'))} />
+
     <Route path="/course" component={Course} />
 
     <Redirect from="*" to="/login" />
