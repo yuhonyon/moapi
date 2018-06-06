@@ -93,23 +93,7 @@ class AddInterfaseModal extends React.Component {
                 </Select>
               )}
             </FormItem>
-            <FormItem
-              {...formItemLayout}
-              label="标记版本"
-            >
-              {getFieldDecorator('versions', {
-                initialValue: this.props.project.curVersion||this.props.project.info.version,
-                rules: [{
-                  required: true, message: '必选',
-                }],
-              })(
-                <Select mode="multiple">
-                  {
-                    this.props.project.info.versions.slice().map(version=>(<Option value={version} key={version}>{version}</Option>))
-                  }
-                </Select>
-              )}
-            </FormItem>
+            
 
             <FormItem
               {...formItemLayout}

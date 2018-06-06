@@ -29,9 +29,7 @@ ReactDOM.render(<Provider {...store}>
   <BrowserRouter>
     <LocaleProvider locale={lang==="zh-CN"?zhCN:enUS}>
       <Switch>
-        <Route path="/login" component={asyncComponent(() => import('./routes/login'))} />
         <Route path="/" component={CoreLayout} />
-        <Redirect from="*" to="/login" />
       </Switch>
     </LocaleProvider>
   </BrowserRouter>

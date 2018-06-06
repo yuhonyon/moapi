@@ -1,4 +1,4 @@
-import { Menu,Dropdown} from 'antd';
+import { Menu,Icon} from 'antd';
 import React  from 'react';
 import { Link  } from 'react-router-dom'
 import Style from './Header.less'
@@ -37,19 +37,16 @@ changeLang=()=>{
       <div className={Style.wrapper}>
         <div className={Style.logo}/>
         <div className={Style.menu}>
-          <Menu theme="dark" mode="horizontal" defaultSelectedKeys={[this.props.history.location.pathname]} >
-            <Menu.Item key="/home"><Link to="/home" >首页</Link></Menu.Item>
-            <Menu.Item key="/project"><Link to="/project" >仓库</Link></Menu.Item>
-            <Menu.Item key="/course"><Link to="/course" >教程</Link></Menu.Item>
-          </Menu>
+          moapi
+
         </div>
         <div className={Style.right} >
-          <Dropdown overlay={this.userMenu}>
-            <span >
-              {this.props.user.userInfo.name}
-            </span>
-          </Dropdown>
-          <a href="###" onClick={this.changeLang}>{this.lang}</a>
+          <a target="_blank"><Icon type="file-text" />设置</a>
+          <a target="_blank"><Icon type="file-text" />导入</a>
+          <a target="_blank"><Icon type="file-text" />导出</a>
+          <a target="_blank"><Icon type="file-text" />下载文档</a>
+          <a target="_blank"><Icon type="file-text" />生成server</a>
+          <a target="_blank"><Icon type="file-text" />mock地址</a>
         </div>
 
       </div>

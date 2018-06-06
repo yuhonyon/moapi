@@ -57,8 +57,8 @@ const fetchApi={
     })
   },
 
-  fetchDeleteInterfase(interfaseId){
-    return http.delete(`/interfase/${interfaseId}`).then(data=>{
+  fetchDeleteInterfase(moduleId,interfaseId){
+    return http.delete(`/interfase/${moduleId}/${interfaseId}`).then(data=>{
       return data;
     })
   },

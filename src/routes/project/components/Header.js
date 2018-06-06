@@ -76,7 +76,7 @@ class Header extends React.Component {
   }
 
   handleUpdateDocOk=()=>{
-    
+
   }
 
   closeEditDocModal=()=>{
@@ -89,47 +89,25 @@ class Header extends React.Component {
         <EditProjectModal  onOk={this.handleUpdateProjectOk} onClose={this.closeEditProjectModal}  visible={this.state.editProjectModalShow} ></EditProjectModal>
         <EditDocModal  onOk={this.handleUpdateDocOk} onClose={this.closeEditDocModal}  visible={this.state.editDocModalShow} ></EditDocModal>
         <TemplateModal onOk={this.handleUpdateTemplateOk} onClose={this.closeTemplateModal}  visible={this.state.templateModalShow}></TemplateModal>
-        <div  className={Style.title}>
-          <h1><Link to="/project">{this.props.project.info.admin.name}</Link><span>/</span>{this.props.project.info.name}</h1>
-
-        </div>
 
 
-        <div className={Style.operation}>
+
+        {/* <div className={Style.operation}>
           {this.props.project.permission>1&&<a onClick={this.openEditProjectModal} href="###"><Icon type="setting" />编辑</a>}
 
-          {this.props.project.permission>2&&<a onClick={this.openTemplateModal} href="###"><Icon type="appstore-o" />模板</a>}
-
-
+          <a target="_blank" href={this.props.project.docUrl}><Icon type="file-text" />导出</a>
+          <a target="_blank" href={this.props.project.docUrl}><Icon type="file-text" />导入</a>
           <a download href={this.props.project.mdDownloadUrl}><Icon type="file-markdown" />下载接口Markdown</a>
 
           <a target="_blank" href={this.props.project.docUrl}><Icon type="file-text" />接口文档</a>
 
-          <a download  href={this.props.project.serverUrl}><Icon type="cloud-download-o" />生成server</a>
+          <a download  href={this.props.project.serverUrl}><Icon type="cloud-download-o" />生成node server</a>
 
           <a target="_blank" href={this.props.interfases.testUrl}><Icon type="tool" />接口测试</a>
 
           <a  onClick={this.handleShowMockUrl}><Icon type="link" />在线mock地址</a>
+        </div> */}
 
-          <a onClick={this.openEditDocModal}><Icon type="file-markdown" />Markdown文档</a>
-        </div>
-
-        <div style={{float:"right"}}>
-          <Select value={this.props.project.curVersion} onChange={this.handleChangeVersion}>
-            <Option value="">所有版本</Option>
-            {
-              this.props.project.info.versions.slice().map(version=>(
-                <Option key={version} value={version}>{version}</Option>
-              ))
-            }
-          </Select>
-          <Button onClick={this.handlerAddVersion}>添加版本</Button>
-        </div>
-
-        {/* <a onClick={this.openEditProjectModal} href="###"><Icon type="edit" />导出</a>
-
-
-        <a onClick={this.openEditProjectModal} href="###"><Icon type="edit" />导入</a> */}
       </div>
     )
   }

@@ -93,7 +93,7 @@ class Project {
 
   @computed
   get permission() {
-    return this.info.permission
+    return 4
   }
 
   @action.bound
@@ -153,7 +153,7 @@ class Project {
 
   @action.bound
   deleteInterfase(interfaseId) {
-    return fetchApi.fetchDeleteInterfase(interfaseId).then(data => {
+    return fetchApi.fetchDeleteInterfase(this.moduleId,interfaseId).then(data => {
       this.getProjectData(this.projectId);
       if (interfaseId === this.interfaseId) {
         this.selectInterfase(this.moduleId);

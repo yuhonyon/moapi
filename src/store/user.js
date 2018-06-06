@@ -7,7 +7,7 @@ class User {
     name:"",
     phone:'',
     accessToken:'',
-    type:''
+    type:4
   };
 
   @observable  userList=[]
@@ -15,10 +15,10 @@ class User {
 
   @action.bound
   getUserInfo(){
-    let user=window.localStorage.getItem('user');
-    if(user){
-      this.userInfo=JSON.parse(user)
-    }
+    // let user=window.localStorage.getItem('user');
+    // if(user){
+    //   this.userInfo=JSON.parse(user)
+    // }
   }
 
 

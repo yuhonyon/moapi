@@ -27,7 +27,7 @@ class EditProjectModal extends React.Component {
 
   componentDidMount(){
     if(this.props.user.userList.length===0){
-      this.props.user.getUserList()
+      //this.props.user.getUserList()
     }
 
   }

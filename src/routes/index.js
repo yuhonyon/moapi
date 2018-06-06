@@ -8,14 +8,7 @@ import Course from "./course"
 const Routes = () => (
   <Switch>
     <Route path="/project/:projectId" render={props=><RenderComponent {...props} component={()=>import('./project')} ></RenderComponent>} />
-    <Route path="/project" component={AsyncComponent(() => import('./projectList'))} />
-    <Route path="/home" component={AsyncComponent(() => import('./home'))} />
-
-    <Route path="/doc/:docId" component={AsyncComponent(() => import('./doc'))} />
-
-    <Route path="/course" component={Course} />
-
-    <Redirect from="*" to="/login" />
+    <Redirect from="*" to="/project/1" />
   </Switch>
 )
 

@@ -163,7 +163,7 @@ class Interfase extends React.Component {
         <ul>
           <li>
             <h3>
-              {this.props.interfases.data.name} <Button onClick={this.openRecord} type="primary" size="small">修改记录</Button>&emsp;
+              {this.props.interfases.data.name} &emsp;
               {this.props.interfases.editable&&<RadioGroup onChange={this.handleProxyTypeChange} value={this.props.interfases.data.proxyType}>
                 <RadioButton value={0}>关闭mock</RadioButton>
                 <RadioButton value={1}>开启mock</RadioButton>
@@ -175,7 +175,6 @@ class Interfase extends React.Component {
             <a target="_blank" href={this.props.interfases.testUrl}>{this.props.interfases.data.url}</a>
           </li>
           <li>类型: {this.props.interfases.data.method}</li>
-          <li>相关版本: {this.props.interfases.data.versions.slice().join("、")}&nbsp;{this.props.interfases.editable&&this.props.project.permission>2&&<Button onClick={this.handlerAddVersion} size="small">添加版本标记</Button>}</li>
           <li>简介: {this.props.interfases.data.description}</li>
         </ul>
         {this.props.project.permission>1&&<div>
@@ -183,7 +182,6 @@ class Interfase extends React.Component {
             this.props.interfases.editable
               ? <ButtonGroup >
                   <Button onClick={this.saveInterfase} type="primary">直接保存</Button>
-                  <Button onClick={this.addRecord} type="primary">保存</Button>
                   <Button onClick={this.cancel}>&emsp;&emsp;取消&emsp;&emsp;</Button>
                 </ButtonGroup>
               : <Button onClick={this.edit} type="primary">&emsp;&emsp;编辑&emsp;&emsp;</Button>
@@ -262,23 +260,6 @@ data={toJS(this.props.interfases.data.headers)}></HeadersTable>
         </div>
       }
 
-      <div className={Style.title}>
-        <h3>备注</h3>
-        {this.props.project.permission>2&&<Button onClick={this.handleAddRemark} className={Style.titleBtn} size="small" type="primary">添加</Button>}
-      </div>
-      <List
-      size="small"
-      bordered
-      dataSource={toJS(this.props.interfases.remarks.slice())}
-      renderItem={item => (
-        <List.Item actions={[<Icon onClick={this.handleDeleteRemark.bind(this,item.id)} type="delete"></Icon>]}>
-          <List.Item.Meta
-                title={<div>{item.version}&emsp;{item.creator}</div>}
-                description={item.message}
-              />
-          <div>{parseDate(item.createdAt)}</div>
-        </List.Item>)}
-      />
     </div>)
   }
 }
