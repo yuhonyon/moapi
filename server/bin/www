@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 const colors = require('colors');
 require("../app.js");
+const opn =require('opn')
 
 console.log(`
   ╔═╗╔═╦═══╦═══╦═══╦══╗
@@ -11,5 +12,8 @@ console.log(`
   ╚╝╚╝╚╩═══╩╝─╚╩╝──╚══╝`.green)
 
 console.log("*****************************")
-console.log(`api:http://127.0.0.1:3015`.green)
+console.log(`api:http://127.0.0.1:3015/project/mock/`.green)
+console.log(`console:http://127.0.0.1:3016`.green)
 console.log("*****************************")
+
+opn("http://127.0.0.1:3016")
