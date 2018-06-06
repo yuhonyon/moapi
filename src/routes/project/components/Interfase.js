@@ -107,6 +107,7 @@ class Interfase extends React.Component {
   }
   cancel = () => {
     this.props.interfases.closeEditable()
+    this.props.project.getProjectData()
   }
   resLeadInOk=(code)=>{
     this.props.interfases.leadInRes(code);

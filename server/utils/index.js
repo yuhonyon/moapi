@@ -10,7 +10,6 @@ function parse(buffer){
 
 async function getProject(){
   const data=await fs.readFile(resolve("../data/project.json"));
-  console.log(data.toString())
   return parse(data);
 }
 

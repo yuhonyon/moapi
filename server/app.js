@@ -12,7 +12,7 @@ const path =require('path');
 const http =require('http');
 const _debug =require('debug');
 
-
+const restc =require('restc')
 const router =require('./routes');
 
 
@@ -24,7 +24,10 @@ var debug = _debug('demo:server');
 onerror(app);
 
 // middlewares
-app.keys = ['zhangivon'];
+app.use(restc.koa2({
+  includes: [/^\/project\/test/]
+}))
+
 app.use(cors());
 app.use(bodyparser({
   enableTypes: ['json', 'form', 'text']
@@ -33,7 +36,7 @@ app.use(json());
 app.use(logger());
 
 app.use(require('koa-static')(path.join(__dirname ,'/public')));
-app.use(require('koa-static')(path.join(__dirname ,'../build')));
+
 app.use(views(path.join(__dirname , '/views'), {extension: 'ejs'}));
 
 // logger
@@ -127,3 +130,18 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+
+const page = new Koa();
+
+page.use(require('koa-static')(path.join(__dirname ,'../build')));
+
+const pageServer = http.createServer(page.callback());
+
+/**
+ * Listen on provided port, on all network interfaces.
+ */
+
+pageServer.listen(3016);
+pageServer.on('error', onError);
+pageServer.on('listening', onListening);

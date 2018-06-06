@@ -1,0 +1,1 @@
+import marked from 'marked';

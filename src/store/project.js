@@ -97,7 +97,7 @@ class Project {
   }
 
   @action.bound
-  getProjectData(projectId) {
+  getProjectData(projectId=this.projectId) {
     return fetchApi.fetchGetProjectData(projectId).then(data => {
       runInAction(() => {
         this.data = data;

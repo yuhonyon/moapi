@@ -168,7 +168,7 @@ const fetchApi={
     return http.delete(`/doc/${id}`).then(data=>{
       return data;
     })
-  },
+  }
 
 }
 

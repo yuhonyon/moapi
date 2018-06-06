@@ -9,7 +9,14 @@ class Project{
     saveProject(project)
   }
   async deleteProject(){
-    await saveProject({})
+    await saveProject({"id":1,"modules":{}})
+  }
+  async importProject(info){
+    await saveProject(info);
+  }
+  async exportProject(){
+    let project=await getProject();
+    return project;
   }
   async getProject(){
     let project=await getProject();
