@@ -1,7 +1,20 @@
 {
   "name": "moapi",
   "version": "2.0.0",
-  "private": true,
+  "author": "yufangyang",
+  "repository": "https://github.com/yuhonyon/moapi",
+  "homepage": "http://moapi.yfyld.top/",
+  "keywords": [
+    "mock",
+    "api",
+    "mockserver",
+    "markdown"
+  ],
+  "tags": [
+    "mock",
+    "api",
+    "server"
+  ],
   "dependencies": {
     "antd": "^3.5.3",
     "autoprefixer": "7.1.6",
