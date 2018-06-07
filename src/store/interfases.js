@@ -88,7 +88,7 @@ class Interfase {
       if(!this.data.id){
         return ""
       }
-      return (`${Config.baseURL}project/test/${this.data.url}#!method=${this.data.method.toUpperCase()}&headers=${this.headerTest}${this.reqTest}`).replace(/([^:])\/\//,"$1/");
+      return (`${Config.baseURL}test/${this.data.url}#!method=${this.data.method.toUpperCase()}&headers=${this.headerTest}${this.reqTest}`).replace(/([^:])\/\//,"$1/");
 
     }
 

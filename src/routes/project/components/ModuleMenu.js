@@ -77,7 +77,7 @@ class MoudleMenu extends React.Component {
 
 
     this.props.history.push({
-      pathname: `/project/${this.props.project.projectId}`,
+      pathname: `/`,
       search: `?moduleId=${e.item.props.module.id}`
     })
   }

@@ -1,4 +1,4 @@
-const {getProject,saveProject} =require("../utils/")
+const {getProject,saveProject} =require("../util/")
 class Project{
   async addProject(){
 
@@ -9,7 +9,9 @@ class Project{
     saveProject(project)
   }
   async deleteProject(){
-    await saveProject({"id":1,"modules":{}})
+    let project=await getProject();
+    project.modules={}
+    await saveProject(project)
   }
   async importProject(info){
     await saveProject(info);

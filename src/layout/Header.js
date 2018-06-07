@@ -6,6 +6,7 @@ import {inject, observer} from 'mobx-react';
 import {withRouter} from "react-router-dom";
 import EditProjectModal from './EditProjectModal'
 import config  from '@/config';
+import logo from '../assets/img/logo.png'
 
 @inject("user","project","projectList")
 @observer
@@ -23,7 +24,7 @@ handleLogout=()=>{
 handleShowMockUrl=()=>{
   Modal.info({
    title: '在线mock地址',
-   content: "http://127.0.0.1:3015/project/mock/ + 接口url",
+   content: "http://127.0.0.1:3015/mock/ + 接口url",
  });
 }
 handleResetProject=()=>{
@@ -78,9 +79,9 @@ handleChange=({file})=>{
     return (
       <div className={Style.wrapper}>
         <EditProjectModal  onOk={this.handleUpdateProjectOk} onClose={this.closeEditProjectModal}  visible={this.state.editProjectModalShow} ></EditProjectModal>
-        <div className={Style.logo}/>
+        <div className={Style.logo}><img src={logo} alt=""/></div>
         <div className={Style.menu}>
-          moapi
+
 
         </div>
         <div className={Style.right} >

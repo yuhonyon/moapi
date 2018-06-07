@@ -1,4 +1,4 @@
-const {getProject,saveProject} =require("../utils/")
+const {getProject,saveProject} =require("../util/")
 class Module{
   async addModule(info){
     let project=await getProject();

@@ -1,4 +1,4 @@
-const {getProject,saveProject} =require("../utils/")
+const {getProject,saveProject} =require("../util/")
 class Interfase{
   async addInterfase(info){
     let project=await getProject();

@@ -25,7 +25,7 @@ onerror(app);
 
 // middlewares
 app.use(restc.koa2({
-  includes: [/^\/project\/test/]
+  includes: [/^\/test/]
 }))
 
 app.use(cors());

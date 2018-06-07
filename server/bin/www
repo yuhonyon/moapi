@@ -12,7 +12,7 @@ console.log(`
   ╚╝╚╝╚╩═══╩╝─╚╩╝──╚══╝`.green)
 
 console.log("*****************************")
-console.log(`api:http://127.0.0.1:3015/project/mock/`.green)
+console.log(`api:http://127.0.0.1:3015/mock/`.green)
 console.log(`console:http://127.0.0.1:3016`.green)
 console.log("*****************************")
 

@@ -59,11 +59,6 @@ router.<%=interfase.method.toLowerCase()%>("<%=interfase.url%>",proxy("<%=interf
 <%}%>
 
 
-router.get("/aaa/b",(ctx,next) => {
-  ctx.body={
-    a:1
-  }
-});
 
 router.get('/', proxy("/"));
 

@@ -65,7 +65,7 @@ class InterfaseMenu extends React.Component {
     this.props.project.selectInterfase(interfaseInfo.moduleId,interfaseInfo.id);
 
     this.props.history.push({
-                pathname: `/project/${this.props.project.data.id}`,
+                pathname: `/`,
                 search: `?moduleId=${e.item.props.interfase.moduleId}&interfaseId=${e.item.props.interfase.id}`
               })
   }

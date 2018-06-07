@@ -7,8 +7,8 @@ import Course from "./course"
 
 const Routes = () => (
   <Switch>
-    <Route path="/project/:projectId" render={props=><RenderComponent {...props} component={()=>import('./project')} ></RenderComponent>} />
-    <Redirect from="*" to="/project/1" />
+    <Route path="/" render={props=><RenderComponent {...props} component={()=>import('./project')} ></RenderComponent>} />
+    <Redirect from="*" to="/" />
   </Switch>
 )
 

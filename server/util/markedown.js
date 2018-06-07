@@ -99,7 +99,7 @@ function getMdData(json){
       interfase.mockRes=toMock(interfase.res)
       interfase.req=format(interfase.req)
       interfase.res=format(interfase.res)
-      interfase.testUrl=(`http://127.0.0.1:3015/project/test/${interfase.url}#!method=${interfase.method.toUpperCase()}&headers=${testHeader(interfase)}${testReq(interfase)}`).replace(/([^:])\/\//,"$1/");
+      interfase.testUrl=(`http://127.0.0.1:3015/test/${interfase.url}#!method=${interfase.method.toUpperCase()}&headers=${testHeader(interfase)}${testReq(interfase)}`).replace(/([^:])\/\//,"$1/");
 
 
     }

@@ -18,22 +18,24 @@ const upload = multer({ storage: storage });
 
 
 const router=koaRouter()
-router.prefix('/project');
 router.all('/test/*',Project.getMock);
 router.all('/test',Project.getMock);
 router.all('/mock/*',Project.getMock);
 router.all('/mock',Project.getMock);
-router.get('/md/',Project.getMarkDown);
-router.get('/doc/',Project.getDoc);
-router.get('/server/',Project.getServer);
 
 
-router.get('/export',Project.exportProject);
-router.post('/import',upload.single('file'),Project.importProject);
-router.get('/:projectId',Project.getProject);
-router.post('/',Project.addProject);
-router.put('/:projectId',Project.updateProject);
-router.delete('/:projectId',Project.deleteProject);
+
+router.get('/project/md/',Project.getMarkDown);
+router.get('/project/doc/',Project.getDoc);
+router.get('/project/server/',Project.getServer);
+
+
+router.get('/project/export',Project.exportProject);
+router.post('/project/import',upload.single('file'),Project.importProject);
+router.get('/project/:projectId',Project.getProject);
+router.post('/project/',Project.addProject);
+router.put('/project/:projectId',Project.updateProject);
+router.delete('/project/:projectId',Project.deleteProject);
 
 
 
