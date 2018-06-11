@@ -1,5 +1,6 @@
 import { Modal,Form, Input } from 'antd';
 import React from 'react'
+import intl from "react-intl-universal";
 
 const FormItem=Form.Item;
 const TextArea=Input.TextArea
@@ -49,7 +50,7 @@ class EditModuleModal extends React.Component {
       <div>
         <Modal maskClosable={false}
           width={640}
-          title="编辑模块"
+          title={intl.get('project.module.edit')}
           visible={this.props.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
@@ -57,11 +58,11 @@ class EditModuleModal extends React.Component {
           <Form>
             <FormItem
               {...formItemLayout}
-              label="名称"
+              label={intl.get('project.module.name')}
             >
               {getFieldDecorator('name', {
                 rules: [{
-                  required: true, message: '必填',
+                  required: true, message: intl.get('required'),
                 }],
               })(
                 <Input />
@@ -71,7 +72,7 @@ class EditModuleModal extends React.Component {
 
             <FormItem
               {...formItemLayout}
-              label="简介"
+              label={intl.get('project.module.description')}
             >
               {getFieldDecorator('description', {
                 initialValue: ''

@@ -7,7 +7,7 @@ import {withRouter} from "react-router-dom";
 import EditProjectModal from './EditProjectModal'
 import config  from '@/config';
 import logo from '../assets/img/logo.png'
-
+import intl from "react-intl-universal";
 @inject("user","project","projectList")
 @observer
 class Header extends React.Component{
@@ -23,17 +23,17 @@ handleLogout=()=>{
 
 handleShowMockUrl=()=>{
   Modal.info({
-   title: '在线mock地址',
-   content: "http://127.0.0.1:3015/mock/ + 接口url",
+   title: intl.get('header.mockModal.title'),
+   content: "http://127.0.0.1:3015/mock/ + "+intl.get('header.mockModal.url'),
  });
 }
 handleResetProject=()=>{
   Modal.confirm({
-   title: '警告',
-   content: "确认重置?",
+   title: intl.get('header.resetModal.title'),
+   content: intl.get('header.resetModal.content'),
    onOk:()=> {
      this.props.projectList.delProject(1).then(()=>{
-       message.success('重置成功')
+       message.success(intl.get('header.resetModal.success'))
        this.props.project.getProjectData(1)
      })
    },
@@ -50,11 +50,11 @@ userMenu = (
     </Menu>
   )
 
-lang=(localStorage.getItem("lang")||"zh-CN")==="zh-CN"?"English":"中文";
+lang=localStorage.getItem("lang")||"zh-CN";
 
 
 changeLang=()=>{
-  localStorage.setItem("lang",this.lang==="中文"?"zh-CN":"en-US");
+  localStorage.setItem("lang",this.lang==="en-US"?"zh-CN":"en-US");
   window.location.reload();
 }
 openEditProjectModal=()=>{
@@ -70,7 +70,7 @@ handleUpdateProjectOk=(info)=>{
 }
 handleChange=({file})=>{
   if (file.status !== 'uploading') {
-   message.success('导入成功')
+   message.success(intl.get('header.leadInSuccess'))
    this.props.project.getProjectData(1)
  }
 }
@@ -85,21 +85,22 @@ handleChange=({file})=>{
 
         </div>
         <div className={Style.right} >
-          <a onClick={this.openEditProjectModal}><Icon type="setting" />设置</a>
-          <a onClick={this.handleResetProject}><Icon type="sync" />重置</a>
+          <a onClick={this.openEditProjectModal}><Icon type="setting" />{intl.get('header.setting')}</a>
+          <a onClick={this.handleResetProject}><Icon type="sync" />{intl.get('header.reset')}</a>
 
           <Upload
             showUploadList={false}
             onChange={this.handleChange}
             action={`${config.baseURL}project/import`}
             >
-             <a ><Icon type="login" />导入</a>
+             <a ><Icon type="login" />{intl.get('header.leadIn')}</a>
            </Upload>
-          <a download href={`${config.baseURL}project/export/`}><Icon type="logout" />导出</a>
-          <a download href={`${config.baseURL}project/md/`}><Icon type="file-markdown" />生成markdown</a>
-          <a target="_blank" href={`${config.baseURL}project/doc/`}><Icon type="file-text" />生成文档</a>
-          <a download href={`${config.baseURL}project/server/`}><Icon type="cloud-o" />生成server</a>
-          <a onClick={this.handleShowMockUrl}><Icon type="link" />mock地址</a>
+          <a download href={`${config.baseURL}project/export/`}><Icon type="logout" />{intl.get('header.leadOut')}</a>
+          <a download href={`${config.baseURL}project/md/`}><Icon type="file-markdown" />{intl.get('header.markdown')}</a>
+          <a target="_blank" href={`${config.baseURL}project/doc/?lang=${this.lang}`}><Icon type="file-text" />{intl.get('header.doc')}</a>
+          <a download href={`${config.baseURL}project/server/`}><Icon type="cloud-o" />{intl.get('header.server')}</a>
+          <a onClick={this.handleShowMockUrl}><Icon type="link" />{intl.get('header.mock')}</a>
+          <a onClick={this.changeLang}>{intl.get('lang')}</a>
         </div>
 
       </div>

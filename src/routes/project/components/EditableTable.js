@@ -2,6 +2,7 @@ import React from "react";
 import { Table,Button,Input,Select ,Switch} from 'antd';
 import Style from "./EditableTable.less"
 import {inject,observer} from 'mobx-react';
+import intl from "react-intl-universal";
 const Option = Select.Option;
 const { TextArea } = Input;
 
@@ -26,7 +27,7 @@ const EditableCell = ({ editable, value, onChange,identify,column }) => {
   let cell;
   if(!editable){
     if(typeof value==='boolean'){
-      value=value?'是':'否';
+      value=value?intl.get('project.attr.true'):intl.get('project.attr.false');
     }
     cell= value
   }else if(!identify){
@@ -56,44 +57,44 @@ class EditableTable extends React.Component{
 
 
   columns = [{
-    title: '名称',
+    title: intl.get('project.attr.name'),
     dataIndex: 'name',
     key: 'name',
     render:(text,record)=>this.renderColumns(text,record,'name')
   }, {
-    title: '类型',
+    title: intl.get('project.attr.type'),
     dataIndex: 'type',
     key: 'type',
     render:(text,record)=>this.renderColumns(text,record,'type',['Object','Number','Array','Boolean','String'])
   }, {
-    title: '必填',
+    title: intl.get('project.attr.required'),
     dataIndex: 'required',
     key: 'required',
     render:(text,record)=>this.renderColumns(text,record,'required','switch')
   }, {
-    title: '规则类型',
+    title: intl.get('project.attr.mockType'),
     dataIndex: 'mockType',
     key: 'mockType',
     render:(text,record)=>this.renderColumns(text,record,'mockType',['String','Number','Array','Boolean','Object'])
   }, {
-    title: '规则量',
+    title: intl.get('project.attr.mockNum'),
     dataIndex: 'mockNum',
     key: 'mockNum',
     render:(text,record)=>this.renderColumns(text,record,'mockNum')
   }, {
-    title: '规则值',
+    title: intl.get('project.attr.mockValue'),
     dataIndex: 'mockValue',
     key: 'mockValue',
     render:(text,record)=>this.renderColumns(text,record,'mockValue','textarea')
   }, {
-    title: '简介',
+    title: intl.get('project.attr.description'),
     dataIndex: 'description',
     key: 'description',
     render:(text,record)=>this.renderColumns(text,record,'description','textarea')
   }]
 
   operate={
-    title: '操作',
+    title: intl.get('project.attr.operate'),
     dataIndex: 'operate',
     key: 'operate',
     render:(text,record)=>this.renderOperate(text,record)

@@ -11,6 +11,7 @@ import Style from './Interfase.less'
 import {inject, observer} from 'mobx-react';
 import {toJS} from 'mobx';
 import {parseDate} from '@/filters'
+import intl from "react-intl-universal";
 const ButtonGroup = Button.Group;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -166,26 +167,26 @@ class Interfase extends React.Component {
             <h3>
               {this.props.interfases.data.name} &emsp;
               {this.props.interfases.editable&&<RadioGroup onChange={this.handleProxyTypeChange} value={this.props.interfases.data.proxyType}>
-                <RadioButton value={0}>关闭mock</RadioButton>
-                <RadioButton value={1}>开启mock</RadioButton>
-                <RadioButton value={2}>合并mock</RadioButton>
+                <RadioButton value={0}>{intl.get('project.mock.off')}</RadioButton>
+                <RadioButton value={1}>{intl.get('project.mock.on')}</RadioButton>
+                <RadioButton value={2}>{intl.get('project.mock.merge')}</RadioButton>
               </RadioGroup>}
             </h3>
           </li>
-          <li>地址:
+          <li>{intl.get("project.url")}:
             <a target="_blank" href={this.props.interfases.testUrl}>{this.props.interfases.data.url}</a>
           </li>
-          <li>类型: {this.props.interfases.data.method}</li>
-          <li>简介: {this.props.interfases.data.description}</li>
+          <li>{intl.get("project.method")}: {this.props.interfases.data.method}</li>
+          <li>{intl.get("project.description")}: {this.props.interfases.data.description}</li>
         </ul>
         {this.props.project.permission>1&&<div>
           {
             this.props.interfases.editable
               ? <ButtonGroup >
-                  <Button onClick={this.saveInterfase} type="primary">直接保存</Button>
-                  <Button onClick={this.cancel}>&emsp;&emsp;取消&emsp;&emsp;</Button>
+                  <Button onClick={this.saveInterfase} type="primary">&emsp;&emsp;{intl.get("project.btn.save")}&emsp;&emsp;</Button>
+                  <Button onClick={this.cancel}>&emsp;&emsp;{intl.get("project.btn.cancel")}&emsp;&emsp;</Button>
                 </ButtonGroup>
-              : <Button onClick={this.edit} type="primary">&emsp;&emsp;编辑&emsp;&emsp;</Button>
+              : <Button onClick={this.edit} type="primary">&emsp;&emsp;{intl.get("project.btn.edit")}&emsp;&emsp;</Button>
           }
         </div>}
       </div>
@@ -195,7 +196,7 @@ class Interfase extends React.Component {
       <div className={Style.title}>
         <h3>Headers</h3>
         <div className={Style.titleRight}>
-        {this.props.interfases.editable&&this.props.project.permission>2&&<Button onClick={()=>{this.handleAddHeader()}}>新建</Button>}
+        {this.props.interfases.editable&&this.props.project.permission>2&&<Button onClick={()=>{this.handleAddHeader()}}>{intl.get("project.btn.add")}</Button>}
         </div>
       </div>
       <HeadersTable permission={this.props.project.permission}
@@ -204,20 +205,20 @@ data={toJS(this.props.interfases.data.headers)}></HeadersTable>
 
 
       <div className={Style.title}>
-        <h3>请求参数</h3>
+        <h3>{intl.get("project.req")}</h3>
         <div className={Style.titleRight}>
           <ButtonGroup >
-            {this.props.interfases.editable&&this.props.project.permission>2&&<Button onClick={()=>{this.openAddValue('req',null)}}>新建</Button>}
+            {this.props.interfases.editable&&this.props.project.permission>2&&<Button onClick={()=>{this.openAddValue('req',null)}}>{intl.get("project.btn.add")}</Button>}
             {this.props.interfases.editable&&<Button onClick={() => {
                 this.setState({reqLeadInModalShow: true})
-              }}>导入</Button>}
+              }}>{intl.get("project.btn.leadIn")}</Button>}
             <Button type={this.state.reqPreview
                 ? 'primary'
                 : ''} onClick={() => {
                 this.setState({
                   reqPreview: !this.state.reqPreview
                 })
-              }}>预览</Button>
+              }}>{intl.get("project.btn.preview")}</Button>
           </ButtonGroup>
         </div>
       </div>
@@ -226,28 +227,28 @@ data={toJS(this.props.interfases.data.headers)}></HeadersTable>
         this.state.reqPreview &&< div className = {
           Style.codeWrapper
         } >
-          <ShowCode code={this.props.interfases.reqMock} title="请求模板"></ShowCode>
-          <ShowCode code={this.props.interfases.reqCode}  title="请求属性"></ShowCode>
+          <ShowCode code={this.props.interfases.reqMock} title={intl.get("project.resMock")}></ShowCode>
+          <ShowCode code={this.props.interfases.reqCode}  title={intl.get("project.req")}></ShowCode>
         </div>
       }
 
 
 
       <div className={Style.title}>
-        <h3>响应内容</h3>
+        <h3>{intl.get("project.res")}</h3>
         <div className={Style.titleRight}>
           <ButtonGroup >
-            {this.props.interfases.editable&&<Button onClick={()=>{this.openAddValue('res',null)}}>新建</Button>}
+            {this.props.interfases.editable&&<Button onClick={()=>{this.openAddValue('res',null)}}>{intl.get("project.btn.add")}</Button>}
             {this.props.interfases.editable&&<Button onClick={() => {
                 this.setState({resLeadInModalShow: true})
-              }}>导入</Button>}
+              }}>{intl.get("project.btn.leadIn")}</Button>}
             <Button type={this.state.resPreview
                 ? 'primary'
                 : ''} onClick={() => {
                 this.setState({
                   resPreview: !this.state.resPreview
                 })
-              }}>预览</Button>
+              }}>{intl.get("project.btn.preview")}</Button>
           </ButtonGroup>
         </div>
       </div>
@@ -256,8 +257,8 @@ data={toJS(this.props.interfases.data.headers)}></HeadersTable>
         this.state.resPreview &&< div className = {
           Style.codeWrapper
         } >
-          <ShowCode code={this.props.interfases.resMock}  title="响应模板"></ShowCode>
-          <ShowCode code={this.props.interfases.resCode}  title="响应属性"></ShowCode>
+          <ShowCode code={this.props.interfases.resMock}  title={intl.get("project.resMock")}></ShowCode>
+          <ShowCode code={this.props.interfases.resCode}  title={intl.get("project.res")}></ShowCode>
         </div>
       }
 

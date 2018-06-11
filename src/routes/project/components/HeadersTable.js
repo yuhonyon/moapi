@@ -2,6 +2,7 @@ import React from "react";
 import { Table,Button,Input} from 'antd';
 import Style from "./HeadersTable.less"
 import {inject,observer} from 'mobx-react';
+import intl from "react-intl-universal";
 const { TextArea } = Input;
 
 
@@ -25,24 +26,24 @@ class HeadersTable extends React.Component{
 
 
   columns = [{
-    title: '名称',
+    title: intl.get("project.attr.name"),
     dataIndex: 'name',
     key: 'key',
     render:(text,record)=>this.renderColumns(text,record,'name')
   },{
-    title: '值',
+    title: intl.get("project.attr.value"),
     dataIndex: 'value',
     key: 'value',
     render:(text,record)=>this.renderColumns(text,record,'value')
   }, {
-    title: '简介',
+    title: intl.get("project.attr.description"),
     dataIndex: 'description',
     key: 'description',
     render:(text,record)=>this.renderColumns(text,record,'description','textarea')
   }]
 
   operate={
-    title: '操作',
+    title: intl.get("project.attr.operate"),
     dataIndex: 'operate',
     key: 'operate',
     render:(text,record)=>this.renderOperate(text,record)

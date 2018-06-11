@@ -6,6 +6,7 @@ import {toJS} from 'mobx';
 import AddModuleModal from './AddModuleModal';
 import EditModuleModal from './EditModuleModal';
 import {withRouter} from "react-router-dom";
+import intl from "react-intl-universal";
 
 @inject("project")
 @observer
@@ -46,8 +47,8 @@ class MoudleMenu extends React.Component {
     e.preventDefault();
 
     Modal.confirm({
-      title: '删除提醒',
-      content: '确认要删除模块?',
+      title: intl.get('project.module.delete.title'),
+      content: intl.get('project.module.delete.content'),
       onOk:()=>{
         this.props.project.deleteModule(moduleId)
       }
@@ -57,14 +58,14 @@ class MoudleMenu extends React.Component {
   handleAddModuleModalOk=(info)=>{
     info.projectId=this.props.project.projectId;
     this.props.project.addModule(info).then(()=>{
-      message.success('添加成功')
+      message.success(intl.get('project.module.success'))
     });;
   }
 
   handleEditModuleModalOk=(info)=>{
     info={...this.state.editModuleInfo,...info};
     this.props.project.updateModule(info.id,info).then(()=>{
-      message.success('编辑成功')
+      message.success(intl.get('project.module.editSuccess'))
     });
   }
 
@@ -111,7 +112,7 @@ class MoudleMenu extends React.Component {
 
 
         </Menu>
-        {this.props.project.permission>2&&!this.props.project.curVersion&&<Button onClick={this.openAddModuleModal} className={Style.addBtn}><Icon type="plus-circle-o" />新增模块</Button>}
+        {this.props.project.permission>2&&!this.props.project.curVersion&&<Button onClick={this.openAddModuleModal} className={Style.addBtn}><Icon type="plus-circle-o" />{intl.get('project.module.btn')}</Button>}
       </div>
     );
   }

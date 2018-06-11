@@ -1,5 +1,6 @@
 import { Modal,Form, Input, Select } from 'antd';
 import React from 'react'
+import intl from "react-intl-universal";
 const Option=Select.Option;
 const FormItem=Form.Item;
 const TextArea=Input.TextArea
@@ -51,7 +52,7 @@ class EditInterfaseModal extends React.Component {
       <div>
         <Modal maskClosable={false}
           width={640}
-          title="编辑接口"
+          title={intl.get('project.interfase.edit')}
           visible={this.props.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
@@ -59,11 +60,11 @@ class EditInterfaseModal extends React.Component {
           <Form>
             <FormItem
               {...formItemLayout}
-              label="名称"
+              label={intl.get('project.interfase.name')}
             >
               {getFieldDecorator('name', {
                 rules: [{
-                  required: true, message: '必填',
+                  required: true, message: intl.get('required'),
                 }],
               })(
                 <Input />
@@ -75,7 +76,7 @@ class EditInterfaseModal extends React.Component {
             >
               {getFieldDecorator('url', {
                 rules: [{
-                  required: true, message: '必填',
+                  required: true, message: intl.get('required'),
                 }],
               })(
                 <Input />
@@ -83,12 +84,12 @@ class EditInterfaseModal extends React.Component {
             </FormItem>
             <FormItem
               {...formItemLayout}
-              label="类型"
+              label={intl.get('project.interfase.method')}
             >
               {getFieldDecorator('method', {
                 initialValue: 'GET',
                 rules: [{
-                  required: true, message: '必选',
+                  required: true, message: intl.get('required'),
                 }],
               })(
                 <Select>
@@ -102,7 +103,7 @@ class EditInterfaseModal extends React.Component {
 
             <FormItem
               {...formItemLayout}
-              label="简介"
+              label={intl.get('project.interfase.description')}
             >
               {getFieldDecorator('description', {
                 initialValue: ''

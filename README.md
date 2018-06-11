@@ -1,4 +1,46 @@
 # moapi-cli ![](https://img.shields.io/npm/v/moapi-cli.svg)
+Local mock tool, a command starts, safely and quickly
+* Front-End:react+mobx+antd
+* Back-End: koa2+Data using the local file instead mongodb
+
+----
+## Environmental requirements
+* Node.js 8.9.0+
+
+## install
+```bash
+npm i moapi-cli -g
+```
+
+## Start the
+```bash
+moapi
+```
+------
+
+## introduce
+* No network deployment condition or teams use is recommended to use this tool;
+* Recommend the team to use[moapi online platform](http://moapi.yfyld.top);
+* Conditional network deployment of more secure, the deployment method[README](http://moapi.yfyld.top)(Is writing...);
+
+### features
+* Support proxy
+* Support the generated interface documentation
+* Support the markdown document generated
+* Support for import and export
+* Support to generate the mock server code
+* Flexible support edit mock data
+* Support mockjs grammar
+* Support restc way testing interface
+
+### link
+* [moapi online platform](http://moapi.yfyld.top)
+
+
+
+
+
+# moapi-cli ![](https://img.shields.io/npm/v/moapi-cli.svg)
 本地mock工具,一句命令启动,快速安全
 * 前端展示:react+mobx+antd
 * 后端数据: 基于koa2+数据使用本地文件代替mongodb

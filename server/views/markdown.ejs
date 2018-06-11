@@ -1,6 +1,5 @@
 ---
 title: <%=name%>
-author: cli版
 toc:
   ordered: true
   depth_from: 1
@@ -12,63 +11,54 @@ toc:
 # <%=module.name%>
 ---
   <%if(module.description){%>
-简介: <%=module.description%>
+<%=intl.description%>: <%=module.description%>
   <%}%>
 
   <%for(var interfase of module.interfases){%>
 ## <%=interfase.name%>
-> 访问URL: [<%=interfase.url%>](<%=interfase.testUrl%>)
-> 请求方式: `<%=interfase.method%>`
-> 相关版本: <%=interfase.versions.join("、")%>
-> 简介: <%=interfase.description%>
+> <%=intl.url%>: [<%=interfase.url%>](<%=interfase.testUrl%>)
+> <%=intl.method%>: `<%=interfase.method%>`
+> <%=intl.description%>: <%=interfase.description%>
 
 
-### 备注
-<%if(interfase.headers.length){%>
-<%for(var remark of interfase.remarks){%>
-* ** <%=remark.version%> **<%=remark.message%>(<%=parseDate(remark.createdAt)%> <%=remark.creator%>)
-<%}%>
-<%}else{%>
-无
-<%}%>
 
 ### headers
 <%if(interfase.headers.length){%>
-|字段名|值|描述及要求|
+|<%=intl.name%>|<%=intl.value%>|<%=intl.description2%>|
 |:---|:---|:---|
 <%for(var header of interfase.headers){%>|<%-header.name%>|<%-header.value%>|<%-header.description||"--"%>|
 <%}%>
 <%}else{%>
-无
+<%=intl.nodata%>
 <%}%>
-### 请求参数
+### <%=intl.req%>
 <%if(interfase.req.length){%>
-|字段名|数据类型|是否必填|描述及要求|
+|<%=intl.name%>|<%=intl.type%>|<%=intl.required%>|<%=intl.description2%>|
 |:---|:---:|:---:|:---|
 <%for(var request of interfase.req){%>|<%-request.name%>|<%-request.type%>|<%-request.required%>|<%-request.description||"--"%>|
 <%}%>
 
-### 请求参数例子
+### <%=intl.reqCode%>
 ```json
 <%-interfase.mockReq%>
 ```
 <%}else{%>
-无
+<%=intl.nodata%>
 <%}%>
 
-### 响应数据
+### <%=intl.res%>
 <%if(interfase.req.length){%>
-|字段名|数据类型|说明|
+|<%=intl.name%>|<%=intl.type%>|<%=intl.description%>|
 |:---|:---:|:---|
 <%for(var response of interfase.res){%>|<%-response.name%>|<%-response.type%>|<%-response.description||"--"%>|
 <%}%>
 
-### 响应数据例子
+### <%=intl.resCode%>
 ```json
 <%-interfase.mockRes%>
 ```
 <%}else{%>
-无
+<%=intl.nodata%>
 <%}%>
   <%}%>
 <%}%>

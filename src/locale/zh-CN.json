@@ -17,5 +17,101 @@
       "signup": "注册成功",
       "signin": "登录成功"
     }
+  },
+  "header": {
+    "setting": "设置",
+    "reset": "重置",
+    "leadIn": "导入",
+    "leadOut": "导出",
+    "markdown": "生成markdown",
+    "doc": "生成doc",
+    "server": "生成server",
+    "mock": "mock地址",
+    "leadInSuccess":"导入成功",
+    "setModal": {
+      "title":"项目设置",
+      "name": "项目名称",
+      "proxy": "代理地址",
+      "description": "简介"
+    },
+    "resetModal": {
+      "title": "警告",
+      "content": "确认重置",
+      "success":"重置成功"
+    },
+    "mockModal": {
+      "title": "在线mock地址",
+      "url": "接口url"
+    }
+  },
+
+  "required": "必填",
+  "lang":"English",
+  "project": {
+    "module": {
+      "edit":"编辑模块",
+      "btn": "新增模块",
+      "title": "添加模块",
+      "name": "名称",
+      "description": "简介",
+      "success":"添加成功",
+      "editSuccess":"编辑成功",
+      "delete": {
+        "title": "删除提醒",
+        "content": "确认要删除该模块?"
+      }
+    },
+    "interfase": {
+      "edit":"编辑接口",
+      "btn": "新增接口",
+      "title": "添加接口",
+      "name": "名称",
+      "method": "类型",
+      "description": "简介",
+      "success":"添加成功",
+      "editSuccess":"编辑成功",
+      "delete": {
+        "title": "删除提醒",
+        "content": "确认要删除该接口?"
+      }
+    },
+    "req": "请求参数",
+    "res": "响应内容",
+    "reqMock": "请求模板",
+    "resMock": "响应模板",
+    "description": "简介",
+    "method": "类型",
+    "url": "地址",
+    "noData": "无数据",
+    "null": "空",
+    "mock":{
+      "on":"开启mock",
+      "off":"关闭mock",
+      "merge":"合并mock"
+    },
+    "attr": {
+      "title": "添加属性",
+      "name": "名称",
+      "type": "类型",
+      "mockType": "规则类型",
+      "mockNum": "规则量",
+      "required": "必填",
+      "operate": "操作",
+      "true":"是",
+      "false":"否",
+      "mockValue": "规则值",
+      "value": "值",
+      "description": "简介",
+      "leadInReqTitle": "导入请求属性",
+      "leadInResTitle": "导入响应属性"
+    },
+    "btn": {
+      "edit": "编辑",
+      "save": "保存",
+      "cancel": "取消",
+      "add": "新建",
+      "leadIn": "导入",
+      "preview": "预览"
+    }
   }
 }

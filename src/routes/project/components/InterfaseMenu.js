@@ -7,6 +7,7 @@ import AddInterfaseModal from './AddInterfaseModal';
 import EditInterfaseModal from './EditInterfaseModal';
 import {toJS} from 'mobx';
 import {withRouter} from "react-router-dom";
+import intl from "react-intl-universal";
 
 
 @inject("project")
@@ -45,14 +46,14 @@ class InterfaseMenu extends React.Component {
     info.moduleId=this.props.project.moduleId;
     info.projectId=this.props.project.data.id;
     this.props.project.addInterfase(info).then(()=>{
-      message.success('添加成功')
+      message.success(intl.get('project.interfase.success'))
     });;
   }
 
   handleEditInterfaseModalOk=(info)=>{
     info={...this.state.editInterfaseInfo,...info};
     this.props.project.updateInterfase(info.id,info).then(()=>{
-      message.success('编辑成功')
+      message.success(intl.get('project.interfase.editSuccess'))
     });
   }
 
@@ -79,8 +80,8 @@ class InterfaseMenu extends React.Component {
     e.stopPropagation();
 
     Modal.confirm({
-      title: '删除提醒',
-      content: '确认要删除接口?',
+      title: intl.get('project.interfase.delete.title'),
+      content: intl.get('project.interfase.delete.content'),
       onOk:()=>{
         this.props.project.deleteInterfase(interfaseId)
       }
@@ -115,7 +116,7 @@ class InterfaseMenu extends React.Component {
 
 
         </Menu>
-        {this.props.project.permission>2&&<Button onClick={this.openAddInterfaseModal} className={Style.addBtn}><Icon type="plus-circle-o" />新增接口</Button>}
+        {this.props.project.permission>2&&<Button onClick={this.openAddInterfaseModal} className={Style.addBtn}><Icon type="plus-circle-o" />{intl.get('project.interfase.btn')}</Button>}
       </div>
     );
   }

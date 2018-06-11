@@ -1,6 +1,6 @@
 {
   "name": "moapi-cli",
-  "version": "2.0.3",
+  "version": "2.0.4",
   "author": "yufangyang",
   "main": "./server/bin/www",
   "repository": "https://github.com/yuhonyon/moapi",
@@ -9,12 +9,14 @@
     "mock",
     "api",
     "mockserver",
+    "interface",
     "markdown"
   ],
   "tags": [
     "mock",
     "api",
-    "server"
+    "server",
+    "mock server"
   ],
   "dependencies": {
     "archiver": "^2.1.1",

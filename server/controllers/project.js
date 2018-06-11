@@ -94,6 +94,40 @@ const packageInfo = `
   }
 }
 `
+
+const intls=[{
+  url:"访问URL",
+  method:"请求方式",
+  description:"简介",
+  req:"请求参数",
+  reqCode:"请求参数例子",
+  res:"响应数据",
+  resCode:"响应数据例子",
+  name:"字段名",
+  type:"数据类型",
+  value:"值",
+  required:"是否必填",
+  description2:"要求及描述",
+  link:"管理平台",
+  nodata:"无"
+},{
+  url:"URL",
+  method:"method",
+  description:"description",
+  req:"request",
+  reqCode:"request example",
+  res:"response",
+  resCode:"response example",
+  name:"name",
+  type:"type",
+  value:"value",
+  required:"required",
+  description2:"Description and requirements",
+  link:"The console",
+  nodata:"No data"
+}]
+
+
 class Project {
   constructor() {
     this.addProject = this.addProject.bind(this);
@@ -135,7 +169,8 @@ class Project {
   async getMarkDown(ctx, next){
     let project = await ProjectModel.getProject()
     const mdData = getMdData(project)
-    const md = ejs.render(markedown, {...mdData,parseDate});
+    const intl=ctx.query.lang==="en-US"?intls[1]:intls[0];
+    const md = ejs.render(markedown, {...mdData,parseDate,intl});
     ctx.set('Content-disposition', 'attachment;filename=doc.md')
     ctx.body = md
   }
@@ -143,9 +178,11 @@ class Project {
   async getDoc(ctx, next) {
     let project = await ProjectModel.getProject()
     const mdData = getMdData(project)
-    const md = ejs.render(markedown, {...mdData,parseDate});
+    const intl=ctx.query.lang==="en-US"?intls[1]:intls[0];
+    const md = ejs.render(markedown, {...mdData,parseDate,intl});
 
     await ctx.render("doc", {
+      intl,
       title: project.name||"mock项目",
       id: project.id,
       content: marked(md)

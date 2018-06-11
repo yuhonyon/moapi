@@ -1,7 +1,7 @@
 import { Modal,Form, Input, Select } from 'antd';
 import React from 'react'
 import {inject, observer} from 'mobx-react';
-
+import intl from "react-intl-universal";
 
 
 
@@ -64,7 +64,7 @@ class EditProjectModal extends React.Component {
       <div>
         <Modal maskClosable={false}
           width={640}
-          title="设置"
+          title={intl.get('header.setModal.title')}
           visible={this.props.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
@@ -72,12 +72,12 @@ class EditProjectModal extends React.Component {
           <Form>
             <FormItem
               {...formItemLayout}
-              label="项目名称"
+              label={intl.get('header.setModal.name')}
             >
               {getFieldDecorator('name', {
                 initialValue: '',
                 rules: [{
-                  required: true, message: '必填',
+                  required: true, message: intl.get('required'),
                 }],
               })(
                 <Input />
@@ -85,7 +85,7 @@ class EditProjectModal extends React.Component {
             </FormItem>
             <FormItem
               {...formItemLayout}
-              label="代理地址"
+              label={intl.get('header.setModal.proxy')}
             >
               {getFieldDecorator('proxy', {
                 initialValue: ''
@@ -96,7 +96,7 @@ class EditProjectModal extends React.Component {
 
             <FormItem
               {...formItemLayout}
-              label="简介"
+              label={intl.get('header.setModal.description')}
             >
               {getFieldDecorator('description', {
                 initialValue: ''

@@ -17,5 +17,100 @@
       "signup": "Registered successfully",
       "signin": "Login successful"
     }
+  },
+  "header": {
+    "setting": "setting",
+    "reset": "reset",
+    "leadIn": "leading-in",
+    "leadOut": "leading-out",
+    "markdown": "export markdown",
+    "doc": "doc",
+    "server": "export server",
+    "mock": "mock url",
+    "leadInSuccess":"import success",
+    "setModal": {
+      "title":"Project Settings",
+      "name": "Project Name",
+      "proxy": "proxy",
+      "description": "description"
+    },
+    "resetModal": {
+      "title": "Warning",
+      "content": "Confirm the reset",
+      "success":"Reset success"
+    },
+    "mockModal": {
+      "title": "Mock Url",
+      "url": "The url of the interface"
+    }
+  },
+  "lang":"中文",
+  "required": "required",
+  "project": {
+    "module": {
+      "edit":"Edit Module",
+      "btn": "Add Module",
+      "title": "Add Module",
+      "name": "name",
+      "description": "description",
+      "success":"add success",
+      "editSuccess":"edit success",
+      "delete": {
+        "title": "Warning",
+        "content": "Confirm to delete the module?"
+      }
+    },
+    "interfase": {
+      "edit":"Edit Interfase",
+      "btn": "Add Interface",
+      "title": "Add Interface",
+      "name": "name",
+      "method": "method",
+      "success":"add success",
+      "editSuccess":"edit success",
+      "description": "description",
+      "delete": {
+        "title": "Waring",
+        "content": "Confirm to delete the interface?"
+      }
+    },
+    "req": "request",
+    "res": "response",
+    "reqMock": "request template",
+    "resMock": "response template",
+    "description": "description",
+    "method": "method",
+    "url": "url",
+    "noData": "No Data",
+    "null": "No Data",
+    "mock":{
+      "on":"open mock",
+      "off":"shut down mock",
+      "merge":"merge mock"
+    },
+    "attr": {
+      "title": "Add attribute",
+      "name": "name",
+      "type": "type",
+      "true":"true",
+      "value": "value",
+      "false":"false",
+      "mockType": "mock type",
+      "mockNum": "mock number",
+      "required": "required",
+      "operate": "operate",
+      "mockValue": "value",
+      "description": "description",
+      "leadInReqTitle": "leading-in request",
+      "leadInResTitle": "leading-in response"
+    },
+    "btn": {
+      "edit": "edit",
+      "save": "save",
+      "cancel": "cancel",
+      "add": "add",
+      "leadIn": "leading-in",
+      "preview": "preview"
+    }
   }
 }
