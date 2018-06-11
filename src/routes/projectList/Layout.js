@@ -76,10 +76,10 @@ class Layout extends React.Component {
   handleAddProjectClose=()=>{
     this.setState({addProjectModalShow:false})
   }
-  handleShowMockUrl=()=>{
+  handleShowMockUrl=(url)=>{
     Modal.info({
      title: '在线mock地址',
-     content: this.props.project.mockUrl+" + 接口url",
+     content: url+" + 接口url",
    });
   }
   handleDeleteProject=(projectId)=>{
