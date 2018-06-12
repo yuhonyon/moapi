@@ -1,3 +1,4 @@
+chiglish:
 # moapi-cli ![](https://img.shields.io/npm/v/moapi-cli.svg)
 Local mock tool, a command starts, safely and quickly
 * Front-End:react+mobx+antd
@@ -38,7 +39,7 @@ moapi
 
 
 
-
+中文:
 
 # moapi-cli ![](https://img.shields.io/npm/v/moapi-cli.svg)
 本地mock工具,一句命令启动,快速安全
