@@ -1,7 +1,28 @@
 #!/usr/bin/env node
 const colors = require('colors');
 require("../app.js");
-const opn =require('opn')
+const opn =require('opn');
+const acmd=require("../util/acmd");
+const packageInfo=require("../../package.json");
+
+
+try {
+  acmd(`npm view moapi-cli version`).then(version=>{
+    if(parseInt(version.replace(/\./g,""))>parseInt(packageInfo.version.replace(/\./g,""))){
+      console.log("*****************************")
+      console.log(`The current version is ${version}`.red);
+      console.log(`The latest version is ${packageInfo.version}  please update\n`.red);
+      console.log('By using the following command to update\n'.red)
+      console.log('npm install moapi-cli -g'.green)
+      console.log("*****************************")
+    }
+  });
+} catch (e) {
+  return null;
+}
+
+
+
 
 console.log(`
   ╔═╗╔═╦═══╦═══╦═══╦══╗

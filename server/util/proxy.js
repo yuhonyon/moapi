@@ -1,5 +1,5 @@
-import axios from 'axios';
-import pathToRegexp from 'path-to-regexp';
+const axios =require('axios');
+const pathToRegexp =require('path-to-regexp');
 
 
 function replacePathParams(path, params) {
@@ -18,7 +18,7 @@ function replacePathParams(path, params) {
 
 const hasColons = /:/;
 
-export default function proxy(ctx,next,path,options) {
+function proxy(ctx,next,path,options) {
     return new Promise((resolve,reject)=>{
       const shouldReplacePathParams = hasColons.test(path);
       const requestOpts = {
@@ -53,3 +53,5 @@ export default function proxy(ctx,next,path,options) {
     })
 
 };
+
+module.exports=proxy;
