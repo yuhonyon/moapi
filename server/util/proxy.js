@@ -1,5 +1,5 @@
-const axios=require('axios');
-const pathToRegexp=require('path-to-regexp');
+import axios from 'axios';
+import pathToRegexp from 'path-to-regexp';
 
 
 function replacePathParams(path, params) {
@@ -18,7 +18,7 @@ function replacePathParams(path, params) {
 
 const hasColons = /:/;
 
-module.exports= function proxy(ctx,next,path,options) {
+export default function proxy(ctx,next,path,options) {
     return new Promise((resolve,reject)=>{
       const shouldReplacePathParams = hasColons.test(path);
       const requestOpts = {
@@ -37,22 +37,11 @@ module.exports= function proxy(ctx,next,path,options) {
               requestOpts.url = options.host + replacePathParams(path, ctx.params);
           }
 
-          // something possibly went wrong if they have no body but are sending a
-          // put or a post
-          if (requestOpts.method === 'POST' || requestOpts.method === 'PUT') {
-
-              if (!ctx.request.body) {
-                  console.warn('sending PUT or POST but no request body found');
-              } else {
-                  requestOpts.body = ctx.request.body;
-              }
-
-              // make request allow js objects if we are sending json
-              if (ctx.request.type === 'application/json') {
-                  requestOpts.json = true;
-              }
+          if(requestOpts.headers.host){
+            requestOpts.headers.host=options.host.replace(/.*:\/\//,'').replace(/\//,'');
           }
 
+//console.log(requestOpts)
 
           axios(requestOpts)
               .then(response => {
