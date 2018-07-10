@@ -1,11 +1,16 @@
 .wrapper{
   overflow: hidden;
 }
-
 .editor{
   width:50%;
   float: left;
   padding: 20px;
+  height: 100vh;
+    :global{
+      .ace_print-margin{
+        display: none;
+      }
+    }
 }
 .preview{
   width:50%;
@@ -13,6 +18,7 @@
   border-left: 1px solid #ddd;
   height: 100vh;
   padding: 20px;
+  overflow: auto;
 }
 
 .header{

@@ -147,7 +147,10 @@
     ]
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "rules":{
+      "no-loop-func":0
+    }
   },
   "devDependencies": {
     "nodemon": "^1.8.1"

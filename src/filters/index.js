@@ -66,3 +66,17 @@ export  const recordType=(type)=>{
     return "修改项目"
   }
 }
+
+
+export  const formatDate=(date)=>{
+  let diffdate=Date.now()-new Date(date).getTime();
+  if(diffdate<60000){
+    return parseInt(diffdate/1000,10)+"秒前";
+  }else if(diffdate<60000*60){
+    return parseInt(diffdate/60000,10)+"分钟前";
+  }else if(diffdate<60000*60*24){
+    return parseDate(diffdate,"HH小时mm分钟前");
+  }else{
+    return parseDate(date,"yyyy-MM-dd HH:mm");
+  }
+}

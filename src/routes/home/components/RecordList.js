@@ -3,7 +3,7 @@ import {List,Spin} from 'antd';
 import { Link  } from 'react-router-dom'
 import Style from "./RecordList.less";
 import {inject, observer} from 'mobx-react';
-import {recordType,parseDate} from "@/filters"
+import {recordType,formatDate} from "@/filters"
 import InfiniteScroll from 'react-infinite-scroller';
 
 @inject("home")
@@ -17,18 +17,7 @@ class Layout extends React.Component {
     page:2,
     pageSize:10
   }
-  formatDate(date){
-    let diffdate=Date.now()-new Date(date).getTime();
-    if(diffdate<60000){
-      return parseInt(diffdate/1000,10)+"秒前";
-    }else if(diffdate<60000*60){
-      return parseInt(diffdate/60000,10)+"分钟前";
-    }else if(diffdate<60000*60*24){
-      return parseDate(diffdate,"HH小时mm分钟前");
-    }else{
-      return parseDate(date,"yyyy-MM-dd HH:mm");
-    }
-  }
+
 
   handleInfiniteOnLoad=()=>{
     this.setState({
@@ -65,7 +54,7 @@ class Layout extends React.Component {
         itemLayout="horizontal"
         dataSource={this.props.home.recordList.data}
         renderItem={item => (
-          <List.Item actions={[<span className={Style.header}>{this.formatDate(item.createdAt
+          <List.Item actions={[<span className={Style.header}>{formatDate(item.createdAt
 )}</span>]}>
             <Link to="/project">{item.creator}</Link> &nbsp;{recordType(item.type)}&nbsp;
             <span>

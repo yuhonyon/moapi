@@ -6,9 +6,22 @@ import 'brace/ext/language_tools';
 import 'brace/ext/searchbox';
 
 class Editor extends React.Component {
-
+  editor=null
   handleChange=(code)=>{
     this.props.onChange(code)
+  }
+  handleScroll=(e)=>{
+    this.props.onScroll(e.container.getElementsByClassName('ace_cursor')[0].offsetTop)
+  }
+  getInstance=(editor)=>{
+    this.editor=editor;
+  }
+  componentWillReceiveProps(nextProps){
+    if(this.editor&&nextProps.preview!==this.props.preview){
+      setTimeout(()=>{
+        this.editor.resize()
+      },100)
+    }
   }
   render(){
     return (
@@ -18,12 +31,16 @@ class Editor extends React.Component {
             name="blah2"
             height='100vh'
             width='100%'
+            onLoad={this.getInstance}
             onChange={this.handleChange}
             fontSize={14}
-            showPrintMargin={true}
+            showPrintMargin={false}
             showGutter={false}
+            wrapEnabled={true}
+            showLineNumbers={false}
             highlightActiveLine={true}
             value={this.props.code}
+            onScroll={this.handleScroll}
             setOptions={{
             enableBasicAutocompletion: true,
             enableLiveAutocompletion: true,

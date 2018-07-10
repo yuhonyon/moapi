@@ -17,6 +17,7 @@ class Layout extends React.Component {
     title:"",
     preview:true
   }
+  previewDom = React.createRef()
   componentDidMount=()=>{
     this.props.doc.getDoc(this.props.match.params.docId).then(()=>{
       this.setState({content:this.props.doc.data.content,title:this.props.doc.data.title})
@@ -39,23 +40,29 @@ class Layout extends React.Component {
   handlePreview=(e)=>{
     this.setState({preview:!this.state.preview})
   }
+  handleScroll=(e)=>{
+    if(!this.state.preview){
+      return;
+    }
+    this.previewDom.current.scrollTop=-e;
+  }
   render(){
     return (
       <div className={Style.wrapper}>
         <div className={Style.header}>
           <div className={Style.title}>
-            <Link to={`/project/${this.props.doc.data.projectId}`}>{this.props.doc.data.projectName}</Link>/<Input onChange={this.handleTitleChange}  value={this.state.title}/>
+            <Link to={`/project/${this.props.doc.data.projectId}`}>{this.props.doc.data.projectName}</Link>/<Input onChange={this.handleTitleChange}  value={this.state.title}/>.md
           </div>
 
           <ButtonGroup className={Style.btn}>
             <Button onClick={this.handleSave}>保存</Button>
-            <Button onClick={this.handlePreview} type={this.state.preview&&'primary'}>预览</Button>
+            <Button onClick={this.handlePreview} type={this.state.preview?'primary':''}>预览</Button>
           </ButtonGroup>
         </div>
         <div className={Style.editor} style={{width:this.state.preview?"50%":"100%"}}>
-          <Editor onChange={this.handleCodeChange} code={this.state.content}></Editor>
+          <Editor preview={this.state.preview} onChange={this.handleCodeChange} onScroll={this.handleScroll} code={this.state.content}></Editor>
         </div>
-        {this.state.preview&&<div className={Style.preview}>
+        {this.state.preview&&<div className={Style.preview} ref={this.previewDom}>
           <ReactMarkdown source={this.state.content} />
         </div>}
       </div>

@@ -21,6 +21,15 @@ const formItemLayout = {
 @inject("project")
 @observer
 class AddProjectModal extends React.Component {
+  state={
+    userList:[]
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.visible&&nextProps.visible!==this.props.visible){
+      
+    }
+  }
 
   handleOk = (e) => {
     this.props.form.validateFields((err, values) => {
@@ -35,6 +44,11 @@ class AddProjectModal extends React.Component {
   handleCancel = (e) => {
     this.props.form.resetFields()
     this.props.onClose();
+  }
+
+  handleSelectChange=(e)=>{
+    console.log(e)
+    //this.props.form.getFieldValue()
   }
 
   render() {
@@ -72,11 +86,12 @@ class AddProjectModal extends React.Component {
               })(
                 <Select
                   showSearch
+                  onChange={this.handleSelectChange}
                   mode="multiple"
                   optionFilterProp="children"
                   filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                 >
-                  {this.props.user.userList.map(user=>(
+                  {this.state.userList.map(user=>(
                     <Option key={user.id} value={user.id}>{user.name}</Option>
                   ))}
                 </Select>
@@ -92,6 +107,7 @@ class AddProjectModal extends React.Component {
               })(
                 <Select
                   showSearch
+                  onChange={this.handleSelectChange}
                   mode="multiple"
                   optionFilterProp="children"
                   filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
@@ -112,6 +128,7 @@ class AddProjectModal extends React.Component {
               })(
                 <Select
                   showSearch
+                  onChange={this.handleSelectChange}
                   mode="multiple"
                   optionFilterProp="children"
                   filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}

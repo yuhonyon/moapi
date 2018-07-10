@@ -2,7 +2,7 @@ import React from "react";
 import Style from "./Pane.less";
 import {Icon,Tooltip} from "antd"
 import {withRouter} from "react-router-dom";
-import {parseDate} from "@/filters"
+import {formatDate} from "@/filters"
 import config from "@/config"
 import { Link  } from 'react-router-dom'
 
@@ -32,8 +32,8 @@ class Pane extends React.Component {
         <h3 onClick={this.handleClick} >{this.props.project.name}</h3>
         <p>管理员:{this.props.project.admin.name}</p>
         <p>当前版本:{this.props.project.version}</p>
-        <p>创建时间:{parseDate(this.props.project.createdAt)}</p>
-        <p>更新时间:{parseDate(this.props.project.updatedAt)}</p>
+        <p>创建时间:{formatDate(this.props.project.createdAt)}</p>
+        <p>更新时间:{formatDate(this.props.project.updatedAt)}</p>
         <div>其他文档:
            <ul>
             {this.props.project.docs.map(item=>(
