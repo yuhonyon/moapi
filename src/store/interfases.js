@@ -146,7 +146,7 @@ class Interfase {
 
   formatCode(key, value, id) {
     function judgeType(value) {
-      if (!value) {
+      if (!value&&value!==0) {
         return 'String'
       }
       if (value.constructor === Array) {

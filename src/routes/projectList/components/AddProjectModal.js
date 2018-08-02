@@ -27,7 +27,7 @@ class AddProjectModal extends React.Component {
 
   componentWillReceiveProps(nextProps){
     if(nextProps.visible&&nextProps.visible!==this.props.visible){
-      
+
     }
   }
 
@@ -91,7 +91,7 @@ class AddProjectModal extends React.Component {
                   optionFilterProp="children"
                   filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                 >
-                  {this.state.userList.map(user=>(
+                  {this.props.user.userList.map(user=>(
                     <Option key={user.id} value={user.id}>{user.name}</Option>
                   ))}
                 </Select>
