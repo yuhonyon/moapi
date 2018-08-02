@@ -50,8 +50,7 @@ class InterfaseMenu extends React.Component {
   }
 
   handleEditInterfaseModalOk=(info)=>{
-    info={...this.state.editInterfaseInfo,...info};
-    this.props.project.updateInterfase(info.id,info).then(()=>{
+    this.props.project.updateInterfase(this.state.editInterfaseInfo.id,info).then(()=>{
       message.success('编辑成功')
     });
   }

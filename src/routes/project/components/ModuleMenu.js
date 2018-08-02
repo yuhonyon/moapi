@@ -62,8 +62,7 @@ class MoudleMenu extends React.Component {
   }
 
   handleEditModuleModalOk=(info)=>{
-    info={...this.state.editModuleInfo,...info};
-    this.props.project.updateModule(info.id,info).then(()=>{
+    this.props.project.updateModule(this.state.editModuleInfo.id,info).then(()=>{
       message.success('编辑成功')
     });
   }
