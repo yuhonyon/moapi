@@ -1,5 +1,5 @@
 # moapi
-mock平台 [moapi在线平台](http://moapi.yfyld.top)
+mock平台 [moapi在线平台](http://moapi.yfyld.online)
 
 ----
 ## Tech Arch
@@ -17,8 +17,8 @@ mock平台 [moapi在线平台](http://moapi.yfyld.top)
 
 ## 介绍
 * 团队使用推荐;
-* 没用内网部署条件推荐使用[moapi在线平台](http://moapi.yfyld.top)或本地mock工具[moapi-cli](https://www.npmjs.com/package/moapi-cli);
-* 有条件内网部署更安全,部署方法[README](http://moapi.yfyld.top)(正在写...);
+* 没用内网部署条件推荐使用[moapi在线平台](http://moapi.yfyld.online)或本地mock工具[moapi-cli](https://www.npmjs.com/package/moapi-cli);
+* 有条件内网部署更安全,部署方法[README](http://moapi.yfyld.online)(正在写...);
 
 ### 特性
 * 支持接口代理
@@ -66,11 +66,11 @@ mock平台 [moapi在线平台](http://moapi.yfyld.top)
 * 需要测试真实接口 要先关闭mock,即转发真实接口地址
 
 ### 获取mock server方法:
-* 在线地址:[http://moapi.yfyld.top/project/mock/:projectId+接口url]
+* 在线地址:[http://moapi.yfyld.online/project/mock/:projectId+接口url]
 * 本地:生成server,npm i&&npm start
 
 ### 获取接口文档:
-* 在线地址:[http://moapi.yfyld.top/project/doc/:projectId]
+* 在线地址:[http://moapi.yfyld.online/project/doc/:projectId]
 * markdown:下载markdown
 
 ### 其他文档管理
