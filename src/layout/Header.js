@@ -4,6 +4,7 @@ import { Link  } from 'react-router-dom'
 import Style from './Header.less'
 import {inject, observer} from 'mobx-react';
 import {withRouter} from "react-router-dom";
+import logo from "../assets/imgs/logo.png"
 
 @inject("user")
 @observer
@@ -35,7 +36,9 @@ changeLang=()=>{
   render(){
     return (
       <div className={Style.wrapper}>
-        <div className={Style.logo}/>
+        <div className={Style.logo}>
+          <img src={logo} alt=""/>
+        </div>
         <div className={Style.menu}>
           <Menu theme="dark" mode="horizontal" defaultSelectedKeys={[this.props.history.location.pathname]} >
             <Menu.Item key="/home"><Link to="/home" >首页</Link></Menu.Item>

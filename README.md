@@ -15,11 +15,6 @@ mock平台 [moapi在线平台](http://moapi.yfyld.online)
 * 自动部署
   - jenkins
 
-## 介绍
-* 团队使用推荐;
-* 没用内网部署条件推荐使用[moapi在线平台](http://moapi.yfyld.online)或本地mock工具[moapi-cli](https://www.npmjs.com/package/moapi-cli);
-* 有条件内网部署更安全,部署方法[README](http://moapi.yfyld.online)(正在写...);
-
 ### 特性
 * 支持接口代理
 * 支持生成接口文档
@@ -35,6 +30,7 @@ mock平台 [moapi在线平台](http://moapi.yfyld.online)
 * 支持灵活编辑mock数据
 * 支持mockjs语法
 * 支持restc方式测试接口
+* 同步swagger
 
 ### 链接
 * [moapi-cli](https://www.npmjs.com/package/moapi-cli);
@@ -78,6 +74,7 @@ mock平台 [moapi在线平台](http://moapi.yfyld.online)
 * 添加 项目详情"markdown文档"中上传
 * 编辑 项目列表中及项目详情"markdown文档"中点击编辑按钮
 
+### 导入swagger
 
 ### 版本标记
 * 功能 目前版本控制只有标记和筛选功能
