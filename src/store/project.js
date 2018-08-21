@@ -241,6 +241,16 @@ class Project {
     }
   }
 
+  @action.bound
+  importSwagger(params) {
+    return fetchApi.fetchImportSwagger(this.projectId, params).then(data => {
+      this.getProjectInfo(this.projectId)
+      return data;
+    })
+  }
+
+
+
 
 
 

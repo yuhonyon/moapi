@@ -2,21 +2,24 @@ import React  from 'react';
 import {Icon,Select,Modal,Button,Input} from 'antd';
 import EditProjectModal from './EditProjectModal'
 import EditDocModal from './EditDocModal'
+import ImportSwaggerModal from './ImportSwaggerModal'
 import TemplateModal from './TemplateModal'
 import {inject, observer} from 'mobx-react';
 import Style from "./Header.less"
 import { Link  } from 'react-router-dom'
+import config from "@/config"
 
 const Option =Select.Option;
 
 
-@inject("project","interfases")
+@inject("project","interfases",'user')
 @observer
 class Header extends React.Component {
   state={
     editProjectModalShow:false,
     templateModalShow:false,
-    editDocModalShow:false
+    editDocModalShow:false,
+    importSwaggerModalShow:false
   }
   addVersion=""
 
@@ -76,11 +79,23 @@ class Header extends React.Component {
   }
 
   handleUpdateDocOk=()=>{
-    
+
   }
 
   closeEditDocModal=()=>{
     this.setState({editDocModalShow:false})
+  }
+
+  openImportSwaggerModal=()=>{
+    this.setState({importSwaggerModalShow:true})
+  }
+
+  handleImportSwaggerOk=(info)=>{
+    this.props.project.importSwagger(info)
+    this.closeImportSwaggerModal()
+  }
+  closeImportSwaggerModal=()=>{
+    this.setState({importSwaggerModalShow:false})
   }
 
   render(){
@@ -89,6 +104,7 @@ class Header extends React.Component {
         <EditProjectModal  onOk={this.handleUpdateProjectOk} onClose={this.closeEditProjectModal}  visible={this.state.editProjectModalShow} ></EditProjectModal>
         <EditDocModal  onOk={this.handleUpdateDocOk} onClose={this.closeEditDocModal}  visible={this.state.editDocModalShow} ></EditDocModal>
         <TemplateModal onOk={this.handleUpdateTemplateOk} onClose={this.closeTemplateModal}  visible={this.state.templateModalShow}></TemplateModal>
+        <ImportSwaggerModal onOk={this.handleImportSwaggerOk} onClose={this.closeImportSwaggerModal}  visible={this.state.importSwaggerModalShow}></ImportSwaggerModal>
         <div  className={Style.title}>
           <h1><Link to="/project">{this.props.project.info.admin.name}</Link><span>/</span>{this.props.project.info.name}</h1>
 
@@ -112,6 +128,10 @@ class Header extends React.Component {
           <a  onClick={this.handleShowMockUrl}><Icon type="link" />在线mock地址</a>
 
           <a onClick={this.openEditDocModal}><Icon type="file-markdown" />Markdown文档</a>
+
+          <a href={`${config.baseURL}project/export/${this.props.project.info.id}?token=${this.props.user.userInfo.accessToken}`} download={this.props.project.name+".json"} ><Icon type="file-markdown" />导出</a>
+
+          <a onClick={this.openImportSwaggerModal}><Icon type="file-markdown" />导入swagger</a>
         </div>
 
         <div style={{float:"right"}}>

@@ -170,6 +170,12 @@ const fetchApi={
     })
   },
 
+  fetchImportSwagger(id,params){
+    return http.post(`/project/${id}/swagger`,params).then(data=>{
+      return data;
+    })
+  }
+
 }
 
 

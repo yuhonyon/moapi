@@ -72,7 +72,7 @@ const removeLoading=function(){
 //实例
 const instance = axios.create({
   baseURL: Config.baseURL,
-  timeout: 5000,
+  timeout: 20000,
   headers: {'accesstoken': getToken(),"Content-Type":"application/json"}
 });
 
