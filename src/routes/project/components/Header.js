@@ -91,7 +91,6 @@ class Header extends React.Component {
   }
 
   handleImportSwaggerOk=(info)=>{
-    this.props.project.importSwagger(info)
     this.closeImportSwaggerModal()
   }
   closeImportSwaggerModal=()=>{

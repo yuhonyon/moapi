@@ -367,6 +367,13 @@ class Interfase {
     interfases.changeCode('res')
   }
 
+  @action.bound syncSwaggerData(){
+    return fetchApi.fetchInterfaseSyncSwaggerData(this.data.id).then((data) => {
+      project.getProjectData(this.data.projectId)
+      return data;
+    })
+  }
+
 }
 
 const interfases = new Interfase()

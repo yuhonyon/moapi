@@ -98,7 +98,7 @@ class Project {
 
   @action.bound
   getProjectData(projectId) {
-    return fetchApi.fetchGetProjectData(projectId).then(data => {
+    return fetchApi.fetchGetProjectData(projectId||this.projectId).then(data => {
       runInAction(() => {
         this.data = data;
         //v
@@ -244,7 +244,7 @@ class Project {
   @action.bound
   importSwagger(params) {
     return fetchApi.fetchImportSwagger(this.projectId, params).then(data => {
-      this.getProjectInfo(this.projectId)
+      this.getProjectData(this.projectId);
       return data;
     })
   }

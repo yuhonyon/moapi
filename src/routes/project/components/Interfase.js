@@ -59,7 +59,9 @@ class Interfase extends React.Component {
       },
     })
   }
-
+  handleSyncSwaggerData=()=>{
+    this.props.interfases.syncSwaggerData()
+  }
 
   addRecord=()=>{
     this.forceSave=false;
@@ -107,6 +109,7 @@ class Interfase extends React.Component {
   }
   cancel = () => {
     this.props.interfases.closeEditable()
+    this.props.project.getProjectData()
   }
   resLeadInOk=(code)=>{
     this.props.interfases.leadInRes(code);
@@ -163,7 +166,9 @@ class Interfase extends React.Component {
         <ul>
           <li>
             <h3>
-              {this.props.interfases.data.name} <Button onClick={this.openRecord} type="primary" size="small">修改记录</Button>&emsp;
+              {this.props.interfases.data.name}
+              {(this.props.interfases.editable&&this.props.project.info.swaggerUrl)&&<span>&nbsp;<Button onClick={this.handleSyncSwaggerData} type="primary" size="small">同步swagger</Button>&nbsp;</span>}
+               <Button onClick={this.openRecord} size="small">修改记录</Button>&nbsp;
               {this.props.interfases.editable&&<RadioGroup onChange={this.handleProxyTypeChange} value={this.props.interfases.data.proxyType}>
                 <RadioButton value={0}>关闭mock</RadioButton>
                 <RadioButton value={1}>开启mock</RadioButton>

@@ -174,6 +174,12 @@ const fetchApi={
     return http.post(`/project/${id}/swagger`,params).then(data=>{
       return data;
     })
+  },
+
+  fetchInterfaseSyncSwaggerData(id){
+    return http.post(`/interfase/${id}/swagger`).then(data=>{
+      return data;
+    })
   }
 
 }

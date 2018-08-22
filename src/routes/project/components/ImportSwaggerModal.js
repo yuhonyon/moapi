@@ -19,7 +19,9 @@ const formItemLayout = {
 @inject("interfases","user","project")
 @observer
 class ImportSwaggerModal extends React.Component {
-
+  state={
+    confirmLoading:false
+  }
   componentWillReceiveProps(nextProps){
     if(nextProps.visible&&nextProps.visible!==this.props.visible){
       this.props.form.setFieldsValue({
@@ -33,9 +35,20 @@ class ImportSwaggerModal extends React.Component {
       if (err) {
         return
       }
-      this.props.onOk(values);
-      this.props.form.resetFields()
-      this.props.onClose();
+      this.setState({
+        confirmLoading: true,
+      });
+      this.props.project.importSwagger(values).then(data=>{
+        this.props.form.resetFields()
+        this.props.onClose();
+        this.setState({
+          confirmLoading: false,
+        });
+      }).catch(e=>{
+        this.setState({
+          confirmLoading: false,
+        });
+      })
     });
   }
   handleCancel = (e) => {
@@ -55,6 +68,7 @@ class ImportSwaggerModal extends React.Component {
           width={640}
           title="导入Swagger"
           visible={this.props.visible}
+          confirmLoading={this.state.confirmLoading}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
           okText="同步"
