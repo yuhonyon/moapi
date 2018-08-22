@@ -10,8 +10,10 @@ export function getQuery(search,name) {
 
 export function getApiUrl(search,name) {
   let host=window.location.host;
-  if(/91jkys\./.test(host)){
+  if(/qa.91jkys\./.test(host)){
     return window.location.protocol+"//mock.qa.91jkys.com/api"
+  }else if(/91jkys\./.test(host)){
+    return window.location.protocol+"//mock.91jkys.com/api"
   }else if(/moapi\./.test(host)){
     return window.location.protocol+"//api.yfyld.online:3030"
   }else if(/97\./.test(host)){

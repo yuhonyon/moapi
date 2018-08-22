@@ -116,15 +116,13 @@ class Header extends React.Component {
           {this.props.project.permission>2&&<a onClick={this.openTemplateModal} href="###"><Icon type="appstore-o" />模板</a>}
 
 
-          <a download href={this.props.project.mdDownloadUrl}><Icon type="file-markdown" />下载接口Markdown</a>
+          <a download href={this.props.project.mdDownloadUrl}><Icon type="file-markdown" />下载文档</a>
 
           <a target="_blank" href={this.props.project.docUrl}><Icon type="file-text" />接口文档</a>
 
           <a download  href={this.props.project.serverUrl}><Icon type="cloud-download-o" />生成server</a>
 
-          <a target="_blank" href={this.props.interfases.testUrl}><Icon type="tool" />接口测试</a>
-
-          <a  onClick={this.handleShowMockUrl}><Icon type="link" />在线mock地址</a>
+          <a  onClick={this.handleShowMockUrl}><Icon type="link" />mock地址</a>
 
           <a onClick={this.openEditDocModal}><Icon type="file-markdown" />Markdown文档</a>
 
