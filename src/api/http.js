@@ -105,6 +105,12 @@ instance.interceptors.response.use( (response)=> {
   }, function (error) {
     if(error.response){
       cancelRequesting(error.response.config)
+      if (error.response.status===401){
+          _message('请重新登录');
+          setTimeout(() => {
+              window.location.href=window.location.origin+"/login"
+          }, 1000)
+      }
     }else{
       requesting={}
     }
