@@ -27,9 +27,9 @@ class LoginForm extends React.Component {
         <Form onSubmit={this.handleSubmit} className={Style.from}>
           <FormItem>
             {getFieldDecorator('name', {
-              rules: [{ required: true, message: intl.get("login.rules.name").d("请输入用户名") }],
+              rules: [{ required: true, message: intl.get("login.rules.name").d("请输入真实姓名或钉钉昵称") }],
             })(
-              <Input  size="large"  prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} type="text" placeholder={intl.get("login.placeholder.name").d("用户名")} />
+              <Input  size="large"  prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} type="text" placeholder={intl.get("login.placeholder.name").d("真实姓名或钉钉昵称")} />
             )}
           </FormItem>
           <FormItem>

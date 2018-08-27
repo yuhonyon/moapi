@@ -4,12 +4,12 @@
     "signup": "注册",
     "name": "昵称",
     "rules": {
-      "name": "请输入用户名",
+      "name": "请输入真实姓名或钉钉昵称",
       "phone": "请输入手机号",
       "password": "请输入密码"
     },
     "placeholder": {
-      "name": "用户名",
+      "name": "真实姓名或钉钉昵称",
       "phone": "手机号",
       "password": "密码"
     },

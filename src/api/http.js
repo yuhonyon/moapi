@@ -103,7 +103,6 @@ instance.interceptors.response.use( (response)=> {
     removeLoading()
     return Promise.resolve(response.data);
   }, function (error) {
-    removeLoading()
     if(error.response){
       cancelRequesting(error.response.config)
       if (error.response.status===401){
@@ -111,12 +110,16 @@ instance.interceptors.response.use( (response)=> {
           setTimeout(() => {
               window.location.href=window.location.origin+"/login"
           }, 1000)
+      }else if(error.response.data&&error.response.data.message){
+        setTimeout(function(){
+          _message(error.response.data.message)
+        },300);
       }
-      return;
+      
     }else{
       requesting={}
     }
-
+    removeLoading()
     if (error.code === 'ECONNABORTED') {
         _message('网络连接超时');
     }else if (error.message === 'Request failed with status code 403'){
@@ -124,12 +127,7 @@ instance.interceptors.response.use( (response)=> {
         setTimeout(() => {
             window.location.href=window.location.origin+"/login"
         }, 1000)
-    }else if(error.response&&error.response.data&&error.response.data.message){
-      setTimeout(function(){
-        _message(error.response.data.message)
-      },300);
     }
-
     return Promise.reject(error);
   });
 
