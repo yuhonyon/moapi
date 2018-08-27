@@ -24,6 +24,11 @@ class EditDocModal extends React.Component {
      this.props.project.getProjectInfo()
    }
   }
+  handleAddDoc=()=>{
+    this.props.project.saveDoc().then(()=>{
+      message.success("保存成功")
+    })
+  }
 
   handleDeleteDoc=(docId)=>{
     Modal.confirm({
@@ -45,7 +50,7 @@ class EditDocModal extends React.Component {
       <div>
         <Modal maskClosable={false}
           width={640}
-          title={<div><span>markdown文档</span><Upload
+          title={<div><span>markdown文档</span>&nbsp;<Upload
             showUploadList={false}
             onChange={this.handleChange}
             action={`${config.baseURL}doc/upload?token=${this.props.user.userInfo.accessToken}&projectId=${this.props.project.projectId}`}
@@ -53,7 +58,7 @@ class EditDocModal extends React.Component {
              <Button>
                <Icon type="upload" /> 上传
              </Button>
-           </Upload></div>}
+           </Upload>&nbsp;<Button onClick={this.handleAddDoc}>保存当前文档为附件</Button></div>}
           visible={this.props.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}

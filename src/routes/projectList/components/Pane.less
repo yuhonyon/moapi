@@ -1,6 +1,6 @@
 .wrapper{
   width:240px;
-  height: 300px;
+  min-height: 350px;
   border: 1px solid #ddd;
   border-radius: 5px;
   display: inline-block;
@@ -13,16 +13,25 @@
     cursor: pointer;
     color: #09c;
   }
-
+ ul{
+   padding-left: 15px;
+ }
 
 }
 
-
+.docLink{
+  overflow: hidden;
+   text-overflow: ellipsis;
+   white-space: nowrap;
+   width: 12em;
+   display: inline-block;
+   font-size: 12px;
+}
 .btnBox{
   position: absolute;
   right: 0;
   top: 0;
-  padding: 10px;
+  padding: 5px;
   a{
     color: #333;
   }

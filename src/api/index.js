@@ -180,6 +180,12 @@ const fetchApi={
     return http.post(`/interfase/${id}/swagger`).then(data=>{
       return data;
     })
+  },
+
+  fetchSaveDoc(params){
+    return http.post(`/doc/`,params).then(data=>{
+      return data;
+    })
   }
 
 }

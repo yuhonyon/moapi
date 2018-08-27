@@ -249,6 +249,14 @@ class Project {
     })
   }
 
+  @action.bound
+  saveDoc(params={projectId:this.projectId}) {
+    return fetchApi.fetchSaveDoc(params).then(data => {
+      this.getProjectInfo(this.projectId);
+      return data;
+    })
+  }
+
 
 
 

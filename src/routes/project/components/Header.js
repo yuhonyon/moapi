@@ -48,6 +48,7 @@ class Header extends React.Component {
       this.props.project.getProjectInfo(this.props.project.projectId)
     })
   }
+
   handlerAddVersion=()=>{
     this.addVersion="";
     const ref =Modal.confirm({
@@ -124,11 +125,11 @@ class Header extends React.Component {
 
           <a  onClick={this.handleShowMockUrl}><Icon type="link" />mock地址</a>
 
-          <a onClick={this.openEditDocModal}><Icon type="file-markdown" />Markdown文档</a>
+          <a onClick={this.openEditDocModal}><Icon type="file-markdown" />Markdown附件</a>
 
           <a href={`${config.baseURL}project/export/${this.props.project.info.id}?token=${this.props.user.userInfo.accessToken}`} download={this.props.project.name+".json"} ><Icon type="file-markdown" />导出</a>
 
-          <a onClick={this.openImportSwaggerModal}><Icon type="file-markdown" />导入swagger</a>
+          {this.props.project.permission>2&&<a onClick={this.openImportSwaggerModal}><Icon type="file-markdown" />导入swagger</a>}
         </div>
 
         <div style={{float:"right"}}>
@@ -143,10 +144,6 @@ class Header extends React.Component {
           <Button onClick={this.handlerAddVersion}>添加版本</Button>
         </div>
 
-        {/* <a onClick={this.openEditProjectModal} href="###"><Icon type="edit" />导出</a>
-
-
-        <a onClick={this.openEditProjectModal} href="###"><Icon type="edit" />导入</a> */}
       </div>
     )
   }

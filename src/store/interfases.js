@@ -4,6 +4,16 @@ import project from './project'
 import Config from '@/config'
 import fetchApi from '@/api'
 
+
+function parseStrToObj(str){
+  try{
+    return (new Function(`return ${str};`))()
+  }catch(e){
+    console.log(e)
+  }
+  return null
+}
+
 //import axios from 'axios';
 useStrict(true);
 
@@ -38,9 +48,11 @@ class Interfase {
     let data = {};
     for (let item of this.data.res) {
 
-      data[item.name + (item.mockNum && "|" + item.mockNum)] = this.formatMock(item)
+      data[item.name + ((item.mockNum!==undefined&&item.mockNum!==null) ? "|" + item.mockNum:"")] = this.formatMock(item)
     }
-    return JSON.stringify(data, null, 2);
+    return JSON.stringify(data, null, 2).replace(/"\$\$\*RegExp\*\$\$(.*)\$\$\*RegExp\*\$\$"/g,($,$1)=>{
+
+      return `/${$1.replace(/\\\\/g,'\\')}/`});
   }
 
 
@@ -50,9 +62,10 @@ class Interfase {
     }
     let data = {};
     for (let item of this.data.req) {
-      data[item.name + (item.mockNum && "|" + item.mockNum)] = this.formatMock(item)
+      data[item.name + ((item.mockNum!==undefined&&item.mockNum!==null) ? "|" + item.mockNum:"")] = this.formatMock(item)
     }
-    return JSON.stringify(data, null, 2);
+    return JSON.stringify(data, null, 2).replace(/"\$\$\*RegExp\*\$\$(.*)\$\$\*RegExp\*\$\$"/g,($,$1)=>{
+      return `/${$1.replace(/\\\\/g,'\\')}/`});
   }
 
   @computed get headerTest() {
@@ -72,7 +85,7 @@ class Interfase {
       return ""
     }
 
-    let mockData = JSON.parse(this.reqMock);
+    let mockData =  Mock.mock(parseStrToObj(this.reqMock))
 
     if (method === "POST" || method === "PUT") {
       return "&body=" + encodeURIComponent(JSON.stringify(mockData, null, 2));
@@ -99,16 +112,18 @@ class Interfase {
       if (!item.children || item.children.length === 0 || item.mockValue) {
         if (item.mockValue) {
           if (item.mockType === 'Array' && /^\[[\s\S]*\]$/m.test(item.mockValue)) {
-            return JSON.parse(item.mockValue)
+            return parseStrToObj(item.mockValue)
           } else if (item.mockType === 'Object' && /^{[\s\S]*}$/m.test(item.mockValue)) {
-            return JSON.parse(item.mockValue)
+            return parseStrToObj(item.mockValue)
           } else if (item.mockType === 'String') {
             return "" + item.mockValue
           } else if (item.mockType === 'Number' && /^[0-9.+-]*$/m.test(item.mockValue)) {
             return Number(item.mockValue)
           } else if (item.mockType === 'Boolean' && /^true|false$/m.test(item.mockValue)) {
-            return JSON.parse(item.mockValue)
-          } else {
+            return parseStrToObj(item.mockValue)
+          } else if(item.mockType==='RegExp'){
+            return `$$*RegExp*$$${item.mockValue}$$*RegExp*$$`
+          }else {
             return item.mockValue
           }
 
@@ -153,6 +168,8 @@ class Interfase {
         return "Array"
       } else if (value.constructor === Date) {
         return "Date"
+      }else if (value.constructor === RegExp) {
+        return "RegExp"
       } else {
         return (typeof value).replace(/./, $ => $.toUpperCase())
       }
@@ -192,7 +209,7 @@ class Interfase {
 
   @action.bound leadInRes(code) {
     if (typeof code === 'string') {
-      code = JSON.parse(code)
+      code = parseStrToObj(code)
     }
     if (code.constructor === Array) {
       code = code[0];
@@ -208,7 +225,7 @@ class Interfase {
 
   @action.bound leadInReq(code) {
     if (typeof code === 'string') {
-      code = JSON.parse(code)
+      code = parseStrToObj(code)
     }
     if (code.constructor === Array) {
       code = code[0];
@@ -328,9 +345,9 @@ class Interfase {
 
   @action.bound createCode(type) {
     if (type === 'res' && this.resMock) {
-      this.resCode = JSON.stringify(Mock.mock(JSON.parse(this.resMock)), null, 2)
+      this.resCode = JSON.stringify(Mock.mock(parseStrToObj(this.resMock)), null, 2)
     } else if (this.reqMock) {
-      this.reqCode = JSON.stringify(Mock.mock(JSON.parse(this.reqMock)), null, 2)
+      this.reqCode = JSON.stringify(Mock.mock(parseStrToObj(this.reqMock)), null, 2)
     }
   }
 

@@ -74,7 +74,7 @@ class EditableTable extends React.Component{
     title: '规则类型',
     dataIndex: 'mockType',
     key: 'mockType',
-    render:(text,record)=>this.renderColumns(text,record,'mockType',['String','Number','Array','Boolean','Object'])
+    render:(text,record)=>this.renderColumns(text,record,'mockType',['String','Number','Array','Boolean','Object','RegExp'])
   }, {
     title: '规则量',
     dataIndex: 'mockNum',

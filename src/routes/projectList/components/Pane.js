@@ -38,7 +38,10 @@ class Pane extends React.Component {
            <ul>
             {this.props.project.docs.map(item=>(
               <li key={item.id}>
-                <a target="_blank" href={`${config.baseURL}doc/preview/${item.id}`}>{item.title}</a>&nbsp;
+                <Tooltip title={item.title}>
+                  <a target="_blank" className={Style.docLink} href={`${config.baseURL}doc/preview/${item.id}`}>{item.title}</a>
+                </Tooltip>
+                &nbsp;
                 <Link to={`/doc/${item.id}`}><Icon type="form"></Icon></Link>
                 <Icon onClick={this.handleDeleteDoc.bind(this,item.id)} type="delete"></Icon>
               </li>
