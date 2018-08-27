@@ -48,7 +48,7 @@ class Interfase {
     let data = {};
     for (let item of this.data.res) {
 
-      data[item.name + ((item.mockNum!==undefined&&item.mockNum!==null) ? "|" + item.mockNum:"")] = this.formatMock(item)
+      data[item.name + ((!!item.mockNum&&item.mockNum!==0) ? "|" + item.mockNum:"")] = this.formatMock(item)
     }
     return JSON.stringify(data, null, 2).replace(/"\$\$\*RegExp\*\$\$(.*)\$\$\*RegExp\*\$\$"/g,($,$1)=>{
 
@@ -62,7 +62,7 @@ class Interfase {
     }
     let data = {};
     for (let item of this.data.req) {
-      data[item.name + ((item.mockNum!==undefined&&item.mockNum!==null) ? "|" + item.mockNum:"")] = this.formatMock(item)
+      data[item.name + ((!!item.mockNum&&item.mockNum!==0) ? "|" + item.mockNum:"")] = this.formatMock(item)
     }
     return JSON.stringify(data, null, 2).replace(/"\$\$\*RegExp\*\$\$(.*)\$\$\*RegExp\*\$\$"/g,($,$1)=>{
       return `/${$1.replace(/\\\\/g,'\\')}/`});
@@ -145,7 +145,7 @@ class Interfase {
 
       let data = {};
       for (let child of item.children) {
-        data[child.name + (child.mockNum && "|" + child.mockNum)] = this.formatMock(child);
+        data[child.name + ((!!child.mockNum&&child.mockNum!==0)? "|" + child.mockNum:'')] = this.formatMock(child);
       }
 
       if (item.mockType === 'Array') {
