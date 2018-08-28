@@ -194,7 +194,7 @@ class Interfase {
       key: id,
       name: key,
       type: judgeType(value),
-      required: false,
+      required: true,
       mockType: judgeType(value),
       mockNum: '',
       mockValue: (typeof value === 'object' || value === null)
@@ -352,6 +352,7 @@ class Interfase {
       this.data[type].push(value)
       return;
     }
+    value.required=true;
     const keys = key.split('-');
     let curKey = '';
     let target = {

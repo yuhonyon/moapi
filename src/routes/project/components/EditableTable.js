@@ -264,9 +264,9 @@ class EditableTable extends React.Component{
     this.props.interfases.changeField(this.props.isReq?'req':'res',value, key, column)
   }
   componentDidMount(){
-    if(!this.props.isReq){
-      this.columns.splice(2,1);
-    }
+    // if(!this.props.isReq){
+    //   this.columns.splice(2,1);
+    // }
   }
   componentWillUpdate(nextProps){
       if(this.props.interfases.editable&&this.columns[this.columns.length-1].key!=='operate'){

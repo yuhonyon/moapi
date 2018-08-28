@@ -9,7 +9,7 @@ import {toJS} from 'mobx';
 import {withRouter} from "react-router-dom";
 
 
-@inject("project")
+@inject("project","interfases")
 @observer
 class InterfaseMenu extends React.Component {
   state = {
@@ -24,6 +24,11 @@ class InterfaseMenu extends React.Component {
   }
 
   openAddInterfaseModal=()=>{
+    if(this.props.interfases.editable){
+      if(!window.confirm("当前接口未保存,确定新增?")){
+        return;
+      }
+    }
     this.setState({addInterfaseModalShow:true})
   }
   closeAddInterfaseModal=()=>{
@@ -44,8 +49,12 @@ class InterfaseMenu extends React.Component {
   handleAddInterfaseModalOk=(info)=>{
     info.moduleId=this.props.project.moduleId;
     info.projectId=this.props.project.data.id;
-    this.props.project.addInterfase(info).then(()=>{
+    this.props.project.addInterfase(info).then((data)=>{
       message.success('添加成功')
+      this.props.history.push({
+        pathname: `/project/${this.props.project.projectId}`,
+        search:`?moduleId=${data.moduleId}&interfaseId=${data.id}`
+      })
     });;
   }
 
@@ -59,14 +68,19 @@ class InterfaseMenu extends React.Component {
 
 
   handleMenuClick = (e) => {
-    this.setState({'selectedKey':e.key});
-    let interfaseInfo=e.item.props.interfase;
-    this.props.project.selectInterfase(interfaseInfo.moduleId,interfaseInfo.id);
-
+    const search=`?moduleId=${e.item.props.interfase.moduleId}&interfaseId=${e.item.props.interfase.id}`;
     this.props.history.push({
                 pathname: `/project/${this.props.project.data.id}`,
-                search: `?moduleId=${e.item.props.interfase.moduleId}&interfaseId=${e.item.props.interfase.id}`
+                search
               })
+
+    setTimeout(()=>{
+      if(this.props.location.search===search){
+        this.setState({'selectedKey':e.key});
+        const interfaseInfo=e.item.props.interfase;
+        this.props.project.selectInterfase(interfaseInfo.moduleId,interfaseInfo.id);
+      }
+    },0)
   }
 
   handleInterfaseEdit=(interfase,e)=>{

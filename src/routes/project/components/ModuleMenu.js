@@ -7,7 +7,7 @@ import AddModuleModal from './AddModuleModal';
 import EditModuleModal from './EditModuleModal';
 import {withRouter} from "react-router-dom";
 
-@inject("project")
+@inject("project",'interfases')
 @observer
 class MoudleMenu extends React.Component {
   state = {
@@ -23,6 +23,11 @@ class MoudleMenu extends React.Component {
 
 
   openAddModuleModal=()=>{
+    if(this.props.interfases.editable){
+      if(!window.confirm("当前接口未保存,确定新增?")){
+        return;
+      }
+    }
     this.setState({addModuleModalShow:true})
   }
   closeAddModuleModal=()=>{
@@ -56,8 +61,12 @@ class MoudleMenu extends React.Component {
 
   handleAddModuleModalOk=(info)=>{
     info.projectId=this.props.project.projectId;
-    this.props.project.addModule(info).then(()=>{
+    this.props.project.addModule(info).then((data)=>{
       message.success('添加成功')
+      this.props.history.push({
+        pathname: `/project/${this.props.project.projectId}`,
+        search:`?moduleId=${data.id}`
+      })
     });;
   }
 
@@ -70,15 +79,18 @@ class MoudleMenu extends React.Component {
 
 
   handleMenuClick = (e) => {
-    this.setState({'selectedKey':e.key});
-    let module=e.item.props.module;
-    this.props.project.selectInterfase(module.id)
-
-
+    let search=`?moduleId=${e.item.props.module.id}`
     this.props.history.push({
       pathname: `/project/${this.props.project.projectId}`,
-      search: `?moduleId=${e.item.props.module.id}`
+      search
     })
+    setTimeout(()=>{
+      if(this.props.location.search===search){
+        this.setState({'selectedKey':e.key});
+        let module=e.item.props.module;
+        this.props.project.selectInterfase(module.id)
+      }
+    },0)
   }
   render() {
     return (

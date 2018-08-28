@@ -28,7 +28,7 @@ class Editor extends React.Component {
           this.props.project.inVersionModules.length!==0?<div className={Style.content}>
             <div className={Style.menu}>
               <InterfaseMenu
-                interfases={this.props.project.interfases} moduleId={this.props.project.moduleId}></InterfaseMenu>
+           moduleId={this.props.project.moduleId}></InterfaseMenu>
             </div>
             <div className={Style.main}>
               {this.props.project.inVersionInterfases.length!==0?<Interfase></Interfase>:`该模块下暂无${this.props.project.curVersion?this.props.project.curVersion+"版本的":""}接口数据`}

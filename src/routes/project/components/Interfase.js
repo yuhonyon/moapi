@@ -10,6 +10,7 @@ import {Button,List,Radio,message,Modal,Input,Select,Icon,Switch} from 'antd'
 import Style from './Interfase.less'
 import {inject, observer} from 'mobx-react';
 import {toJS} from 'mobx';
+import { Prompt } from 'react-router'
 import {parseDate} from '@/filters'
 const ButtonGroup = Button.Group;
 const RadioButton = Radio.Button;
@@ -32,6 +33,7 @@ class Interfase extends React.Component {
   recordMessage=""
   forceSave=false
   addVersion=""
+
 
   saveInterfase = () => {
     this.props.interfases.closeEditable()
@@ -147,6 +149,7 @@ class Interfase extends React.Component {
   render() {
     //console.log(this.props.interfases.resMock)
     return (<div className={Style.wrapper}>
+      <Prompt when={this.props.interfases.editable} message="当前接口未保存,确定跳转?"/>
       <AddRemarkModal onClose={() => {
           this.setState({addRemarkModalShow: false})
         }}  visible={this.state.addRemarkModalShow} onOk={this.handleAddRemarkOk}></AddRemarkModal>
