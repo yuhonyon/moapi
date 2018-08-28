@@ -14,6 +14,22 @@ function parseStrToObj(str){
   return null
 }
 
+function byIndexFind(index,num,data){
+  for(let i=0;i<data.children.length;i++){
+    if(num>=index){
+      return {data,i}
+    }
+    num++
+    if(data.children[i].children&&data.children[i].children.length>0){
+      num=byIndexFind(index,num,data.children[i])
+      if(typeof num==='object'){
+        return num
+      }
+    }
+  }
+  return num
+}
+
 //import axios from 'axios';
 useStrict(true);
 
@@ -241,6 +257,26 @@ class Interfase {
 
   @action.bound changeProxyType(val) {
     this.data.proxyType = val;
+  }
+
+  @action.bound changeSort(type,dragIndex, hoverIndex){
+    const data = this.data[type].slice();
+    let target = {
+      children: data
+    };
+    let drag=byIndexFind(dragIndex,0,target)
+    let hover=byIndexFind(hoverIndex,0,target)
+    if(hover.data!==drag.data){
+      return;
+    }
+
+    let back=drag.data.children[drag.i];
+    hover.data.children.splice(drag.i,1)
+    hover.data.children.splice(hover.i,0,back)
+
+
+    this.data[type] = data;
+    this.changeCode(type)
   }
 
   @action.bound changeField(type, value, key, column) {

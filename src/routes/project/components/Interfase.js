@@ -257,7 +257,7 @@ data={toJS(this.props.interfases.data.headers)}></HeadersTable>
           </ButtonGroup>
         </div>
       </div>
-      <EditableTable permission={this.props.project.permission} data={toJS(this.props.interfases.data.res)}></EditableTable>
+      <EditableTable onOpenAddValue={this.openAddValue} permission={this.props.project.permission} data={toJS(this.props.interfases.data.res)}></EditableTable>
       {
         this.state.resPreview &&< div className = {
           Style.codeWrapper
