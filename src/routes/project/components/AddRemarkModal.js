@@ -73,7 +73,10 @@ class AddRemarkModal extends React.Component {
               label="备注"
             >
               {getFieldDecorator('message', {
-                initialValue: ''
+                initialValue: '',
+                rules: [{
+                  required: true, message: '必填',
+                }],
               })(
                 <TextArea />
               )}

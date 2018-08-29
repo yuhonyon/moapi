@@ -155,7 +155,7 @@ const EditableCell = ({ editable, value, onChange,identify,column }) => {
               }
           </Select>
   }
-  return <div className={Style.cell}>{cell}</div>
+  return <div className={Style.cell} style={{whiteSpace:identify==='textarea'?'pre':null}}>{cell}</div>
 }
 
 

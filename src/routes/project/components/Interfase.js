@@ -2,7 +2,9 @@ import React from "react";
 import EditableTable from './EditableTable'
 import AddValueModal from './AddValueModal'
 import AddRemarkModal from './AddRemarkModal'
+import EditRemarkModal from './EditRemarkModal'
 import HeadersTable from './HeadersTable'
+import PathsTable from './PathsTable'
 import RecordModal from './RecordModal'
 import ShowCode from './ShowCode'
 import LeadInModal from './LeadInModal'
@@ -25,6 +27,8 @@ class Interfase extends React.Component {
     reqLeadInModalShow: false,
     addValueModalShow:false,
     addRemarkModalShow:false,
+    editRemarkModalShow:false,
+    editRemarkInfo:{},
     recordModalShow:false,
     resPreview: true,
     reqPreview: true,
@@ -42,7 +46,8 @@ class Interfase extends React.Component {
   }
 
   handleAddRemarkOk=(info)=>{
-    this.props.interfases.addRemork({interfaseId:this.props.interfases.data.id,...info})
+    this.forceSave=true;
+    this.props.interfases.addRemark({interfaseId:this.props.interfases.data.id,...info})
   }
 
   handleAddHeader=()=>{
@@ -52,11 +57,18 @@ class Interfase extends React.Component {
   handleAddRemark=(e)=>{
     this.setState({addRemarkModalShow:true})
   }
+  handleUpdateRemark=(info)=>{
+    this.setState({editRemarkModalShow:true,editRemarkInfo:info})
+  }
+  handleUpdateRemarkOk=(info)=>{
+    this.props.interfases.editRemark(this.state.editRemarkInfo.id,info)
+  }
   handleDeleteRemark=(id)=>{
     Modal.confirm({
       title:'警告?',
       content:'确认删除备注?',
       onOk:()=>{
+        this.forceSave=true;
         this.props.interfases.deleteRemark(id)
       },
     })
@@ -150,6 +162,9 @@ class Interfase extends React.Component {
     //console.log(this.props.interfases.resMock)
     return (<div className={Style.wrapper}>
       <Prompt when={this.props.interfases.editable} message="当前接口未保存,确定跳转?"/>
+      <EditRemarkModal info={this.state.editRemarkInfo} onClose={() => {
+          this.setState({editRemarkModalShow: false})
+        }}  visible={this.state.editRemarkModalShow} onOk={this.handleUpdateRemarkOk}></EditRemarkModal>
       <AddRemarkModal onClose={() => {
           this.setState({addRemarkModalShow: false})
         }}  visible={this.state.addRemarkModalShow} onOk={this.handleAddRemarkOk}></AddRemarkModal>
@@ -209,6 +224,16 @@ class Interfase extends React.Component {
       </div>
       <HeadersTable permission={this.props.project.permission}
 data={toJS(this.props.interfases.data.headers)}></HeadersTable>
+
+
+
+      {/\{/.test(this.props.interfases.data.url)&&<div>
+        <div className={Style.title}>
+          <h3>Path参数</h3>
+        </div>
+        <PathsTable permission={this.props.project.permission}
+        data={toJS(this.props.interfases.data.paths)}></PathsTable>
+      </div>}
 
 
 
@@ -279,10 +304,10 @@ data={toJS(this.props.interfases.data.headers)}></HeadersTable>
       bordered
       dataSource={toJS(this.props.interfases.remarks.slice())}
       renderItem={item => (
-        <List.Item actions={[<Icon onClick={this.handleDeleteRemark.bind(this,item.id)} type="delete"></Icon>]}>
+        <List.Item actions={[<Icon onClick={this.handleUpdateRemark.bind(this,item)} type="edit"></Icon>,<Icon onClick={this.handleDeleteRemark.bind(this,item.id)} type="delete"></Icon>]}>
           <List.Item.Meta
                 title={<div>{item.version}&emsp;{item.creator}</div>}
-                description={item.message}
+                description={<div className={Style.remarkMessage}>{item.message}</div>}
               />
           <div>{parseDate(item.createdAt)}</div>
         </List.Item>)}

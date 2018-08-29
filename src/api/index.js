@@ -138,13 +138,24 @@ const fetchApi={
     })
   },
 
-  fetchAddRemork(params){
+  fetchGetInterfaseRemark(interfaseId,params){
+    return http.get(`/interfase/${interfaseId}/remarks`,params).then(data=>{
+      return data;
+    })
+  },
+
+  fetchAddRemark(params){
     return http.post(`/remark/`,params).then(data=>{
       return data;
     })
   },
-  fetchDeleteRemork(id){
+  fetchDeleteRemark(id){
     return http.delete(`/remark/${id}`).then(data=>{
+      return data;
+    })
+  },
+  fetchUpdateRemark(id,info){
+    return http.put(`/remark/${id}`,info).then(data=>{
       return data;
     })
   },

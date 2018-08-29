@@ -1,4 +1,4 @@
-import {observable, action, useStrict, computed} from 'mobx';
+import {observable, action, useStrict, computed,runInAction} from 'mobx';
 import Mock from 'mockjs';
 import project from './project'
 import Config from '@/config'
@@ -42,6 +42,7 @@ class Interfase {
     url: '',
     res: [],
     headers: [],
+    paths:[],
     remarks: [],
     req: [],
     versions: []
@@ -119,7 +120,11 @@ class Interfase {
     if (!this.data.id) {
       return ""
     }
-    return (`${Config.baseURL}project/test/${project.projectId}/${this.data.url}#!method=${this.data.method.toUpperCase()}&headers=${this.headerTest}${this.reqTest}`).replace(/([^:])\/\//, "$1/");
+    let url=this.data.url
+    this.data.paths.forEach(item=>{
+      url=url.replace(`{${item.name}}`,item.value||1)
+    })
+    return (`${Config.baseURL}project/test/${project.projectId}/${url}#!method=${this.data.method.toUpperCase()}&headers=${this.headerTest}${this.reqTest}`).replace(/([^:])\/\//, "$1/");
 
   }
 
@@ -151,7 +156,7 @@ class Interfase {
           } else if (item.type === 'String') {
             return ""
           } else if (item.type === 'Number') {
-            return 0
+            return null
           } else if (item.type === 'Boolean') {
             return false
           } else {}
@@ -313,6 +318,13 @@ class Interfase {
     let index = data.findIndex(item => item.key === key);
     this.data.headers[index][column] = value;
   }
+
+  @action.bound changePathsField(value, key, column) {
+    const data = this.data.paths.slice();
+    let index = data.findIndex(item => item.key === key);
+    this.data.paths[index][column] = value;
+  }
+
   @action.bound delHeadersRow(key) {
     const data = this.data.headers.slice();
     let index = data.findIndex(item => item.key === key);
@@ -399,15 +411,30 @@ class Interfase {
     this.data.versions.push(version);
   }
 
-  @action.bound addRemork(info) {
-    return fetchApi.fetchAddRemork(info).then((data) => {
-      project.getProjectData(this.data.projectId)
+  @action.bound addRemark(info) {
+    return fetchApi.fetchAddRemark(info).then((data) => {
+      this.getRemark()
       return data;
     })
   }
+  @action.bound getRemark() {
+    return fetchApi.fetchGetInterfaseRemark(this.data.id).then((data) => {
+      runInAction(() => {
+        this.data.remarks=data.remarks;
+      })
+      return data;
+    })
+  }
+
   @action.bound deleteRemark(id) {
-    return fetchApi.fetchDeleteRemork(id).then((data) => {
-      project.getProjectData(this.data.projectId)
+    return fetchApi.fetchDeleteRemark(id).then((data) => {
+      this.getRemark()
+      return data;
+    })
+  }
+  @action.bound editRemark(id,info) {
+    return fetchApi.fetchUpdateRemark(id,info).then((data) => {
+      this.getRemark()
       return data;
     })
   }

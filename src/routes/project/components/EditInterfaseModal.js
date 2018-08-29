@@ -1,5 +1,6 @@
 import { Modal,Form, Input, Select } from 'antd';
 import React from 'react'
+import {inject, observer} from 'mobx-react';
 const Option=Select.Option;
 const FormItem=Form.Item;
 const TextArea=Input.TextArea
@@ -15,6 +16,8 @@ const formItemLayout = {
   },
 };
 
+@inject("project")
+@observer
 class EditInterfaseModal extends React.Component {
 
   handleOk = (e) => {
@@ -40,7 +43,8 @@ class EditInterfaseModal extends React.Component {
         name: nextProps.interfase.name,
         url: nextProps.interfase.url,
         method: nextProps.interfase.method,
-        description: nextProps.interfase.description
+        description: nextProps.interfase.description,
+        versions:nextProps.interfase.versions,
       })
     }
   }
@@ -96,6 +100,23 @@ class EditInterfaseModal extends React.Component {
                   <Option value="POST">POST</Option>
                   <Option value="DELETE">DELETE</Option>
                   <Option value="PUT">PUT</Option>
+                </Select>
+              )}
+            </FormItem>
+
+            <FormItem
+              {...formItemLayout}
+              label="标记版本"
+            >
+              {getFieldDecorator('versions', {
+                rules: [{
+                  required: true, message: '必选',
+                }],
+              })(
+                <Select mode="multiple">
+                  {
+                    this.props.project.info.versions.slice().map(version=>(<Option value={version} key={version}>{version}</Option>))
+                  }
                 </Select>
               )}
             </FormItem>
