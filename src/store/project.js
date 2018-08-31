@@ -175,8 +175,8 @@ class Project {
   @action.bound
   addInterfase(interfase) {
     return fetchApi.fetchAddInterfase(interfase).then(data => {
-      this.getProjectData(interfase.projectId).then(() => {
-        this.selectInterfase(interfase.moduleId, interfase.id)
+      this.getProjectData(data.projectId).then(() => {
+        this.selectInterfase(data.moduleId, data.id)
       })
       return data;
     })

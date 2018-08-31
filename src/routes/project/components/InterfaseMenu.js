@@ -95,7 +95,9 @@ class InterfaseMenu extends React.Component {
       title: '删除提醒',
       content: '确认要删除接口?',
       onOk:()=>{
-        this.props.project.deleteInterfase(interfaseId)
+        this.props.project.deleteInterfase(interfaseId).then(data=>{
+          message.success("删除成功")
+        })
       }
     });
   }
