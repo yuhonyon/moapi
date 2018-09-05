@@ -17,6 +17,7 @@ class LeadInModal extends React.Component {
   handleOk = (e) => {
     if(/^\[[\s\S]*\]$/m.test(this.state.code)){
       message.warning('不建议用数组格式数据');
+      this.setState({'code':`{"array_type_data":${this.state.code}}`})
       return;
     }
     if(!this.isJSON(this.state.code)){
@@ -55,6 +56,9 @@ class LeadInModal extends React.Component {
   handleFormat=()=>{
     try{
       let format=this.evil('(' + this.state.code + ')')
+      if(format&&format.constructor===Array){
+        format={"array_type_data":format}
+      }
       format=JSON.stringify(format,'',2)
       this.setState({code:format})
     }catch(err){

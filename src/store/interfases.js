@@ -109,7 +109,13 @@ class Interfase {
     } else {
       let data = [];
       for (let key in mockData) {
-        data.push({"enabled": true, "key": key, "value": mockData[key]})
+        if(mockData[key]&&mockData[key].constructor===Array){
+          for(let i in mockData[key]){
+            data.push({"enabled": true, "key": `${key}[${i}]`, "value": JSON.stringify(mockData[key][i])})
+          }
+        }else{
+          data.push({"enabled": true, "key": key, "value": JSON.stringify(mockData[key])})
+        }
       }
       return "&queryParameters=" + encodeURI(JSON.stringify(data));
     }
@@ -175,7 +181,6 @@ class Interfase {
         return data;
       }
     } catch (e) {
-      console.log(e)
       return item.mockValue
     }
   }
@@ -238,7 +243,7 @@ class Interfase {
     let newCode = [];
     let id = Date.now()
     for (let i in code) {
-      newCode.push(this.formatCode(i, code[i], id + i))
+      newCode.push(this.formatCode(i, code[i], id + i.replace(/-/g,'_')))
     }
     this.data.res = this.data.res.toJS().concat(newCode)
     this.changeCode('res')
@@ -254,7 +259,7 @@ class Interfase {
     let newCode = [];
     let id = Date.now()
     for (let i in code) {
-      newCode.push(this.formatCode(i, code[i], id + i))
+      newCode.push(this.formatCode(i, code[i], id + i.replace(/-/g,'_')))
     }
     this.data.req = this.data.req.slice().concat(newCode)
     this.changeCode('req')
@@ -394,9 +399,17 @@ class Interfase {
 
   @action.bound createCode(type) {
     if (type === 'res' && this.resMock) {
-      this.resCode = JSON.stringify(Mock.mock(parseStrToObj(this.resMock)), null, 2)
+      let data=Mock.mock(parseStrToObj(this.resMock));
+      if(data.array_type_data&&data.array_type_data.constructor===Array){
+        data=data.array_type_data
+      }
+      this.resCode = JSON.stringify(data, null, 2)
     } else if (this.reqMock) {
-      this.reqCode = JSON.stringify(Mock.mock(parseStrToObj(this.reqMock)), null, 2)
+      let data=Mock.mock(parseStrToObj(this.reqMock));
+      if(data.array_type_data&&data.array_type_data.constructor===Array){
+        data=data.array_type_data
+      }
+      this.reqCode = JSON.stringify(data, null, 2)
     }
   }
 

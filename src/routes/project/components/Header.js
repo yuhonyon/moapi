@@ -8,6 +8,7 @@ import {inject, observer} from 'mobx-react';
 import Style from "./Header.less"
 import { Link  } from 'react-router-dom'
 import config from "@/config"
+import {mergePath} from '@/utils'
 
 const Option =Select.Option;
 
@@ -75,7 +76,7 @@ class Header extends React.Component {
   handleShowMockUrl=()=>{
     Modal.info({
      title: '在线mock地址',
-     content: this.props.project.mockUrl+" + 接口url",
+     content: mergePath(this.props.project.mockUrl,this.props.interfases.data.url),
    });
   }
 

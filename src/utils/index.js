@@ -7,6 +7,9 @@ export function getQuery(search,name) {
   return null;
 }
 
+export function mergePath(url1,url2) {
+  return url1.replace(/\/$/,'')+'/'+url2.replace(/^\//,'')
+}
 
 export function getApiUrl(search,name) {
   let host=window.location.host;
