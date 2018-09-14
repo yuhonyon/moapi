@@ -114,7 +114,7 @@ class EditProjectModal extends React.Component {
               })(
                 <Select
                   showSearch
-                  disabled={this.props.project.info.permission!==4}
+                  disabled={this.props.project.info.permission<3}
                   mode="multiple"
                   optionFilterProp="children"
                   filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
