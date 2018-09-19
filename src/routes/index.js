@@ -15,7 +15,7 @@ const Routes = () => (
 
     <Route path="/course" component={Course} />
 
-    <Redirect from="*" to="/login" />
+    <Redirect from="*" to="/project" />
   </Switch>
 )
 

@@ -24,6 +24,9 @@ class Header extends React.Component {
   }
   addVersion=""
 
+  componentDidMount(){
+    this.props.project.changeCurVersion('')
+  }
   openEditProjectModal=()=>{
     this.setState({editProjectModalShow:true})
   }
