@@ -111,10 +111,10 @@ class Interfase {
       for (let key in mockData) {
         if(mockData[key]&&mockData[key].constructor===Array){
           for(let i in mockData[key]){
-            data.push({"enabled": true, "key": `${key}[${i}]`, "value": JSON.stringify(mockData[key][i])})
+            data.push({"enabled": true, "key": `${key}[${i}]`, "value": mockData[key][i]})
           }
         }else{
-          data.push({"enabled": true, "key": key, "value": JSON.stringify(mockData[key])})
+          data.push({"enabled": true, "key": key, "value": mockData[key]})
         }
       }
       return "&queryParameters=" + encodeURI(JSON.stringify(data));
