@@ -118,7 +118,7 @@ class InterfaseMenu extends React.Component {
             this.props.project.inVersionInterfases.map(item=>{
               return (
                 <Menu.Item key={item.id} interfase={item}>
-                    {item.proxyType>0&&<Badge className={Style.badge} status="success"></Badge>}
+                    {item.proxyType>0&&this.props.project.info.mock&&<Badge className={Style.badge} status="success"></Badge>}
                     {item.name}&emsp;
                     {this.props.project.permission>2&&<span className={Style.icon}>
                         <Icon interfase={item} onClick={this.handleInterfaseEdit.bind(this,item)}  type="form" />

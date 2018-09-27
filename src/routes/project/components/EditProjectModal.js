@@ -1,4 +1,4 @@
-import { Modal,Form, Input, Select } from 'antd';
+import { Modal,Form, Input, Select,Switch } from 'antd';
 import React from 'react'
 import {inject, observer} from 'mobx-react';
 
@@ -36,6 +36,7 @@ class EditProjectModal extends React.Component {
     if(nextProps.visible&&nextProps.visible!==this.props.visible){
       this.props.form.setFieldsValue({
         name: this.props.project.info.name,
+        mock: this.props.project.info.mock,
         admin: this.props.project.info.admin.id,
         developers: this.props.project.info.developers.toJS().map(item=>item.id),
         guests: this.props.project.info.guests.toJS().map(item=>item.id),
@@ -94,7 +95,7 @@ class EditProjectModal extends React.Component {
                 initialValue: ''
               })(
                 <Select
-                  disabled
+                  disabled={this.props.project.info.permission<4}
                   showSearch
                   optionFilterProp=""
                   filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
@@ -135,7 +136,7 @@ class EditProjectModal extends React.Component {
               })(
                 <Select
                   showSearch
-                  disabled={this.props.project.info.permission<3}
+                  disabled={this.props.project.info.permission<2}
                   mode="multiple"
                   optionFilterProp="children"
                   filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
@@ -156,7 +157,7 @@ class EditProjectModal extends React.Component {
               })(
                 <Select
                   showSearch
-                  disabled={this.props.project.info.permission<3}
+                  disabled={this.props.project.info.permission<2}
                   mode="multiple"
                   optionFilterProp="children"
                   filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
@@ -165,6 +166,20 @@ class EditProjectModal extends React.Component {
                     <Option key={user.id} value={user.id}>{user.name}</Option>
                   ))}
                 </Select>
+              )}
+            </FormItem>
+
+            <FormItem
+              {...formItemLayout}
+              label="开启mock"
+            >
+              {getFieldDecorator('mock', {
+                initialValue: false,
+                valuePropName: 'checked'
+              })(
+                <Switch
+                  disabled={this.props.project.info.permission<2}
+                />
               )}
             </FormItem>
 
