@@ -44,6 +44,7 @@ class EditProjectModal extends React.Component {
         guests: this.props.project.info.guests.toJS().map(item=>item.id),
         reporters: this.props.project.info.reporters.toJS().map(item=>item.id),
         proxy: this.props.project.info.proxy,
+        public:this.props.project.info.public,
         description: this.props.project.info.description
       })
     }
@@ -168,6 +169,20 @@ class EditProjectModal extends React.Component {
                     <Option key={user.id} value={user.id}>{user.name}</Option>
                   ))}
                 </Select>
+              )}
+            </FormItem>
+
+            <FormItem
+              {...formItemLayout}
+              label="公开"
+            >
+              {getFieldDecorator('public', {
+                initialValue: true,
+                valuePropName: 'checked'
+              })(
+                <Switch
+                  disabled={this.props.project.info.permission<2}
+                />
               )}
             </FormItem>
 

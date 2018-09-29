@@ -1,4 +1,4 @@
-import { Modal,Form, Input,Select } from 'antd';
+import { Modal,Form, Input,Select ,Switch,Radio} from 'antd';
 import React from 'react'
 import {inject, observer} from 'mobx-react';
 const FormItem=Form.Item;
@@ -18,7 +18,6 @@ const formItemLayout = {
 
 
 @inject("user")
-@inject("project")
 @observer
 class AddProjectModal extends React.Component {
   state={
@@ -137,6 +136,58 @@ class AddProjectModal extends React.Component {
                     <Option key={user.id} value={user.id}>{user.name}</Option>
                   ))}
                 </Select>
+              )}
+            </FormItem>
+
+            <FormItem
+              {...formItemLayout}
+              label="公开"
+            >
+              {getFieldDecorator('public', {
+                initialValue: true,
+                valuePropName: 'checked'
+              })(
+                <Switch/>
+              )}
+            </FormItem>
+
+            <FormItem
+              {...formItemLayout}
+              label="全局mock"
+            >
+              {getFieldDecorator('mockType', {
+                initialValue: 1,
+              })(
+                <Radio.Group  buttonStyle="solid" >
+                  <Radio.Button value={1}>默认</Radio.Button>
+                  <Radio.Button value={0}>全局关闭</Radio.Button>
+                  <Radio.Button value={2}>全局开启</Radio.Button>
+                </Radio.Group>
+              )}
+            </FormItem>
+
+
+            <FormItem
+              {...formItemLayout}
+              label="网关模式"
+            >
+              {getFieldDecorator('gateway', {
+                initialValue: false,
+                valuePropName: 'checked'
+              })(
+                <Switch/>
+              )}
+            </FormItem>
+
+
+            <FormItem
+              {...formItemLayout}
+              label="网关代理地址"
+            >
+              {getFieldDecorator('gatewayProxy', {
+                initialValue: ''
+              })(
+                <Input />
               )}
             </FormItem>
 
