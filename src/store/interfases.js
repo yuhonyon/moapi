@@ -102,6 +102,14 @@ class Interfase {
         data.push({"enabled": true, "key": i, "value": project.info.gatewayTemplate.headers[i]})
       }
     }
+    if(project.info.checkInfo.type===1&&project.info.checkInfo.key){
+      let index=data.findIndex(item=>project.info.checkInfo.key);
+      if(index>=0){
+        data[index].value=project.info.checkInfo.value
+      }else{
+        data.push({"enabled": true, "key": project.info.checkInfo.key, "value": project.info.checkInfo.value})
+      }
+    }
     return encodeURI(JSON.stringify(data));
   }
 

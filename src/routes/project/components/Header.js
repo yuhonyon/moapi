@@ -2,6 +2,7 @@ import React  from 'react';
 import {Icon,Select,Modal,Button,Input} from 'antd';
 import EditProjectModal from './EditProjectModal'
 import EditDocModal from './EditDocModal'
+import CheckModal from './CheckModal'
 import ImportSwaggerModal from './ImportSwaggerModal'
 import TemplateModal from './TemplateModal'
 import GatewayTemplateModal from './GatewayTemplateModal'
@@ -22,7 +23,8 @@ class Header extends React.Component {
     templateModalShow:false,
     editDocModalShow:false,
     importSwaggerModalShow:false,
-    gatewayTemplateModalShow:false
+    gatewayTemplateModalShow:false,
+    checkModalShow:false
   }
   addVersion=""
 
@@ -31,6 +33,12 @@ class Header extends React.Component {
   }
   openEditProjectModal=()=>{
     this.setState({editProjectModalShow:true})
+  }
+  openCheckModal=()=>{
+    this.setState({checkModalShow:true})
+  }
+  closeCheckModal=()=>{
+    this.setState({checkModalShow:false})
   }
   openEditDocModal=()=>{
     this.setState({editDocModalShow:true})
@@ -62,6 +70,12 @@ class Header extends React.Component {
   }
   handleUpdateGatewayTemplateOk=(info)=>{
     this.props.project.updateProject(this.props.project.projectId,{gatewayTemplate:info}).then(()=>{
+      this.props.project.getProjectInfo(this.props.project.projectId)
+    })
+  }
+  handleCheckOk=(info)=>{
+    console.log(info)
+    this.props.project.updateProject(this.props.project.projectId,{checkInfo:info}).then(()=>{
       this.props.project.getProjectInfo(this.props.project.projectId)
     })
   }
@@ -118,6 +132,7 @@ class Header extends React.Component {
   render(){
     return(
       <div className={Style.wrapper}>
+        <CheckModal onOk={this.handleCheckOk} onClose={this.closeCheckModal}  visible={this.state.checkModalShow}></CheckModal>
         <EditProjectModal  onOk={this.handleUpdateProjectOk} onClose={this.closeEditProjectModal}  visible={this.state.editProjectModalShow} ></EditProjectModal>
         <EditDocModal  onOk={this.handleUpdateDocOk} onClose={this.closeEditDocModal}  visible={this.state.editDocModalShow} ></EditDocModal>
         <TemplateModal onOk={this.handleUpdateTemplateOk} onClose={this.closeTemplateModal}  visible={this.state.templateModalShow}></TemplateModal>
@@ -137,6 +152,8 @@ class Header extends React.Component {
           {this.props.project.permission>2&&<a onClick={this.openTemplateModal} href="###"><Icon type="appstore-o" />模板</a>}
 
           {this.props.project.permission>2&&<a onClick={this.openGatewayTemplateModal} href="###"><Icon type="appstore-o" />网关格式</a>}
+
+          {this.props.project.permission>1&&<a onClick={this.openCheckModal} href="###"><Icon type="appstore-o" />鉴权</a>}
 
 
           <a download href={this.props.project.mdDownloadUrl}><Icon type="file-markdown" />下载文档</a>

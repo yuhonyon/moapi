@@ -14,6 +14,7 @@ class Project {
     admin:{
       name:null
     },
+    checkInfo:{},
     gatewayTemplate:{},
     versions:[],
     docs:[]
@@ -23,6 +24,7 @@ class Project {
     admin: {},
     id: null,
     description: '',
+
     modules: [
     ],
     members: [],
