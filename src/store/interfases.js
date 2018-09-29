@@ -59,39 +59,48 @@ class Interfase {
     return this.data.remarks
   }
   @computed get resMock() {
-    if (!this.data.res) {
-      return "";
-    }
-    let data = {};
-    for (let item of this.data.res) {
+    let result="";
+    if (this.data.res) {
+      let data = {};
+      for (let item of this.data.res) {
 
-      data[item.name + ((!!item.mockNum&&item.mockNum!==0) ? "|" + item.mockNum:"")] = this.formatMock(item)
+        data[item.name + ((!!item.mockNum&&item.mockNum!==0) ? "|" + item.mockNum:"")] = this.formatMock(item)
+      }
+      result= JSON.stringify(data, null, 2).replace(/"\$\$\*RegExp\*\$\$(.*)\$\$\*RegExp\*\$\$"/g,($,$1)=>{
+        return `/${$1.replace(/\\\\/g,'\\')}/`
+      });
     }
-    return JSON.stringify(data, null, 2).replace(/"\$\$\*RegExp\*\$\$(.*)\$\$\*RegExp\*\$\$"/g,($,$1)=>{
-
-      return `/${$1.replace(/\\\\/g,'\\')}/`});
+    return result;
   }
 
 
   @computed get reqMock() {
-    if (!this.data.res) {
-      return "";
+    let result="";
+    if (this.data.res) {
+      let data = {};
+      for (let item of this.data.req) {
+        data[item.name + ((!!item.mockNum&&item.mockNum!==0) ? "|" + item.mockNum:"")] = this.formatMock(item)
+      }
+      result= JSON.stringify(data, null, 2).replace(/"\$\$\*RegExp\*\$\$(.*)\$\$\*RegExp\*\$\$"/g,($,$1)=>{
+        return `/${$1.replace(/\\\\/g,'\\')}/`});
     }
-    let data = {};
-    for (let item of this.data.req) {
-      data[item.name + ((!!item.mockNum&&item.mockNum!==0) ? "|" + item.mockNum:"")] = this.formatMock(item)
-    }
-    return JSON.stringify(data, null, 2).replace(/"\$\$\*RegExp\*\$\$(.*)\$\$\*RegExp\*\$\$"/g,($,$1)=>{
-      return `/${$1.replace(/\\\\/g,'\\')}/`});
+    return result;
+
   }
 
   @computed get headerTest() {
-    if (!this.data.headers.length === 0) {
+    if (!this.data.headers.length === 0&&!project.info.gatewayTemplate.headers) {
       return "";
     }
+
     let data = [];
     for (let item of this.data.headers) {
       data.push({"enabled": true, "key": item.name, "value": item.value})
+    }
+    if(project.info.gateway&&project.info.gatewayTemplate.headers){
+      for(let i in project.info.gatewayTemplate.headers){
+        data.push({"enabled": true, "key": i, "value": project.info.gatewayTemplate.headers[i]})
+      }
     }
     return encodeURI(JSON.stringify(data));
   }
@@ -102,7 +111,7 @@ class Interfase {
       return ""
     }
 
-    let mockData =  Mock.mock(parseStrToObj(this.reqMock))
+    let mockData =  parseStrToObj(this.reqCode)
 
     if (method === "POST" || method === "PUT") {
       return "&body=" + encodeURIComponent(JSON.stringify(mockData, null, 2));
@@ -126,7 +135,7 @@ class Interfase {
     if (!this.data.id) {
       return ""
     }
-    let url=this.data.url
+    let url=project.info.gateway?this.data.gatewayUrl||'':this.data.url
     this.data.paths.forEach(item=>{
       url=url.replace(`{${item.name}}`,item.value||1)
     })
@@ -403,13 +412,35 @@ class Interfase {
       if(data.array_type_data&&data.array_type_data.constructor===Array){
         data=data.array_type_data
       }
-      this.resCode = JSON.stringify(data, null, 2)
+      data=JSON.stringify(data, null, 2);
+      if(project.info.gateway&&project.info.gatewayTemplate.res){
+        let resTemplate=JSON.stringify(project.info.gatewayTemplate.res)
+        if(resTemplate.search(/"\$data"/)>=0){
+          data=resTemplate.replace(/"\$data"/,data)
+        }else{
+          data=resTemplate.replace(/^{/,data.replace(/\}$/,','))
+        }
+        data=JSON.stringify(JSON.parse(data),null,2)
+      }
+      this.resCode = data
     } else if (this.reqMock) {
       let data=Mock.mock(parseStrToObj(this.reqMock));
+
       if(data.array_type_data&&data.array_type_data.constructor===Array){
         data=data.array_type_data
       }
-      this.reqCode = JSON.stringify(data, null, 2)
+      data=JSON.stringify(data, null, 2);
+      if(project.info.gateway&&project.info.gatewayTemplate.req){
+        let reqTemplate=JSON.stringify(project.info.gatewayTemplate.req)
+        if(reqTemplate.search(/"\$data"/)>=0){
+          data=reqTemplate.replace(/"\$data"/,data)
+        }else{
+          data=reqTemplate.replace(/^{/,data.replace(/\}$/,','))
+
+        }
+        data=JSON.stringify(JSON.parse(data),null,2)
+      }
+      this.reqCode = data
     }
   }
 

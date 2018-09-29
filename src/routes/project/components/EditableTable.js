@@ -1,5 +1,5 @@
 import React from "react";
-import { Table,Button,Input,Select ,Switch} from 'antd';
+import { Table,Button,Input,Select ,Switch,Popover,Icon} from 'antd';
 import Style from "./EditableTable.less"
 import {inject,observer} from 'mobx-react';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
@@ -183,17 +183,25 @@ class EditableTable extends React.Component{
     key: 'required',
     render:(text,record)=>this.renderColumns(text,record,'required','switch')
   }, {
-    title: '规则类型',
+    title: <div>
+      规则类型<Popover content={<a target="_blank" href="http://mockjs.com/examples.html">mock.js文档</a>} title="提示">
+              <Icon type="question-circle" theme="outlined" />
+            </Popover>
+    </div>,
     dataIndex: 'mockType',
     key: 'mockType',
     render:(text,record)=>this.renderColumns(text,record,'mockType',['String','Number','Array','Boolean','Object','RegExp'])
   }, {
-    title: '规则量',
+    title: <div>
+      规则量<Popover content={<a target="_blank" href="http://mockjs.com/examples.html">mock.js文档</a>} title="提示">
+              <Icon type="question-circle" theme="outlined" />
+            </Popover>
+    </div>,
     dataIndex: 'mockNum',
     key: 'mockNum',
     render:(text,record)=>this.renderColumns(text,record,'mockNum')
   }, {
-    title: '规则值',
+    title: '规则值/默认值',
     dataIndex: 'mockValue',
     key: 'mockValue',
     render:(text,record)=>this.renderColumns(text,record,'mockValue','textarea')

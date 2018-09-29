@@ -1,4 +1,4 @@
-import { Modal,Form, Input, Select,Switch } from 'antd';
+import { Modal,Form, Input, Select,Radio,Switch } from 'antd';
 import React from 'react'
 import {inject, observer} from 'mobx-react';
 
@@ -36,7 +36,9 @@ class EditProjectModal extends React.Component {
     if(nextProps.visible&&nextProps.visible!==this.props.visible){
       this.props.form.setFieldsValue({
         name: this.props.project.info.name,
-        mock: this.props.project.info.mock,
+        mockType: this.props.project.info.mockType,
+        gateway:this.props.project.info.gateway,
+        gatewayProxy:this.props.project.info.gatewayProxy,
         admin: this.props.project.info.admin.id,
         developers: this.props.project.info.developers.toJS().map(item=>item.id),
         guests: this.props.project.info.guests.toJS().map(item=>item.id),
@@ -171,9 +173,26 @@ class EditProjectModal extends React.Component {
 
             <FormItem
               {...formItemLayout}
-              label="开启mock"
+              label="全局mock"
             >
-              {getFieldDecorator('mock', {
+              {getFieldDecorator('mockType', {
+                initialValue: 1,
+                valuePropName: 'checked'
+              })(
+                <Radio.Group defaultValue={this.props.project.info.mockType} buttonStyle="solid" disabled={this.props.project.info.permission<2}>
+                  <Radio.Button value={1}>默认</Radio.Button>
+                  <Radio.Button value={0}>全局关闭</Radio.Button>
+                  <Radio.Button value={2}>全局开启</Radio.Button>
+                </Radio.Group>
+              )}
+            </FormItem>
+
+
+            <FormItem
+              {...formItemLayout}
+              label="网关模式"
+            >
+              {getFieldDecorator('gateway', {
                 initialValue: false,
                 valuePropName: 'checked'
               })(
@@ -182,6 +201,20 @@ class EditProjectModal extends React.Component {
                 />
               )}
             </FormItem>
+
+
+            <FormItem
+              {...formItemLayout}
+              label="网关代理地址"
+            >
+              {getFieldDecorator('gatewayProxy', {
+                initialValue: ''
+              })(
+                <Input />
+              )}
+            </FormItem>
+
+
 
             <FormItem
               {...formItemLayout}

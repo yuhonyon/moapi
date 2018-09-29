@@ -14,6 +14,7 @@ class Project {
     admin:{
       name:null
     },
+    gatewayTemplate:{},
     versions:[],
     docs:[]
   }
