@@ -2,8 +2,10 @@ import React  from 'react';
 import {Icon,Select,Modal,Button,Input} from 'antd';
 import EditProjectModal from './EditProjectModal'
 import EditDocModal from './EditDocModal'
+import CheckModal from './CheckModal'
 import ImportSwaggerModal from './ImportSwaggerModal'
 import TemplateModal from './TemplateModal'
+import GatewayTemplateModal from './GatewayTemplateModal'
 import {inject, observer} from 'mobx-react';
 import Style from "./Header.less"
 import { Link  } from 'react-router-dom'
@@ -20,7 +22,9 @@ class Header extends React.Component {
     editProjectModalShow:false,
     templateModalShow:false,
     editDocModalShow:false,
-    importSwaggerModalShow:false
+    importSwaggerModalShow:false,
+    gatewayTemplateModalShow:false,
+    checkModalShow:false
   }
   addVersion=""
 
@@ -30,11 +34,23 @@ class Header extends React.Component {
   openEditProjectModal=()=>{
     this.setState({editProjectModalShow:true})
   }
+  openCheckModal=()=>{
+    this.setState({checkModalShow:true})
+  }
+  closeCheckModal=()=>{
+    this.setState({checkModalShow:false})
+  }
   openEditDocModal=()=>{
     this.setState({editDocModalShow:true})
   }
   openTemplateModal=()=>{
     this.setState({templateModalShow:true})
+  }
+  openGatewayTemplateModal=()=>{
+    this.setState({gatewayTemplateModalShow:true})
+  }
+  closeGatewayTemplateModal=()=>{
+    this.setState({gatewayTemplateModalShow:false})
   }
   closeTemplateModal=()=>{
     this.setState({templateModalShow:false})
@@ -49,6 +65,17 @@ class Header extends React.Component {
   }
   handleUpdateTemplateOk=(info)=>{
     this.props.project.updateProject(this.props.project.projectId,{template:info}).then(()=>{
+      this.props.project.getProjectInfo(this.props.project.projectId)
+    })
+  }
+  handleUpdateGatewayTemplateOk=(info)=>{
+    this.props.project.updateProject(this.props.project.projectId,{gatewayTemplate:info}).then(()=>{
+      this.props.project.getProjectInfo(this.props.project.projectId)
+    })
+  }
+  handleCheckOk=(info)=>{
+    console.log(info)
+    this.props.project.updateProject(this.props.project.projectId,{checkInfo:info}).then(()=>{
       this.props.project.getProjectInfo(this.props.project.projectId)
     })
   }
@@ -79,7 +106,7 @@ class Header extends React.Component {
   handleShowMockUrl=()=>{
     Modal.info({
      title: '在线mock地址',
-     content: mergePath(this.props.project.mockUrl,this.props.interfases.data.url),
+     content: mergePath(this.props.project.mockUrl,this.props.project.info.gateway?this.props.interfases.data.gatewayUrl||'':this.props.interfases.data.url),
    });
   }
 
@@ -105,9 +132,13 @@ class Header extends React.Component {
   render(){
     return(
       <div className={Style.wrapper}>
+        <CheckModal onOk={this.handleCheckOk} onClose={this.closeCheckModal}  visible={this.state.checkModalShow}></CheckModal>
         <EditProjectModal  onOk={this.handleUpdateProjectOk} onClose={this.closeEditProjectModal}  visible={this.state.editProjectModalShow} ></EditProjectModal>
         <EditDocModal  onOk={this.handleUpdateDocOk} onClose={this.closeEditDocModal}  visible={this.state.editDocModalShow} ></EditDocModal>
         <TemplateModal onOk={this.handleUpdateTemplateOk} onClose={this.closeTemplateModal}  visible={this.state.templateModalShow}></TemplateModal>
+
+        <GatewayTemplateModal onOk={this.handleUpdateGatewayTemplateOk} onClose={this.closeGatewayTemplateModal}  visible={this.state.gatewayTemplateModalShow}></GatewayTemplateModal>
+
         <ImportSwaggerModal onOk={this.handleImportSwaggerOk} onClose={this.closeImportSwaggerModal}  visible={this.state.importSwaggerModalShow}></ImportSwaggerModal>
         <div  className={Style.title}>
           <h1><Link to="/project">{this.props.project.info.admin.name}</Link><span>/</span>{this.props.project.info.name}</h1>
@@ -119,6 +150,10 @@ class Header extends React.Component {
           {this.props.project.permission>1&&<a onClick={this.openEditProjectModal} href="###"><Icon type="setting" />编辑</a>}
 
           {this.props.project.permission>2&&<a onClick={this.openTemplateModal} href="###"><Icon type="appstore-o" />模板</a>}
+
+          {this.props.project.permission>2&&<a onClick={this.openGatewayTemplateModal} href="###"><Icon type="appstore-o" />网关格式</a>}
+
+          {this.props.project.permission>1&&<a onClick={this.openCheckModal} href="###"><Icon type="appstore-o" />鉴权</a>}
 
 
           <a download href={this.props.project.mdDownloadUrl}><Icon type="file-markdown" />下载文档</a>

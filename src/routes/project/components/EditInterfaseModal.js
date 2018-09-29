@@ -19,7 +19,7 @@ const formItemLayout = {
 @inject("project")
 @observer
 class EditInterfaseModal extends React.Component {
-
+  interfase={}
   handleOk = (e) => {
     this.props.form.validateFields((err, values) => {
       if (err) {
@@ -39,9 +39,11 @@ class EditInterfaseModal extends React.Component {
 
   componentWillReceiveProps(nextProps){
     if(nextProps.visible&&nextProps.visible!==this.props.visible){
+      this.interfase=nextProps.interfase
       this.props.form.setFieldsValue({
         name: nextProps.interfase.name,
         url: nextProps.interfase.url,
+        gatewayUrl:nextProps.interfase.gatewayUrl,
         method: nextProps.interfase.method,
         description: nextProps.interfase.description,
         versions:nextProps.interfase.versions,
@@ -80,6 +82,39 @@ class EditInterfaseModal extends React.Component {
               {getFieldDecorator('url', {
                 rules: [{
                   required: true, message: '必填',
+                },{
+                  validator:(rule,value,callback)=>{
+                    if(value){
+                      for(let module of this.props.project.modules){
+                        if(module.interfases.find(interfase=>interfase.url===value&&this.interfase.url!==value)){
+                          callback(new Error("url已被占用"))
+                        }
+                      }
+                    }
+                    callback()
+                  }
+                }],
+              })(
+                <Input />
+              )}
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label="网关URL"
+            >
+              {getFieldDecorator('gatewayUrl', {
+                initialValue:'',
+                rules: [{
+                  validator:(rule,value,callback)=>{
+                    if(value){
+                      for(let module of this.props.project.modules){
+                        if(module.interfases.find(interfase=>interfase.gatewayUrl===value&&this.interfase.gatewayUrl!==value)){
+                          callback(new Error("url已被占用"))
+                        }
+                      }
+                    }
+                    callback()
+                  }
                 }],
               })(
                 <Input />

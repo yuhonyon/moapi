@@ -197,7 +197,15 @@ const fetchApi={
     return http.post(`/doc/`,params).then(data=>{
       return data;
     })
-  }
+  },
+  fetchCheckLogin(params){
+    if(!params.url||!params.nameKey||!params.passwordKey){
+      return Promise.reject()
+    }
+    return http.post(params.url,{[params.nameKey]:params.nameValue,[params.passwordKey]:params.passwordValue}).then(data=>{
+      return data;
+    })
+  },
 
 }
 

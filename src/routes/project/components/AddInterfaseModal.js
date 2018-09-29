@@ -29,6 +29,7 @@ class AddInterfaseModal extends React.Component {
       if (err) {
         return
       }
+
       this.props.onOk(values);
       this.props.form.resetFields()
       this.props.onClose();
@@ -70,7 +71,45 @@ class AddInterfaseModal extends React.Component {
               {getFieldDecorator('url', {
                 rules: [{
                   required: true, message: '必填',
+                },{
+                  validator:(rule,value,callback)=>{
+                    if(value){
+                      for(let module of this.props.project.modules){
+                        if(module.interfases.find(interfase=>interfase.url===value)){
+                          callback(new Error("url已被占用"))
+                        }
+                      }
+                    }
+                    callback()
+                  }
                 }],
+              })(
+                <Input />
+              )}
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label="网关URL"
+            >
+              {getFieldDecorator('gatewayUrl', {
+                initialValue: '',
+                rules:[
+                  {
+                    validator:(rule,value,callback)=>{
+                      if(!value){
+                        callback()
+                        return;
+                      }
+                      for(let module of this.props.project.modules){
+                        if(module.interfases.find(interfase=>interfase.gatewayUrl===value)){
+                          callback(new Error("url已被占用"))
+                          return
+                        }
+                      }
+                      callback()
+                    }
+                  }
+                ]
               })(
                 <Input />
               )}
