@@ -4,6 +4,71 @@ import ReactMarkdown from 'react-markdown'
 
 class Course extends React.Component {
   md=`
+### 鉴权
+* headers key 方式
+* 账号密码方式
+
+### 设置网关
+* 点击编辑网关格式,按下方格式编辑
+* 接口返回数据用"$data"表示,无则默认接口返回数据合并网关格式设置的数据
+* 项目编辑里打开网关模式会应用网关格式数据
+\`\`\`json
+{
+    "headers": {
+        "token": 111111,
+        "aaaa": 11111,
+        "aaaa1": 11111,
+        "aaaa2": 111111111111
+    },
+    "req": {
+        "token": 20001
+    },
+    "res": {
+        "rerult": "$data",
+        "code": 2000,
+        "msg": "请求成功"
+    }
+}
+\`\`\`
+
+### 设置接口模板:
+* 点击编辑模板,按下方格式编辑模板,key为随意字符串,模板内唯一即可
+* header 格式
+\`\`\`json
+{
+  "name": "token",
+  "key": 1,
+  "description": "描述",
+  "value": "asdgasd-asdf-asdfasdf-asdfasdf"
+}
+\`\`\`
+* request 格式
+\`\`\`json
+{
+  "key": "2",
+  "name": "id",
+  "type": "Number",
+  "required":true,
+  "mockType": "Number",
+  "mockNum": "",
+  "mockValue": "",
+  "description": "请求数据"
+}
+\`\`\`
+* response 格式
+\`\`\`json
+{
+  "key": "3",
+  "name": "data",
+  "type": "Object",
+  "mockType": "Object",
+  "mockNum": "",
+  "mockValue": "",
+  "description": "返回数据"
+}
+\`\`\`
+
+
 ### 角色权限
 * 管理者:所有权限
 * 开发者:除删除项目和修改项目成员外所有权限
@@ -51,47 +116,12 @@ class Course extends React.Component {
 * 项目详情内每个接口都有对应的修改记录查看入口
 
 ### 添加备注
-# 接口详情最下面有添加备注入口,默认版本为最新版本
+* 接口详情最下面有添加备注入口,默认版本为最新版本
 
 ### mockJS
 * mockJS文档[http://mockjs.com/examples.html]
 
-### 设置接口模板:
-* 点击编辑模板,按下方格式编辑模板,key为随意字符串,模板内唯一即可
-* header 格式
-\`\`\`json
-{
-  "name": "token",
-  "key": 1,
-  "description": "描述",
-  "value": "asdgasd-asdf-asdfasdf-asdfasdf"
-}
-\`\`\`
-* request 格式
-\`\`\`json
-{
-  "key": "2",
-  "name": "id",
-  "type": "Number",
-  "required":true,
-  "mockType": "Number",
-  "mockNum": "",
-  "mockValue": "",
-  "description": "请求数据"
-}
-\`\`\`
-* response 格式
-\`\`\`json
-{
-  "key": "3",
-  "name": "data",
-  "type": "Object",
-  "mockType": "Object",
-  "mockNum": "",
-  "mockValue": "",
-  "description": "返回数据"
-}
-\`\`\`
+
 
   `
   render(){

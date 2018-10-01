@@ -184,7 +184,7 @@ class Header extends React.Component {
               ))
             }
           </Select>
-          <Button onClick={this.handlerAddVersion}>添加版本</Button>
+          {this.props.project.permission>2&&<Button onClick={this.handlerAddVersion}>添加版本</Button>}
         </div>
 
       </div>

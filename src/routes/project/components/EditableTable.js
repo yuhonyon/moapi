@@ -2,7 +2,6 @@ import React from "react";
 import { Table,Button,Input,Select ,Switch,Popover,Icon} from 'antd';
 import Style from "./EditableTable.less"
 import {inject,observer} from 'mobx-react';
-import {debounce} from 'lodash'
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 const Option = Select.Option;
