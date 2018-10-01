@@ -423,7 +423,9 @@ class Interfase {
       data=JSON.stringify(data, null, 2);
       if(project.info.gateway&&project.info.gatewayTemplate.res){
         let resTemplate=JSON.stringify(project.info.gatewayTemplate.res)
-        if(resTemplate.search(/"\$data"/)>=0){
+        if(data==='{}'){
+          data=resTemplate;
+        }else if(resTemplate.search(/"\$data"/)>=0){
           data=resTemplate.replace(/"\$data"/,data)
         }else{
           data=resTemplate.replace(/^{/,data.replace(/\}$/,','))
@@ -440,7 +442,9 @@ class Interfase {
       data=JSON.stringify(data, null, 2);
       if(project.info.gateway&&project.info.gatewayTemplate.req){
         let reqTemplate=JSON.stringify(project.info.gatewayTemplate.req)
-        if(reqTemplate.search(/"\$data"/)>=0){
+        if(data==='{}'){
+          data=reqTemplate;
+        }else if(reqTemplate.search(/"\$data"/)>=0){
           data=reqTemplate.replace(/"\$data"/,data)
         }else{
           data=reqTemplate.replace(/^{/,data.replace(/\}$/,','))
@@ -496,6 +500,15 @@ class Interfase {
       ...data
     };
     this.editable = false;
+    interfases.changeCode('req')
+    interfases.changeCode('res')
+  }
+
+  @action.bound refreshCode(type){
+    if(type){
+      interfases.changeCode(type)
+      return
+    }
     interfases.changeCode('req')
     interfases.changeCode('res')
   }

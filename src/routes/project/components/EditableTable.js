@@ -28,6 +28,7 @@ function dragDirection(
 @inject("interfases")
 @observer
 class BodyRow extends React.Component {
+
   render() {
     const {
       isOver,
@@ -81,6 +82,9 @@ class BodyRow extends React.Component {
 }
 
 const rowSource = {
+  canDrag(props, monitor){
+    return document.activeElement.className!=='ant-input';
+  },
   beginDrag(props) {
     return {
       index: props.index,
@@ -89,6 +93,7 @@ const rowSource = {
 };
 
 const rowTarget = {
+
   drop(props, monitor) {
     const dragIndex = monitor.getItem().index;
     const hoverIndex = props.index;
@@ -142,7 +147,7 @@ const EditableCell = ({ editable, value, onChange,identify,column }) => {
     }
     cell= value
   }else if(!identify){
-    cell= <Input value={value} onChange={e => onChange(e.target.value)} />
+    cell= <Input value={value}  onChange={e => onChange(e.target.value)} />
   }else if(identify==='switch'){
     cell= <Switch size="small" checked={value} onChange={value => onChange(value)} />
   }else if(identify==='textarea'){
@@ -165,7 +170,6 @@ const data = [];
 @inject("interfases")
 @observer
 class EditableTable extends React.Component{
-
 
   columns = [{
     title: '名称',
@@ -277,6 +281,7 @@ class EditableTable extends React.Component{
   handleChange(value, key, column) {
     this.props.interfases.changeField(this.props.isReq?'req':'res',value, key, column)
   }
+
   componentDidMount(){
     // if(!this.props.isReq){
     //   this.columns.splice(2,1);

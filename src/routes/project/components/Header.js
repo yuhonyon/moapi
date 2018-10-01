@@ -60,7 +60,9 @@ class Header extends React.Component {
   }
   handleUpdateProjectOk=(info)=>{
     this.props.project.updateProject(this.props.project.projectId,info).then(()=>{
-      this.props.project.getProjectInfo(this.props.project.projectId)
+      this.props.project.getProjectInfo(this.props.project.projectId).then(data=>{
+        this.props.interfases.refreshCode()
+      })
     })
   }
   handleUpdateTemplateOk=(info)=>{
@@ -70,11 +72,13 @@ class Header extends React.Component {
   }
   handleUpdateGatewayTemplateOk=(info)=>{
     this.props.project.updateProject(this.props.project.projectId,{gatewayTemplate:info}).then(()=>{
-      this.props.project.getProjectInfo(this.props.project.projectId)
+      this.props.project.getProjectInfo(this.props.project.projectId).then(data=>{
+        this.props.interfases.refreshCode()
+      })
+
     })
   }
   handleCheckOk=(info)=>{
-    console.log(info)
     this.props.project.updateProject(this.props.project.projectId,{checkInfo:info}).then(()=>{
       this.props.project.getProjectInfo(this.props.project.projectId)
     })
@@ -180,7 +184,7 @@ class Header extends React.Component {
               ))
             }
           </Select>
-          <Button onClick={this.handlerAddVersion}>添加版本</Button>
+          {this.props.project.permission>2&&<Button onClick={this.handlerAddVersion}>添加版本</Button>}
         </div>
 
       </div>
