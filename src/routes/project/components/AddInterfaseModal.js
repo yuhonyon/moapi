@@ -73,9 +73,10 @@ class AddInterfaseModal extends React.Component {
                   required: true, message: '必填',
                 },{
                   validator:(rule,value,callback)=>{
-                    if(value){
+                    let method=this.props.form.getFieldValue('method')
+                    if(value&&method){
                       for(let module of this.props.project.modules){
-                        if(module.interfases.find(interfase=>interfase.url===value)){
+                        if(module.interfases.find(interfase=>interfase.url===value&&interfase.method===method)){
                           callback(new Error("url已被占用"))
                         }
                       }
@@ -96,12 +97,13 @@ class AddInterfaseModal extends React.Component {
                 rules:[
                   {
                     validator:(rule,value,callback)=>{
-                      if(!value){
+                      let method=this.props.form.getFieldValue('method')
+                      if(!value||!method){
                         callback()
                         return;
                       }
                       for(let module of this.props.project.modules){
-                        if(module.interfases.find(interfase=>interfase.gatewayUrl===value)){
+                        if(module.interfases.find(interfase=>interfase.gatewayUrl===value&&interfase.method===method)){
                           callback(new Error("url已被占用"))
                           return
                         }
@@ -124,7 +126,7 @@ class AddInterfaseModal extends React.Component {
                   required: true, message: '必选',
                 }],
               })(
-                <Select>
+                <Select  onChange={()=>{setTimeout(()=>this.props.form.validateFields(['gatewayUrl','url'], { force: true } ),0)}}>
                   <Option value="GET">GET</Option>
                   <Option value="POST">POST</Option>
                   <Option value="DELETE">DELETE</Option>
