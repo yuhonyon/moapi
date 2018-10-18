@@ -427,7 +427,7 @@ class Interfase {
           data=resTemplate;
         }else if(resTemplate.search(/"\$data"/)>=0){
           data=resTemplate.replace(/"\$data"/,data)
-        }else{
+        }else if(resTemplate!=="{}"){
           data=resTemplate.replace(/^{/,data.replace(/\}$/,','))
         }
         data=JSON.stringify(JSON.parse(data),null,2)
@@ -435,6 +435,7 @@ class Interfase {
       this.resCode = data
     } else if (this.reqMock) {
       let data=Mock.mock(parseStrToObj(this.reqMock));
+      console.log(data,parseStrToObj(this.reqMock),999)
 
       if(data.array_type_data&&data.array_type_data.constructor===Array){
         data=data.array_type_data
@@ -446,7 +447,7 @@ class Interfase {
           data=reqTemplate;
         }else if(reqTemplate.search(/"\$data"/)>=0){
           data=reqTemplate.replace(/"\$data"/,data)
-        }else{
+        }else if(reqTemplate!=='{}'){
           data=reqTemplate.replace(/^{/,data.replace(/\}$/,','))
 
         }
