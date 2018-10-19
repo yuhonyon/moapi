@@ -32,8 +32,14 @@ const fetchApi={
       return data;
     })
   },
+
   fetchSignup(params){
     return http.post(`/users/signup`,params).then(data=>{
+      return data;
+    })
+  },
+  fetchSignout(params){
+    return http.get(`/users/signout`,params).then(data=>{
       return data;
     })
   },

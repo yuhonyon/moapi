@@ -67,8 +67,10 @@ class AddValueModal extends React.Component {
                 <Select>
                   <Option value="String">String</Option>
                   <Option value="Number">Number</Option>
+                  <Option value="Boolean">Boolean</Option>
                   <Option value="Array">Array</Option>
                   <Option value="Object">Object</Option>
+
                 </Select>
               )}
             </FormItem>
@@ -82,6 +84,7 @@ class AddValueModal extends React.Component {
                 <Select>
                   <Option value="String">String</Option>
                   <Option value="Number">Number</Option>
+                  <Option value="Boolean">Boolean</Option>
                   <Option value="Array">Array</Option>
                   <Option value="Object">Object</Option>
                 </Select>

@@ -23,9 +23,14 @@ class User {
 
 
   @action.bound
-  cleanUserInfo(){
-    window.localStorage.removeItem('user');
-    this.userInfo={};
+  signout(){
+    return fetchApi.fetchSignout().then((data)=>{
+      window.localStorage.removeItem('user');
+      runInAction(()=>{
+        this.userInfo={};
+      })
+      return data
+    })
   }
 
   @action.bound
