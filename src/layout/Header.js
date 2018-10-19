@@ -11,8 +11,10 @@ import logo from "../assets/imgs/logo.png"
 class Header extends React.Component{
 
 handleLogout=()=>{
-  this.props.user.cleanUserInfo();
-  this.props.history.push("/login")
+  this.props.user.signout().then(()=>{
+    this.props.history.push("/login")
+  })
+
 }
 userMenu = (
     <Menu>

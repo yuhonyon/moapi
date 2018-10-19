@@ -73,7 +73,8 @@ const removeLoading=function(){
 const instance = axios.create({
   baseURL: Config.baseURL,
   timeout: 20000,
-  headers: {'accesstoken': getToken(),"Content-Type":"application/json"}
+  withCredentials:true,
+  headers: {"Content-Type":"application/json"}
 });
 
 instance.updateToken = (token) => {
@@ -81,9 +82,9 @@ instance.updateToken = (token) => {
 }
 
 instance.interceptors.request.use( (config) =>{
-    if(!config.headers['accesstoken']){
-      instance.updateToken()
-    }
+    // if(!config.headers['accesstoken']){
+    //   instance.updateToken()
+    // }
     config=addRequesting(config);
     addLoading(config.method.toUpperCase());
 
@@ -115,7 +116,7 @@ instance.interceptors.response.use( (response)=> {
           _message(error.response.data.message)
         },300);
       }
-      
+
     }else{
       requesting={}
     }
