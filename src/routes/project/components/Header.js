@@ -168,7 +168,7 @@ class Header extends React.Component {
 
           <a  onClick={this.handleShowMockUrl}><Icon type="link" />mock地址</a>
 
-          <a onClick={this.openEditDocModal}><Icon type="file-markdown" />Markdown附件</a>
+          <a onClick={this.openEditDocModal}><Icon type="file-markdown" />附件管理</a>
 
           <a href={`${config.baseURL}project/export/${this.props.project.info.id}?token=${this.props.user.userInfo.accessToken}`} download={this.props.project.name+".json"} ><Icon type="file-markdown" />导出</a>
 
