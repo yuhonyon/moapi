@@ -34,19 +34,22 @@ class Pane extends React.Component {
         <p>当前版本:{this.props.project.version}</p>
         <p>创建时间:{formatDate(this.props.project.createdAt)}</p>
         <p>更新时间:{formatDate(this.props.project.updatedAt)}</p>
-        <div>其他文档:
-           <ul>
-            {this.props.project.docs.map(item=>(
+        <div className={Style.fileWraper}>其他文档:
+           <ul >
+            {this.props.project.docs.slice(0,4).map(item=>(
               <li key={item.id}>
                 <Tooltip title={item.title}>
-                  <a target="_blank" className={Style.docLink} href={`${config.baseURL}doc/preview/${item.id}`}>{item.title}</a>
+                  <a target="_blank" className={Style.docLink} href={`${config.baseURL}doc${!(item.type==='md'||item.type==='markedown'||!item.type)&&'/file'}/preview/${item.id}`}>{item.title}</a>
                 </Tooltip>
                 &nbsp;
-                <Link to={`/doc/${item.id}`}><Icon type="form"></Icon></Link>
+
+                {(item.type==='md'||item.type==='markedown'||!item.type)?<Link to={`/doc/${item.id}`}><Icon type="form"></Icon></Link>:<a target="_blank" download href={`${config.baseURL}${item.url}`}><Icon type="download" /></a>}
+
                 <Icon onClick={this.handleDeleteDoc.bind(this,item.id)} type="delete"></Icon>
               </li>
             ))}
            </ul>
+           {this.props.project.docs.length>4&&<Link to={`/project/${this.props.project.id}`}>查看更多附件>></Link>}
         </div>
         <div className={Style.btnBox}>
           <Tooltip title="在线mock地址">
