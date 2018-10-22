@@ -66,8 +66,8 @@ class EditDocModal extends React.Component {
         <ul>
           {this.props.project.docs.map(item=>(
             <li key={item.id}>
-              <a target="_blank" href={`${config.baseURL}doc/preview/${item.id}`}>{item.title}</a>&nbsp;
-              {(item.type==='md'||item.type==='markedown'||!item.type)?<Link to={`/doc/${item.id}`}><Icon type="form"></Icon></Link>:[<a target="_blank"  href={`${config.baseURL}doc/file/preview/${item.id}`}><Icon type="eye"  /></a>,<a target="_blank" download href={`${config.baseURL}${item.url}`}><Icon type="download" /></a>]}
+              <a target="_blank" href={`${config.baseURL}doc${!(item.type==='md'||item.type==='markedown'||!item.type)&&'/file'}/preview/${item.id}`}>{item.title}</a>&nbsp;
+              {(item.type==='md'||item.type==='markedown'||!item.type)?<Link to={`/doc/${item.id}`}><Icon type="form"></Icon></Link>:<a target="_blank" download href={`${config.baseURL}${item.url}`}><Icon type="download" /></a>}
 
               <Icon onClick={this.handleDeleteDoc.bind(this,item.id)} type="delete"></Icon>
             </li>
