@@ -170,7 +170,9 @@ class Project {
     this.selectInterfase(interfase.moduleId, interfaseId)
     delete interfase.remarks;
     return fetchApi.fetchUpdateInterfase(interfaseId, interfase).then(data => {
-      this.getProjectData(this.projectId)
+      this.getProjectData(this.projectId).then(()=>{
+        this.selectInterfase(interfase.moduleId, interfaseId)
+      })
       return data;
     })
   }

@@ -158,6 +158,7 @@ class EditInterfaseModal extends React.Component {
               )}
             </FormItem>
 
+
             <FormItem
               {...formItemLayout}
               label="简介"
@@ -166,6 +167,23 @@ class EditInterfaseModal extends React.Component {
                 initialValue: ''
               })(
                 <TextArea />
+              )}
+            </FormItem>
+
+
+            <FormItem
+              {...formItemLayout}
+              label="所属模块"
+            >
+              {getFieldDecorator('moduleId', {
+                initialValue: this.props.interfase.moduleId,
+                rules: [{
+                  required: true, message: '必选',
+                }],
+              })(
+                <Select >
+                  {this.props.project.data.modules.map(item=><Option value={item.id}>{item.name}</Option>)}
+                </Select>
               )}
             </FormItem>
           </Form>
