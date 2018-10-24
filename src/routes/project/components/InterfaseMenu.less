@@ -14,6 +14,14 @@
 }
 .item{
   padding-left: 24px;
+  h5{
+    font-size: 14px;
+    color: inherit;
+    font-weight: normal;
+    overflow: hidden;
+    width: 12em;
+    text-overflow: ellipsis;
+  }
 }
 .badge{
   position: absolute!important;
@@ -35,11 +43,17 @@
   top: 0;
 }
 :global(.ant-menu-item-selected){
+  h5{
+    width: 9em;
+  }
   .icon{
     display:  block;
   }
 }
 :global(.ant-menu-item:hover){
+  h5{
+    width: 9em;
+  }
   .icon{
     display:  block;
   }

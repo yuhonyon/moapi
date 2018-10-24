@@ -78,7 +78,7 @@ export default class Card extends React.Component{
 				connectDropTarget(<div className={Style.item} style={{  opacity }}>
 
               {(interfase.proxyType>0&&project.info.mockType||project.info.mockType===2)&&<Badge className={Style.badge} status="success"></Badge>}
-              {interfase.name}&emsp;
+              <h5>{interfase.name}</h5>
               {project.permission>2&&<span className={Style.icon}>
                   <Icon interfase={interfase} onClick={(e)=>this.props.onEdit(interfase,e)}  type="form" />
                   <Icon interfase={interfase} onClick={(e)=>this.props.onDelete(interfase.id,e)}  type="delete" />
