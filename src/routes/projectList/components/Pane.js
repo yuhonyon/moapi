@@ -39,7 +39,7 @@ class Pane extends React.Component {
             {this.props.project.docs.slice(0,4).map(item=>(
               <li key={item.id}>
                 <Tooltip title={item.title}>
-                  <a target="_blank" className={Style.docLink} href={`${config.baseURL}doc${!(item.type==='md'||item.type==='markedown'||!item.type)&&'/file'}/preview/${item.id}`}>{item.title}</a>
+                  <a target="_blank" className={Style.docLink} href={`${config.baseURL}doc${!(item.type==='md'||item.type==='markedown'||!item.type)?'/file':''}/preview/${item.id}`}>{item.title}</a>
                 </Tooltip>
                 &nbsp;
 
