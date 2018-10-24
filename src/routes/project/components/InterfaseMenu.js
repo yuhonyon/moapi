@@ -7,10 +7,12 @@ import AddInterfaseModal from './AddInterfaseModal';
 import EditInterfaseModal from './EditInterfaseModal';
 import {toJS} from 'mobx';
 import {withRouter} from "react-router-dom";
-
+import WithDragDropContext from '@/components/WithDragDropContext'
+import InterfaseMenuItem from "./InterfaseMenuItem"
 
 @inject("project","interfases")
 @observer
+@WithDragDropContext
 class InterfaseMenu extends React.Component {
   state = {
     selectedKey:this.props.project.interfaseId+'',
@@ -102,6 +104,13 @@ class InterfaseMenu extends React.Component {
     });
   }
 
+  handleChangeSort=(from,to)=>{
+    if(from===to){
+      return
+    }
+    this.props.project.changeInterfaseSort(from,to)
+  }
+
 
   render() {
     return (
@@ -115,15 +124,20 @@ class InterfaseMenu extends React.Component {
           mode="inline"
         >
           {
-            this.props.project.inVersionInterfases.map(item=>{
+            this.props.project.inVersionInterfases.map((item,i)=>{
               return (
+
                 <Menu.Item key={item.id} interfase={item}>
-                    {(item.proxyType>0&&this.props.project.info.mockType||this.props.project.info.mockType===2)&&<Badge className={Style.badge} status="success"></Badge>}
-                    {item.name}&emsp;
-                    {this.props.project.permission>2&&<span className={Style.icon}>
-                        <Icon interfase={item} onClick={this.handleInterfaseEdit.bind(this,item)}  type="form" />
-                        <Icon interfase={item} onClick={this.handleInterfaseDelete.bind(this,item.id)}  type="delete" />
-                      </span>}
+                  <InterfaseMenuItem
+                    onChangeSort={this.handleChangeSort}
+                    onEdit={this.handleInterfaseEdit}
+                    onDelete={this.handleInterfaseDelete}
+                    key={item.id}
+                    index={i}
+                    id={item.id}
+                    project={this.props.project}
+                    interfase={item}
+                  />
 
                 </Menu.Item>
               )

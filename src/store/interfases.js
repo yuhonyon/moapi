@@ -178,7 +178,7 @@ class Interfase {
             return {}
           } else if (item.type === 'String') {
             return ""
-          } else if (item.type === 'Number') {
+          } else if (item.type === 'Number'||item.type === 'Float'||item.type === 'Integer') {
             return null
           } else if (item.type === 'Boolean') {
             return false
@@ -321,7 +321,12 @@ class Interfase {
     if (target) {
       target[column] = value;
       if (column === 'type') {
-        target['mockType'] = value;
+
+        if(value==='Float'||value==='Integer'){
+          target['mockType'] = 'Number';
+        }else{
+          target['mockType'] = value;
+        }
         if (value !== 'Array' && value !== 'Object') {
           target.children = null;
         }
@@ -435,7 +440,7 @@ class Interfase {
       this.resCode = data
     } else if (this.reqMock) {
       let data=Mock.mock(parseStrToObj(this.reqMock));
-      console.log(data,parseStrToObj(this.reqMock),999)
+
 
       if(data.array_type_data&&data.array_type_data.constructor===Array){
         data=data.array_type_data

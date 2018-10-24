@@ -182,7 +182,7 @@ class EditInterfaseModal extends React.Component {
                 }],
               })(
                 <Select >
-                  {this.props.project.data.modules.map(item=><Option value={item.id}>{item.name}</Option>)}
+                  {this.props.project.data.modules.map(item=><Option value={item.id} key={item.id}>{item.name}</Option>)}
                 </Select>
               )}
             </FormItem>

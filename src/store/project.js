@@ -262,6 +262,14 @@ class Project {
     })
   }
 
+  @action.bound
+  changeInterfaseSort(from,to){
+    return fetchApi.fetchChangeInterfaseSort({moduleId:this.moduleId,from,to}).then(data => {
+      this.getProjectData(this.projectId);
+      return data;
+    })
+  }
+
 
 
 

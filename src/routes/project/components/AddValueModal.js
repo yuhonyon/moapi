@@ -33,6 +33,13 @@ class AddValueModal extends React.Component {
     this.props.onClose();
   }
 
+  handleTypeChange=(type)=>{
+    if(type==="Float"||type==="Integer"){
+      type="Number"
+    }
+    this.props.form.setFieldsValue({mockType:type})
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
@@ -64,12 +71,14 @@ class AddValueModal extends React.Component {
               {getFieldDecorator('type', {
                 initialValue: 'String'
               })(
-                <Select>
+                <Select onChange={this.handleTypeChange}>
                   <Option value="String">String</Option>
                   <Option value="Number">Number</Option>
                   <Option value="Boolean">Boolean</Option>
                   <Option value="Array">Array</Option>
                   <Option value="Object">Object</Option>
+                  <Option value="Float">Float</Option>
+                  <Option value="Integer">Integer</Option>
 
                 </Select>
               )}
