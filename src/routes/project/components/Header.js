@@ -114,8 +114,10 @@ class Header extends React.Component {
    });
   }
 
-  handleUpdateDocOk=()=>{
-
+  handleUpdateDocOk=(data)=>{
+    this.props.project.updateProject(this.props.project.projectId,{docMenu:data}).then(()=>{
+      this.props.project.getProjectInfo(this.props.project.projectId)
+    })
   }
 
   closeEditDocModal=()=>{

@@ -1,6 +1,6 @@
 import React from "react";
 import Style from "./Pane.less";
-import {Icon,Tooltip} from "antd"
+import {Icon,Tooltip,Modal} from "antd"
 import {withRouter} from "react-router-dom";
 import {formatDate} from "@/filters"
 import config from "@/config"
@@ -26,6 +26,25 @@ class Pane extends React.Component {
     e.preventDefault();
     this.props.onMockUrl(`${config.baseURL}project/mock/${this.props.project.id}/`)
   }
+  handleMoreFile=()=>{
+    let modal=Modal.info({
+      title: '附件列表',
+      content: <ul className={Style.modalFileList}>
+      {this.props.project.docs.map(item=>(
+        <li key={item.id}>
+          <Tooltip title={item.title}>
+            <a target="_blank" className={Style.docLink} href={`${config.baseURL}doc${!(item.type==='md'||item.type==='markedown'||!item.type)?'/file':''}/preview/${item.id}`}>{item.title}</a>
+          </Tooltip>
+          &nbsp;
+
+          {(item.type==='md'||item.type==='markedown'||!item.type)?<a onClick={()=>{this.props.history.push(`/doc/${item.id}`);modal.destroy();}}><Icon type="form"></Icon></a>:<a target="_blank" download href={`${config.baseURL}${item.url}`}><Icon type="download" /></a>}
+
+          <Icon onClick={this.handleDeleteDoc.bind(this,item.id)} type="delete"></Icon>
+        </li>
+      ))}
+     </ul>,
+    });
+  }
   render(){
     return (
       <div className={Style.wrapper}>
@@ -34,7 +53,7 @@ class Pane extends React.Component {
         <p>当前版本:{this.props.project.version}</p>
         <p>创建时间:{formatDate(this.props.project.createdAt)}</p>
         <p>更新时间:{formatDate(this.props.project.updatedAt)}</p>
-        <div className={Style.fileWraper}>其他文档:
+        <div className={Style.fileWraper}>附件:
            <ul >
             {this.props.project.docs.slice(0,4).map(item=>(
               <li key={item.id}>
@@ -49,11 +68,16 @@ class Pane extends React.Component {
               </li>
             ))}
            </ul>
-           {this.props.project.docs.length>4&&<Link to={`/project/${this.props.project.id}`}>查看更多附件>></Link>}
+           {this.props.project.docs.length>4&&<span className={Style.modalFileBtn} onClick={this.handleMoreFile}>查看更多附件>></span>}
         </div>
         <div className={Style.btnBox}>
           <Tooltip title="在线mock地址">
             <Icon onClick={this.onMockUrl} type="cloud-o"></Icon>
+          </Tooltip>
+          <Tooltip title="附件目录">
+            <a target="_blank" href={`${config.baseURL}project/menu/${this.props.project.id}/`}>
+              <Icon type="bars"></Icon>
+            </a>
           </Tooltip>
           <Tooltip title="文档地址">
             <a target="_blank" href={`${config.baseURL}project/doc/${this.props.project.id}/`}>

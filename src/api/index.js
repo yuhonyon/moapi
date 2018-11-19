@@ -204,6 +204,12 @@ const fetchApi={
       return data;
     })
   },
+  fetchAddDoc(params){
+    return http.post(`/doc/md`,params).then(data=>{
+      return data;
+    })
+  },
+
   fetchCheckLogin(params){
     if(!params.url||!params.nameKey||!params.passwordKey){
       return Promise.reject()

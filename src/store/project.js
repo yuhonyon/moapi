@@ -10,14 +10,15 @@ class Project {
   @observable interfaseId = null;
   @observable curVersion = "";
 
-  @observable info={
+  @observable info ={
     admin:{
       name:null
     },
     checkInfo:{},
     gatewayTemplate:{},
     versions:[],
-    docs:[]
+    docs:[],
+    docMenu:[]
   }
 
   @observable data = {
@@ -103,6 +104,7 @@ class Project {
   getProjectData(projectId) {
     return fetchApi.fetchGetProjectData(projectId||this.projectId).then(data => {
       runInAction(() => {
+       
         this.data = data;
         //v
         this.selectInterfase(Number(getQuery(window.location.search, "moduleId")), Number(getQuery(window.location.search, "interfaseId")));
@@ -120,6 +122,12 @@ class Project {
       return data;
     })
   }
+  
+  @action.bound
+  changeDocMenu(data){
+    this.info.docMenu=data;
+  }
+
   @action.bound
   selectInterfase(moduleId, interfaseId) {
     if(moduleId&&interfaseId){
@@ -257,6 +265,14 @@ class Project {
   @action.bound
   saveDoc(params={projectId:this.projectId}) {
     return fetchApi.fetchSaveDoc(params).then(data => {
+      this.getProjectInfo(this.projectId);
+      return data;
+    })
+  }
+
+  @action.bound
+  addDoc(params={projectId:this.projectId}) {
+    return fetchApi.fetchAddDoc(params).then(data => {
       this.getProjectInfo(this.projectId);
       return data;
     })

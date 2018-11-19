@@ -15,6 +15,7 @@ class Editor extends React.Component {
   }
   getInstance=(editor)=>{
     this.editor=editor;
+    this.props.onLoad(editor)
   }
   componentWillReceiveProps(nextProps){
     if(this.editor&&nextProps.preview!==this.props.preview){
