@@ -23,35 +23,27 @@ class EditDocModal extends React.Component {
     docMenu:[]
   }
 
+
   componentWillReceiveProps(nextProps){
-    if(nextProps.visible){
+    if(nextProps.visible&&nextProps.visible!==this.props.visible){
       this.getDocMenu()
+    }else if(this.props.visible){
+      this.getDocMenu(this.state.docMenu)
     }
   }
 
-  getDocMenu=()=>{
-    let data = JSON.parse(JSON.stringify(this.props.project.info.docMenu.slice()))
-    const add = (data, key, item) => {
-      let has=false;
-      for(let i =0;i<data.length;i++){
-        let menu=data[i]
-        if (menu.key == key) {
-          has=true;
-          return
+  getDocMenu=(data)=>{
+    data = data||JSON.parse(JSON.stringify(this.props.project.info.docMenu.slice()))
+    const add = (docs, doc) => {
+      for(let i =0;i<docs.length;i++){
+        let menu=docs[i]
+        if (menu.id&&menu.key == doc.id) {
+          return false
+        }else if (menu.children&&menu.children.length&&!add(menu.children, doc)) {
+          return false
         }
-        if (menu.children) {
-          has=true;
-          add(menu.children, key, item);
-        }
-      }
-      if(!has){
-        data.push({
-          title:item.title,
-          key:item.id,
-          id:item.id
-        })
-      }
-      
+      }  
+      return true;  
     };
 
     const remove=(data)=>{
@@ -66,9 +58,18 @@ class EditDocModal extends React.Component {
     }
 
     data=remove(data)
-    this.props.project.info.docs.forEach(item=>{
-      add(data,item.id,item)
-    })
+    
+    let addDoc=this.props.project.info.docs.slice().reduce((total,item,index)=>{
+      if(add(data,item)){
+        total.push({
+          id:item.id,
+          key:item.id,
+          title:item.title
+        })
+      }
+      return total
+    },[])
+    data=data.concat(addDoc)
 
     
 
@@ -86,7 +87,7 @@ class EditDocModal extends React.Component {
 
 
   handleChange =({ file })=> {
-    if (file.status !== 'uploading') {
+    if (file.status === 'done') {
      message.success('上传成功')
      this.props.project.getProjectInfo()
    }
@@ -173,7 +174,6 @@ class EditDocModal extends React.Component {
     } else {
       let ar;
       let i;
-      console.log(data,dropKey)
       loop(data, dropKey, (item, index, arr) => {
         ar = arr;
         i = index;
@@ -197,11 +197,10 @@ class EditDocModal extends React.Component {
       title: '目录名称',
       content: <Input onChange={e=>item.title=e.target.value} defaultValue={item.title} />,
       onOk:()=>{
-        console.log(item.title)
         this.setState({docMenu:this.state.docMenu})
       },
       onCancel() {
-        console.log('Cancel');
+
       },
     });
     
@@ -215,11 +214,7 @@ class EditDocModal extends React.Component {
         if (item.key == key) {
           
           if(item.children){
-            item.children.forEach(val=>{
-              if(val.id){
-                data.push(val)
-              }
-            })
+            data.push(...item.children)
           }
           data.splice(i,1)
           return
@@ -242,8 +237,7 @@ class EditDocModal extends React.Component {
     const loop = data =>{ 
       
       return data.map((item) => {
-        console.log(item.key)
-      if (item.children && item.children.length) {
+      if (item.children && item.children.length&&item.children[0]) {
         return <TreeNode  key={item.key} title={(<div>{item.title}<Icon onClick={this.handleEditMenu.bind(this,item)} type="form"></Icon><Icon onClick={this.handleRemoveMenu.bind(this,item)} type="delete"></Icon></div>)}>{loop(item.children)}</TreeNode>;
       }else if(!item.id){
         return <TreeNode key={item.key} title={(<div>{item.title}<Icon onClick={this.handleEditMenu.bind(this,item)} type="form"></Icon><Icon onClick={this.handleRemoveMenu.bind(this,item)} type="delete"></Icon></div>)}></TreeNode>; 
