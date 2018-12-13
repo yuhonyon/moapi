@@ -260,11 +260,13 @@ class Interfase {
     let newCode = [];
     let id = Date.now()
     for (let i in code) {
-      newCode.push(this.formatCode(i, code[i], id + i.replace(/-/g,'_')))
+      newCode.push(this.formatCode(i, code[i], id+parseInt(Math.random()*10000000000) + i.replace(/-/g,'_')))
     }
     this.data.res = this.data.res.toJS().concat(newCode)
     this.changeCode('res')
   }
+
+
 
   @action.bound leadInReq(code) {
     if (typeof code === 'string') {
@@ -276,11 +278,51 @@ class Interfase {
     let newCode = [];
     let id = Date.now()
     for (let i in code) {
-      newCode.push(this.formatCode(i, code[i], id + i.replace(/-/g,'_')))
+      newCode.push(this.formatCode(i, code[i], id+parseInt(Math.random()*10000000000) + i.replace(/-/g,'_')))
     }
     this.data.req = this.data.req.slice().concat(newCode)
     this.changeCode('req')
   }
+
+  @action.bound leadInModel(type,code) {
+    if (typeof code === 'string') {
+      code = parseStrToObj(code)
+    }
+
+ 
+    let id = Date.now()
+
+    function addKey(data,id){
+      let num=0;
+      for(let item in data){
+        let newId=id+"-"+num
+        item.key=newId;
+        if(item.children){
+          addKey(item.children,newId)
+        }
+        num++;
+      }
+    }
+
+    for(let item of code){
+      let newId=id+parseInt(Math.random()*10000000000)+item.name.replace(/-/g,'_')
+      item.key=newId;
+      if(item.children){
+        addKey(item.children,newId)
+      }
+    }
+   
+    if(type==='res'){
+      this.data.res = this.data.res.toJS().concat(code)
+      this.changeCode('res')
+    }else{
+      this.data.req = this.data.req.toJS().concat(code)
+      this.changeCode('req')
+    }
+    
+  }
+
+
 
   @action.bound changeProxyType(val) {
     this.data.proxyType = val;

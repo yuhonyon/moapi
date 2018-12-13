@@ -8,12 +8,14 @@ import PathsTable from './PathsTable'
 import RecordModal from './RecordModal'
 import ShowCode from './ShowCode'
 import LeadInModal from './LeadInModal'
+import LeadInModelModal from './LeadInModelModal'
 import {Button,List,Radio,message,Modal,Input,Select,Icon,Switch} from 'antd'
 import Style from './Interfase.less'
 import {inject, observer} from 'mobx-react';
 import {toJS} from 'mobx';
 import { Prompt } from 'react-router'
 import {parseDate} from '@/filters'
+import copy from 'copy-to-clipboard';
 const ButtonGroup = Button.Group;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -28,6 +30,8 @@ class Interfase extends React.Component {
     addValueModalShow:false,
     addRemarkModalShow:false,
     editRemarkModalShow:false,
+    resLeadInModelModalShow:false,
+    reqLeadInModelModalShow:false,
     editRemarkInfo:{},
     recordModalShow:false,
     resPreview: true,
@@ -128,6 +132,12 @@ class Interfase extends React.Component {
   resLeadInOk=(code)=>{
     this.props.interfases.leadInRes(code);
   }
+  resLeadInModelOk=(code)=>{
+    this.props.interfases.leadInModel('res',code);
+  }
+  reqLeadInModelOk=(code)=>{
+    this.props.interfases.leadInModel('req',code);
+  }
   reqLeadInOk=(code)=>{
     this.props.interfases.leadInReq(code);
   }
@@ -158,6 +168,22 @@ class Interfase extends React.Component {
     })
   }
 
+  handleCopyModel=(type)=>{
+    let model=JSON.parse(JSON.stringify(this.props.interfases.data[type]));
+    function removeKey(data){
+      for(let item of data){
+        delete item.key;
+        if(data.children){
+          removeKey(data.children)
+        }
+      }
+    }
+    removeKey(model)
+    if(copy(JSON.stringify(model,null,2))){
+      message.success('复制成功');
+    }
+  }
+
   render() {
     //console.log(this.props.interfases.resMock)
     return (<div className={Style.wrapper}>
@@ -174,6 +200,12 @@ class Interfase extends React.Component {
       <LeadInModal onClose={() => {
           this.setState({reqLeadInModalShow: false})
         }} title="导入响应属性" visible={this.state.reqLeadInModalShow} onOk={this.reqLeadInOk}></LeadInModal>
+      <LeadInModelModal onClose={() => {
+          this.setState({reqLeadInModelModalShow: false})
+        }} title="导入请求模板" visible={this.state.reqLeadInModelModalShow} onOk={this.reqLeadInModelOk}></LeadInModelModal>
+      <LeadInModelModal onClose={() => {
+          this.setState({resLeadInModelModalShow: false})
+        }} title="导入响应模板" visible={this.state.resLeadInModelModalShow} onOk={this.resLeadInModelOk}></LeadInModelModal>
       <AddValueModal onClose={() => {
           this.setState({addValueModalShow: false})
         }} title="导入属性" visible={this.state.addValueModalShow} onOk={value=>{this.addValueSuccess(value)}}></AddValueModal>
@@ -244,7 +276,11 @@ data={toJS(this.props.interfases.data.headers)}></HeadersTable>
             {this.props.interfases.editable&&this.props.project.permission>2&&<Button onClick={()=>{this.openAddValue('req',null)}}>新建</Button>}
             {this.props.interfases.editable&&<Button onClick={() => {
                 this.setState({reqLeadInModalShow: true})
-              }}>导入</Button>}
+              }}>导入JSON</Button>}
+              {this.props.interfases.editable&&<Button onClick={() => {
+                this.setState({reqLeadInModelModalShow: true})
+              }}>导入模板</Button>}
+            <Button onClick={this.handleCopyModel.bind(this,'req')}>复制为模板</Button>
             <Button type={this.state.reqPreview
                 ? 'primary'
                 : ''} onClick={() => {
@@ -274,7 +310,11 @@ data={toJS(this.props.interfases.data.headers)}></HeadersTable>
             {this.props.interfases.editable&&<Button onClick={()=>{this.openAddValue('res',null)}}>新建</Button>}
             {this.props.interfases.editable&&<Button onClick={() => {
                 this.setState({resLeadInModalShow: true})
-              }}>导入</Button>}
+              }}>导入JSON</Button>}
+            {this.props.interfases.editable&&<Button onClick={() => {
+                this.setState({resLeadInModelModalShow: true})
+              }}>导入模板</Button>}
+            <Button onClick={this.handleCopyModel.bind(this,'res')}>复制为模板</Button>
             <Button type={this.state.resPreview
                 ? 'primary'
                 : ''} onClick={() => {

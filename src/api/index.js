@@ -222,6 +222,11 @@ const fetchApi={
     return http.put(`/module/sort/${params.moduleId}`,params).then(data=>{
       return data;
     })
+  },
+  fetchUserInfo(params){
+    return http.get(`/users/userInfo`,params).then(data=>{
+      return data;
+    })
   }
 
 }
