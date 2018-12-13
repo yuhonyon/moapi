@@ -294,7 +294,7 @@ class Interfase {
 
     function addKey(data,id){
       let num=0;
-      for(let item in data){
+      for(let item of data){
         let newId=id+"-"+num
         item.key=newId;
         if(item.children){

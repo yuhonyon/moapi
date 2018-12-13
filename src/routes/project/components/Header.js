@@ -11,7 +11,7 @@ import Style from "./Header.less"
 import { Link  } from 'react-router-dom'
 import config from "@/config"
 import {mergePath} from '@/utils'
-
+import copy from 'copy-to-clipboard';
 const Option =Select.Option;
 
 
@@ -108,9 +108,14 @@ class Header extends React.Component {
   }
 
   handleShowMockUrl=()=>{
+    let path=mergePath(this.props.project.mockUrl,this.props.project.info.gateway?this.props.interfases.data.gatewayUrl||'':this.props.interfases.data.url);
     Modal.info({
      title: '在线mock地址',
-     content: mergePath(this.props.project.mockUrl,this.props.project.info.gateway?this.props.interfases.data.gatewayUrl||'':this.props.interfases.data.url),
+     content: path,
+     onOk:()=>{
+      copy(path)
+     },
+     okText:"复制"
    });
   }
 
