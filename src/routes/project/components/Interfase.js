@@ -259,7 +259,7 @@ data={toJS(this.props.interfases.data.headers)}></HeadersTable>
 
 
 
-      {/\{/.test(this.props.interfases.data.url)&&<div>
+      {/\{/.test(this.props.project.info.gateway?this.props.interfases.data.gatewayUrl:this.props.interfases.data.url)&&<div>
         <div className={Style.title}>
           <h3>Path参数</h3>
         </div>

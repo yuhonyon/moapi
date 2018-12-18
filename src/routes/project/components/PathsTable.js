@@ -27,8 +27,7 @@ class PathsTable extends React.Component{
   columns = [{
     title: '名称',
     dataIndex: 'name',
-    key: 'key',
-    render:(text,record)=>this.renderColumns(text,record,'name')
+    key: 'key'
   },{
     title: '值',
     dataIndex: 'value',
