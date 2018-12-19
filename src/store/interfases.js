@@ -147,7 +147,8 @@ class Interfase {
     this.data.paths.forEach(item=>{
       url=url.replace(`{${item.name}}`,item.value||1)
     })
-    return (`${Config.baseURL}project/test/${project.projectId}/${url}#!method=${this.data.method.toUpperCase()}&headers=${this.headerTest}${this.reqTest}`).replace(/([^:])\/\//, "$1/");
+    let proxy=project.info.gateway?project.info.gatewayProxy||'':project.info.proxy
+    return (`${Config.baseURL}project/test/${project.projectId}/${url}#!url=${proxy}&method=${this.data.method.toUpperCase()}&headers=${this.headerTest}${this.reqTest}`).replace(/([^:])\/\//, "$1/");
 
   }
 
