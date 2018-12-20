@@ -126,11 +126,15 @@ class Interfase {
     } else {
       let data = [];
       for (let key in mockData) {
-        if(mockData[key]&&mockData[key].constructor===Array){
-          for(let i in mockData[key]){
-            data.push({"enabled": true, "key": `${key}[${i}]`, "value": mockData[key][i]})
-          }
-        }else{
+        // if(mockData[key]&&mockData[key].constructor===Array){
+        //   for(let i in mockData[key]){
+        //     data.push({"enabled": true, "key": `${key}[${i}]`, "value": mockData[key][i]})
+        //   }
+        // }else 
+        if(!!mockData[key]&&typeof mockData[key]==='object'){
+          data.push({"enabled": true,"key": key,"value": encodeURIComponent(JSON.stringify(mockData[key]))});
+        }
+        else{
           data.push({"enabled": true, "key": key, "value": mockData[key]})
         }
       }
@@ -544,11 +548,21 @@ class Interfase {
     })
   }
 
-  @action.bound getInterfaseData(data) {
+  @action.bound fetchGetInterfase(id) {
+    return fetchApi.fetchGetInterfase(id).then((data) => {
+      this.getInterfaseData(data,true)
+      return data;
+    })
+  }
+
+  @action.bound getInterfaseData(data,noflush) {
     this.data = {
       ...data
     };
-    this.editable = false;
+    if(!noflush){
+      this.editable = false;
+    }
+    
     interfases.changeCode('req')
     interfases.changeCode('res')
   }

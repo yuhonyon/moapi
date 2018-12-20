@@ -123,7 +123,9 @@ class Interfase extends React.Component {
   }
 
   edit = () => {
+    this.props.interfases.fetchGetInterfase(this.props.interfases.data.id)
     this.props.interfases.openEditable()
+    
   }
   cancel = () => {
     this.props.interfases.closeEditable()

@@ -2,7 +2,7 @@ import {observable, action, useStrict, computed, runInAction} from 'mobx';
 import fetchApi from '@/api'
 import interfases from './interfases'
 import Config from "../config"
-import {getQuery} from '../utils'
+import {getQuery,setCookie} from '../utils'
 useStrict(true);
 
 class Project {
@@ -119,6 +119,9 @@ class Project {
       runInAction(() => {
         this.info = data;
       })
+      if(data.checkInfo.type===3&&data.checkInfo.cookieKey){
+        setCookie(data.checkInfo.cookieKey,data.checkInfo.cookieValue)
+      }
       return data;
     })
   }

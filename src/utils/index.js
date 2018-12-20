@@ -25,3 +25,12 @@ export function getApiUrl(search,name) {
     return "http://127.0.0.1:9215"
   }
 }
+
+
+export function setCookie(name, value) {
+  var exp = new Date();
+  exp.setTime(exp.getTime() + 300 * 24 * 60 * 60 * 1000); 
+  document.cookie = name + "=" + encodeURIComponent(value)
+      + ";expires=" + exp.toGMTString() + ";path=/";
+  return true;
+}

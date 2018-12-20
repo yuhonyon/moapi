@@ -13,7 +13,7 @@ const formItemLayout = {
   },
   wrapperCol: {
     xs: { span: 24 },
-    sm: { span: 12 },
+    sm: { span: 16 },
   },
 };
 
@@ -29,6 +29,8 @@ class CheckModal extends React.Component {
         url: nextProps.project.info.checkInfo.url,
         passwordValue:nextProps.project.info.checkInfo.passwordValue,
         passwordKey:nextProps.project.info.checkInfo.passwordKey,
+        cookieValue:nextProps.project.info.checkInfo.cookieValue,
+        cookieKey:nextProps.project.info.checkInfo.cookieKey,
         type: nextProps.project.info.checkInfo.type,
         key: nextProps.project.info.checkInfo.key,
         value:nextProps.project.info.checkInfo.value,
@@ -67,7 +69,7 @@ class CheckModal extends React.Component {
     return (
       <div>
         <Modal maskClosable={false}
-          width={640}
+          width={700}
           title="mock鉴权"
           visible={this.props.visible}
           onOk={this.handleOk}
@@ -88,6 +90,7 @@ class CheckModal extends React.Component {
                   <Radio.Button value={0}>无鉴权</Radio.Button>
                   <Radio.Button value={1}>In Header</Radio.Button>
                   <Radio.Button value={2}>password</Radio.Button>
+                  <Radio.Button value={3}>In Cookie</Radio.Button>
                 </Radio.Group>
               )}
             </FormItem>
@@ -214,6 +217,34 @@ class CheckModal extends React.Component {
 
               <FormItem {...formItemLayout} label="    ">
                 <Button type="primary" onClick={this.handleLogin} >登录</Button>
+              </FormItem>
+            </div>
+
+            <div style={{display:this.props.form.getFieldsValue(['type']).type===3?'block':'none'}}>
+              <FormItem
+                {...formItemLayout}
+                label="key"
+              >
+                {getFieldDecorator('cookieKey', {
+                  initialValue:'',
+                  rules: [{
+
+                  }],
+                })(
+                  <Input />
+                )}
+              </FormItem>
+
+
+              <FormItem
+                {...formItemLayout}
+                label="value"
+              >
+                {getFieldDecorator('cookieValue', {
+                  initialValue: ''
+                })(
+                  <Input />
+                )}
               </FormItem>
             </div>
           </Form>
