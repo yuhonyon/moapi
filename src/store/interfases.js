@@ -132,7 +132,7 @@ class Interfase {
         //   }
         // }else 
         if(!!mockData[key]&&typeof mockData[key]==='object'){
-          data.push({"enabled": true,"key": key,"value": encodeURIComponent(JSON.stringify(mockData[key]))});
+          data.push({"enabled": true,"key": key,"value": JSON.stringify(mockData[key])});
         }
         else{
           data.push({"enabled": true, "key": key, "value": mockData[key]})
