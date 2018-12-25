@@ -157,6 +157,10 @@ class Interfase extends React.Component {
 
   handleProxyTypeChange=(e)=>{
     this.props.interfases.changeProxyType(e.target.value)
+    if(!this.props.interfases.editable){
+      this.fetchSaveInterfase()
+    }
+    
   }
 
   fetchSaveInterfase=()=> {
@@ -221,7 +225,7 @@ class Interfase extends React.Component {
               {this.props.interfases.data.name}
               {(this.props.interfases.editable&&this.props.project.info.swaggerUrl)&&<span>&nbsp;<Button onClick={this.handleSyncSwaggerData} type="primary" size="small">同步swagger</Button>&nbsp;</span>}
                <Button onClick={this.openRecord} size="small">修改记录</Button>&nbsp;
-              {this.props.interfases.editable&&<RadioGroup buttonStyle="solid" onChange={this.handleProxyTypeChange} value={this.props.interfases.data.proxyType}>
+              {this.props.project.permission>1&&<RadioGroup buttonStyle="solid" onChange={this.handleProxyTypeChange} value={this.props.interfases.data.proxyType}>
                 <RadioButton value={0}>关闭mock</RadioButton>
                 <RadioButton value={1}>开启mock</RadioButton>
                 <RadioButton value={2}>合并mock</RadioButton>
