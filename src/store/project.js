@@ -2,7 +2,7 @@ import {observable, action, useStrict, computed, runInAction} from 'mobx';
 import fetchApi from '@/api'
 import interfases from './interfases'
 import Config from "../config"
-import {getQuery} from '../utils'
+import {getQuery,setCookie} from '../utils'
 useStrict(true);
 
 class Project {
@@ -10,14 +10,15 @@ class Project {
   @observable interfaseId = null;
   @observable curVersion = "";
 
-  @observable info={
+  @observable info ={
     admin:{
       name:null
     },
     checkInfo:{},
     gatewayTemplate:{},
     versions:[],
-    docs:[]
+    docs:[],
+    docMenu:[]
   }
 
   @observable data = {
@@ -103,6 +104,7 @@ class Project {
   getProjectData(projectId) {
     return fetchApi.fetchGetProjectData(projectId||this.projectId).then(data => {
       runInAction(() => {
+       
         this.data = data;
         //v
         this.selectInterfase(Number(getQuery(window.location.search, "moduleId")), Number(getQuery(window.location.search, "interfaseId")));
@@ -117,9 +119,18 @@ class Project {
       runInAction(() => {
         this.info = data;
       })
+      if(data.checkInfo.type===3&&data.checkInfo.cookieKey){
+        setCookie(data.checkInfo.cookieKey,data.checkInfo.cookieValue)
+      }
       return data;
     })
   }
+  
+  @action.bound
+  changeDocMenu(data){
+    this.info.docMenu=data;
+  }
+
   @action.bound
   selectInterfase(moduleId, interfaseId) {
     if(moduleId&&interfaseId){
@@ -170,7 +181,9 @@ class Project {
     this.selectInterfase(interfase.moduleId, interfaseId)
     delete interfase.remarks;
     return fetchApi.fetchUpdateInterfase(interfaseId, interfase).then(data => {
-      this.getProjectData(this.projectId)
+      this.getProjectData(this.projectId).then(()=>{
+        this.selectInterfase(interfase.moduleId, interfaseId)
+      })
       return data;
     })
   }
@@ -256,6 +269,22 @@ class Project {
   saveDoc(params={projectId:this.projectId}) {
     return fetchApi.fetchSaveDoc(params).then(data => {
       this.getProjectInfo(this.projectId);
+      return data;
+    })
+  }
+
+  @action.bound
+  addDoc(params={projectId:this.projectId}) {
+    return fetchApi.fetchAddDoc(params).then(data => {
+      this.getProjectInfo(this.projectId);
+      return data;
+    })
+  }
+
+  @action.bound
+  changeInterfaseSort(from,to){
+    return fetchApi.fetchChangeInterfaseSort({moduleId:this.moduleId,from,to}).then(data => {
+      this.getProjectData(this.projectId);
       return data;
     })
   }

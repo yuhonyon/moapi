@@ -126,11 +126,15 @@ class Interfase {
     } else {
       let data = [];
       for (let key in mockData) {
-        if(mockData[key]&&mockData[key].constructor===Array){
-          for(let i in mockData[key]){
-            data.push({"enabled": true, "key": `${key}[${i}]`, "value": mockData[key][i]})
-          }
-        }else{
+        // if(mockData[key]&&mockData[key].constructor===Array){
+        //   for(let i in mockData[key]){
+        //     data.push({"enabled": true, "key": `${key}[${i}]`, "value": mockData[key][i]})
+        //   }
+        // }else 
+        if(!!mockData[key]&&typeof mockData[key]==='object'){
+          data.push({"enabled": true,"key": key,"value": JSON.stringify(mockData[key])});
+        }
+        else{
           data.push({"enabled": true, "key": key, "value": mockData[key]})
         }
       }
@@ -147,7 +151,8 @@ class Interfase {
     this.data.paths.forEach(item=>{
       url=url.replace(`{${item.name}}`,item.value||1)
     })
-    return (`${Config.baseURL}project/test/${project.projectId}/${url}#!method=${this.data.method.toUpperCase()}&headers=${this.headerTest}${this.reqTest}`).replace(/([^:])\/\//, "$1/");
+    let proxy=project.info.gateway?project.info.gatewayProxy||'':project.info.proxy
+    return (`${Config.baseURL}project/test/${project.projectId}/${url}#!url=${proxy}&method=${this.data.method.toUpperCase()}&headers=${this.headerTest}${this.reqTest}`).replace(/([^:])\/\//, "$1/");
 
   }
 
@@ -178,7 +183,7 @@ class Interfase {
             return {}
           } else if (item.type === 'String') {
             return ""
-          } else if (item.type === 'Number') {
+          } else if (item.type === 'Number'||item.type === 'Float'||item.type === 'Integer') {
             return null
           } else if (item.type === 'Boolean') {
             return false
@@ -260,11 +265,13 @@ class Interfase {
     let newCode = [];
     let id = Date.now()
     for (let i in code) {
-      newCode.push(this.formatCode(i, code[i], id + i.replace(/-/g,'_')))
+      newCode.push(this.formatCode(i, code[i], id+parseInt(Math.random()*10000000000) + i.replace(/-/g,'_')))
     }
     this.data.res = this.data.res.toJS().concat(newCode)
     this.changeCode('res')
   }
+
+
 
   @action.bound leadInReq(code) {
     if (typeof code === 'string') {
@@ -276,11 +283,51 @@ class Interfase {
     let newCode = [];
     let id = Date.now()
     for (let i in code) {
-      newCode.push(this.formatCode(i, code[i], id + i.replace(/-/g,'_')))
+      newCode.push(this.formatCode(i, code[i], id+parseInt(Math.random()*10000000000) + i.replace(/-/g,'_')))
     }
     this.data.req = this.data.req.slice().concat(newCode)
     this.changeCode('req')
   }
+
+  @action.bound leadInModel(type,code) {
+    if (typeof code === 'string') {
+      code = parseStrToObj(code)
+    }
+
+ 
+    let id = Date.now()
+
+    function addKey(data,id){
+      let num=0;
+      for(let item of data){
+        let newId=id+"-"+num
+        item.key=newId;
+        if(item.children){
+          addKey(item.children,newId)
+        }
+        num++;
+      }
+    }
+
+    for(let item of code){
+      let newId=id+parseInt(Math.random()*10000000000)+item.name.replace(/-/g,'_')
+      item.key=newId;
+      if(item.children){
+        addKey(item.children,newId)
+      }
+    }
+   
+    if(type==='res'){
+      this.data.res = this.data.res.toJS().concat(code)
+      this.changeCode('res')
+    }else{
+      this.data.req = this.data.req.toJS().concat(code)
+      this.changeCode('req')
+    }
+    
+  }
+
+
 
   @action.bound changeProxyType(val) {
     this.data.proxyType = val;
@@ -321,7 +368,12 @@ class Interfase {
     if (target) {
       target[column] = value;
       if (column === 'type') {
-        target['mockType'] = value;
+
+        if(value==='Float'||value==='Integer'){
+          target['mockType'] = 'Number';
+        }else{
+          target['mockType'] = value;
+        }
         if (value !== 'Array' && value !== 'Object') {
           target.children = null;
         }
@@ -435,7 +487,7 @@ class Interfase {
       this.resCode = data
     } else if (this.reqMock) {
       let data=Mock.mock(parseStrToObj(this.reqMock));
-      console.log(data,parseStrToObj(this.reqMock),999)
+
 
       if(data.array_type_data&&data.array_type_data.constructor===Array){
         data=data.array_type_data
@@ -496,11 +548,21 @@ class Interfase {
     })
   }
 
-  @action.bound getInterfaseData(data) {
+  @action.bound fetchGetInterfase(id) {
+    return fetchApi.fetchGetInterfase(id).then((data) => {
+      this.getInterfaseData(data,true)
+      return data;
+    })
+  }
+
+  @action.bound getInterfaseData(data,noflush) {
     this.data = {
       ...data
     };
-    this.editable = false;
+    if(!noflush){
+      this.editable = false;
+    }
+    
     interfases.changeCode('req')
     interfases.changeCode('res')
   }

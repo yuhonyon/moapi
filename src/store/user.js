@@ -15,10 +15,13 @@ class User {
 
   @action.bound
   getUserInfo(){
-    let user=window.localStorage.getItem('user');
-    if(user){
-      this.userInfo=JSON.parse(user)
-    }
+    return fetchApi.fetchUserInfo().then((data)=>{
+      window.localStorage.setItem('user',JSON.stringify(data));
+      runInAction(()=>{
+        this.userInfo=data;
+      })
+      return data
+    })
   }
 
 
@@ -77,5 +80,5 @@ class User {
 }
 
 const user=new User();
-user.getUserInfo()
+
 export default user;

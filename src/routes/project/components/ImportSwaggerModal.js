@@ -1,4 +1,4 @@
-import { Modal,Form, Input,Upload,Button,Icon } from 'antd';
+import { Modal,Form, Input,Upload,Button,Icon,message } from 'antd';
 import React from 'react'
 import {inject, observer} from 'mobx-react';
 import config from "@/config"
@@ -12,7 +12,7 @@ const formItemLayout = {
   },
   wrapperCol: {
     xs: { span: 24 },
-    sm: { span: 12 },
+    sm: { span: 19 },
   },
 };
 
@@ -31,33 +31,58 @@ class ImportSwaggerModal extends React.Component {
   }
 
   handleOk = (e) => {
-    this.props.form.validateFields((err, values) => {
-      if (err) {
-        return
-      }
-      this.setState({
-        confirmLoading: true,
-      });
-      this.props.project.importSwagger(values).then(data=>{
-        this.props.form.resetFields()
-        this.props.onClose();
-        this.setState({
-          confirmLoading: false,
+    Modal.confirm({
+      title: '警告',
+      content: '同步会覆盖原有的接口!确定要覆盖?',
+      onOk:()=> {
+        this.props.form.validateFields((err, values) => {
+          if (err) {
+            return
+          }
+          this.setState({
+            confirmLoading: true,
+          });
+          this.props.project.importSwagger(values).then(data=>{
+            this.props.form.resetFields()
+            this.props.onClose();
+            this.setState({
+              confirmLoading: false,
+            });
+          }).catch(e=>{
+            message.error("同步失败")
+            this.setState({
+              confirmLoading: false,
+            });
+          })
         });
-      }).catch(e=>{
-        this.setState({
-          confirmLoading: false,
-        });
-      })
+      },
     });
+    
   }
   handleCancel = (e) => {
     this.props.form.resetFields()
     this.props.onClose();
   }
 
-  handleChange=()=>{
+  handleChange=({file})=>{
+    if (file.status === 'done') {
+      message.success('上传成功并保存于附件中')
+      this.props.form.setFieldsValue({
+        url: `${config.baseURL}${file.response.url}`
+      })
+    }
+  }
 
+  handleSubmit=()=>{
+    this.props.form.validateFields((err, values) => {
+        if (err) {
+          return
+        }
+        this.props.project.updateProject(this.props.project.projectId,{swaggerUrl:values.url}).then(()=>{
+          this.props.project.getProjectInfo(this.props.project.projectId)
+          this.props.onClose();
+        })
+    })    
   }
 
   render() {
@@ -67,11 +92,15 @@ class ImportSwaggerModal extends React.Component {
         <Modal maskClosable={false}
           width={640}
           title="导入Swagger"
-          visible={this.props.visible}
-          confirmLoading={this.state.confirmLoading}
-          onOk={this.handleOk}
           onCancel={this.handleCancel}
-          okText="同步"
+          visible={this.props.visible}
+          footer={
+          <div>
+            <Button onClick={this.handleCancel}>取消</Button>
+            {this.props.project.permission>3&&<Button loading={this.state.confirmLoading} type="primary" onClick={this.handleOk}>立即同步</Button>}
+            <Button type="primary" onClick={this.handleSubmit}>提交</Button>
+          </div>
+          }
         >
           <Form>
             <FormItem

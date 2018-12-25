@@ -40,6 +40,14 @@ class AddInterfaseModal extends React.Component {
     this.props.onClose();
   }
 
+  handleUrlChange=(e)=>{
+    let gatewayUrl=this.props.form.getFieldValue("gatewayUrl")
+    if(gatewayUrl){
+      return
+    }
+    this.props.form.setFieldsValue({gatewayUrl:e.target.value})
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
@@ -85,7 +93,7 @@ class AddInterfaseModal extends React.Component {
                   }
                 }],
               })(
-                <Input />
+                <Input onBlur={this.handleUrlChange} />
               )}
             </FormItem>
             <FormItem

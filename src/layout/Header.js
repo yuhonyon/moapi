@@ -10,6 +10,10 @@ import logo from "../assets/imgs/logo.png"
 @observer
 class Header extends React.Component{
 
+componentDidMount(){
+  this.props.user.getUserInfo()
+}
+
 handleLogout=()=>{
   this.props.user.signout().then(()=>{
     this.props.history.push("/login")

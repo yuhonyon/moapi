@@ -2,8 +2,8 @@ import React from "react";
 import { Table,Button,Input,Select ,Switch,Popover,Icon} from 'antd';
 import Style from "./EditableTable.less"
 import {inject,observer} from 'mobx-react';
-import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
+import { DragSource, DropTarget } from 'react-dnd';
+import WithDragDropContext from '@/components/WithDragDropContext';
 const Option = Select.Option;
 const { TextArea } = Input;
 
@@ -180,7 +180,7 @@ class EditableTable extends React.Component{
     title: '类型',
     dataIndex: 'type',
     key: 'type',
-    render:(text,record)=>this.renderColumns(text,record,'type',['Object','Number','Array','Boolean','String'])
+    render:(text,record)=>this.renderColumns(text,record,'type',['Object','Number','Array','Boolean','String','Float','Integer'])
   }, {
     title: '必填',
     dataIndex: 'required',
@@ -315,4 +315,4 @@ class EditableTable extends React.Component{
 }
 
 
-export default DragDropContext(HTML5Backend)(EditableTable);;
+export default WithDragDropContext(EditableTable);
