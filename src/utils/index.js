@@ -13,7 +13,7 @@ export function mergePath(url1,url2) {
 
 export function getApiUrl(search,name) {
   let host=window.location.host;
-  if(/91jkys\./.test(host)||/moapi\./.test(host)){
+  if(!/127|localhost/.test(host)){
     return window.location.origin+"/api"
   }else{
     return "http://127.0.0.1:9215"
