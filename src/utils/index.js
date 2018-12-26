@@ -13,14 +13,8 @@ export function mergePath(url1,url2) {
 
 export function getApiUrl(search,name) {
   let host=window.location.host;
-  if(/qa.91jkys\./.test(host)){
-    return window.location.protocol+"//mock.qa.91jkys.com/api"
-  }else if(/91jkys\./.test(host)){
-    return window.location.protocol+"//mock.91jkys.com/api"
-  }else if(/moapi\./.test(host)){
-    return window.location.protocol+"//api.yfyld.online:3030"
-  }else if(/97\./.test(host)){
-    return "http://97.64.36.18:9215"
+  if(/91jkys\./.test(host)||/moapi\./.test(host)){
+    return window.location.origin+"/api"
   }else{
     return "http://127.0.0.1:9215"
   }
