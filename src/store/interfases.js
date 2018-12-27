@@ -97,20 +97,32 @@ class Interfase {
     for (let item of this.data.headers) {
       data.push({"enabled": true, "key": item.name, "value": item.value})
     }
+
     if(project.info.gateway&&project.info.gatewayTemplate.headers){
       for(let i in project.info.gatewayTemplate.headers){
         data.push({"enabled": true, "key": i, "value": project.info.gatewayTemplate.headers[i]})
       }
     }
     if(project.info.checkInfo.type===1&&project.info.checkInfo.key){
-      let index=data.findIndex(item=>project.info.checkInfo.key);
+      let index=data.findIndex(item=>item.key===project.info.checkInfo.key);
       if(index>=0){
         data[index].value=project.info.checkInfo.value
       }else{
         data.push({"enabled": true, "key": project.info.checkInfo.key, "value": project.info.checkInfo.value})
       }
     }
-    return encodeURI(JSON.stringify(data));
+
+    if(project.info.checkInfo.type===3&&project.info.checkInfo.cookieKey){
+      let index=data.findIndex(item=>item.key==="cookie");
+      let value=project.info.checkInfo.cookieKey+"="+project.info.checkInfo.cookieValue;
+      if(index>=0){
+        data[index].value=value
+      }else{
+        data.push({"enabled": true, "key": "cookie", "value": "afasdfasdf=asdfasdf"})
+      }
+    }
+
+    return encodeURIComponent(JSON.stringify(data));
   }
 
   @computed get reqTest() {
@@ -138,7 +150,7 @@ class Interfase {
           data.push({"enabled": true, "key": key, "value": mockData[key]})
         }
       }
-      return "&queryParameters=" + encodeURI(JSON.stringify(data));
+      return "&queryParameters=" + encodeURIComponent(JSON.stringify(data));
     }
 
   }
