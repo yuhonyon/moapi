@@ -118,7 +118,7 @@ class Interfase {
       if(index>=0){
         data[index].value=value
       }else{
-        data.push({"enabled": true, "key": "cookie", "value": "afasdfasdf=asdfasdf"})
+        data.push({"enabled": true, "key": "cookie", "value": project.info.checkInfo.cookieValue})
       }
     }
 
