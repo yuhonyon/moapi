@@ -131,17 +131,17 @@ class Interfase extends React.Component {
     this.props.interfases.closeEditable()
     this.props.project.getProjectData()
   }
-  resLeadInOk=(code)=>{
-    this.props.interfases.leadInRes(code);
+  resLeadInOk=({code,target})=>{
+    this.props.interfases.leadInRes(code,target);
   }
-  resLeadInModelOk=(code)=>{
-    this.props.interfases.leadInModel('res',code);
+  resLeadInModelOk=({code,target})=>{
+    this.props.interfases.leadInModel('res',code,target);
   }
-  reqLeadInModelOk=(code)=>{
-    this.props.interfases.leadInModel('req',code);
+  reqLeadInModelOk=({code,target})=>{
+    this.props.interfases.leadInModel('req',code,target);
   }
-  reqLeadInOk=(code)=>{
-    this.props.interfases.leadInReq(code);
+  reqLeadInOk=({code,target})=>{
+    this.props.interfases.leadInReq(code,target);
   }
   addValueSuccess=(value)=>{
     this.addValue.value=value;
@@ -175,16 +175,29 @@ class Interfase extends React.Component {
   }
 
   handleCopyModel=(type)=>{
-    let model=JSON.parse(JSON.stringify(this.props.interfases.data[type]));
+    if(copy(type==='res'?this.props.interfases.resModel:this.props.interfases.resModel)){
+      message.success('复制成功');
+    }
+  }
+
+  handleCopyRow=(record)=>{
+    let model=JSON.parse(JSON.stringify(record));
     function removeKey(data){
       for(let item of data){
         delete item.key;
-        if(data.children){
-          removeKey(data.children)
+        if(item.children){
+          item.children=removeKey(data.children)
         }
       }
+      return data;
     }
-    removeKey(model)
+
+    if(model.children){
+      model.children=removeKey(model.children);
+    }else{
+      delete model.key
+    }
+
     if(copy(JSON.stringify(model,null,2))){
       message.success('复制成功');
     }
@@ -201,17 +214,17 @@ class Interfase extends React.Component {
           this.setState({addRemarkModalShow: false})
         }}  visible={this.state.addRemarkModalShow} onOk={this.handleAddRemarkOk}></AddRemarkModal>
       <LeadInModal onClose={() => {
-          this.setState({resLeadInModalShow: false})
-        }} title="导入请求属性" visible={this.state.resLeadInModalShow} onOk={this.resLeadInOk} ></LeadInModal>
-      <LeadInModal onClose={() => {
           this.setState({reqLeadInModalShow: false})
-        }} title="导入响应属性" visible={this.state.reqLeadInModalShow} onOk={this.reqLeadInOk}></LeadInModal>
+        }} title="导入请求属性" type="req" visible={this.state.reqLeadInModalShow} onOk={this.reqLeadInOk} ></LeadInModal>
+      <LeadInModal onClose={() => {
+          this.setState({resLeadInModalShow: false})
+        }} title="导入响应属性" type="res" visible={this.state.resLeadInModalShow} onOk={this.resLeadInOk}></LeadInModal>
       <LeadInModelModal onClose={() => {
           this.setState({reqLeadInModelModalShow: false})
-        }} title="导入请求模板" visible={this.state.reqLeadInModelModalShow} onOk={this.reqLeadInModelOk}></LeadInModelModal>
+        }} title="导入请求模板" type="req" visible={this.state.reqLeadInModelModalShow} onOk={this.reqLeadInModelOk}></LeadInModelModal>
       <LeadInModelModal onClose={() => {
           this.setState({resLeadInModelModalShow: false})
-        }} title="导入响应模板" visible={this.state.resLeadInModelModalShow} onOk={this.resLeadInModelOk}></LeadInModelModal>
+        }} title="导入响应模板" type="res" visible={this.state.resLeadInModelModalShow} onOk={this.resLeadInModelOk}></LeadInModelModal>
       <AddValueModal onClose={() => {
           this.setState({addValueModalShow: false})
         }} title="导入属性" visible={this.state.addValueModalShow} onOk={value=>{this.addValueSuccess(value)}}></AddValueModal>
@@ -286,7 +299,7 @@ data={toJS(this.props.interfases.data.headers)}></HeadersTable>
               {this.props.interfases.editable&&<Button onClick={() => {
                 this.setState({reqLeadInModelModalShow: true})
               }}>导入模板</Button>}
-            <Button onClick={this.handleCopyModel.bind(this,'req')}>复制为模板</Button>
+           
             <Button type={this.state.reqPreview
                 ? 'primary'
                 : ''} onClick={() => {
@@ -297,12 +310,12 @@ data={toJS(this.props.interfases.data.headers)}></HeadersTable>
           </ButtonGroup>
         </div>
       </div>
-      <EditableTable permission={this.props.project.permission} isReq onOpenAddValue={this.openAddValue} data={toJS(this.props.interfases.data.req)}></EditableTable>
+      <EditableTable onCopy={this.handleCopyRow} permission={this.props.project.permission} isReq onOpenAddValue={this.openAddValue} data={toJS(this.props.interfases.data.req)}></EditableTable>
       {
         this.state.reqPreview &&< div className = {
           Style.codeWrapper
         } >
-          <ShowCode code={this.props.interfases.reqMock} title="请求模板"></ShowCode>
+          <ShowCode maxHeight={500} code={this.props.interfases.reqModel} title="请求模板"></ShowCode>
           <ShowCode code={this.props.interfases.reqCode}  title="请求属性"></ShowCode>
         </div>
       }
@@ -320,7 +333,7 @@ data={toJS(this.props.interfases.data.headers)}></HeadersTable>
             {this.props.interfases.editable&&<Button onClick={() => {
                 this.setState({resLeadInModelModalShow: true})
               }}>导入模板</Button>}
-            <Button onClick={this.handleCopyModel.bind(this,'res')}>复制为模板</Button>
+          
             <Button type={this.state.resPreview
                 ? 'primary'
                 : ''} onClick={() => {
@@ -331,12 +344,12 @@ data={toJS(this.props.interfases.data.headers)}></HeadersTable>
           </ButtonGroup>
         </div>
       </div>
-      <EditableTable onOpenAddValue={this.openAddValue} permission={this.props.project.permission} data={toJS(this.props.interfases.data.res)}></EditableTable>
+      <EditableTable onCopy={this.handleCopyRow} onOpenAddValue={this.openAddValue} permission={this.props.project.permission} data={toJS(this.props.interfases.data.res)}></EditableTable>
       {
         this.state.resPreview &&< div className = {
           Style.codeWrapper
         } >
-          <ShowCode code={this.props.interfases.resMock}  title="响应模板"></ShowCode>
+          <ShowCode maxHeight={500}  code={this.props.interfases.resModel}  title="响应模板"></ShowCode>
           <ShowCode code={this.props.interfases.resCode}  title="响应属性"></ShowCode>
         </div>
       }

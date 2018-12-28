@@ -160,7 +160,7 @@ class Header extends React.Component {
         <div className={Style.operation}>
           {this.props.project.permission>1&&<a onClick={this.openEditProjectModal} href="###"><Icon type="setting" />编辑</a>}
 
-          {this.props.project.permission>2&&<a onClick={this.openTemplateModal} href="###"><Icon type="appstore-o" />模板</a>}
+          {this.props.project.permission>2&&<a onClick={this.openTemplateModal} href="###"><Icon type="appstore-o" />初始模板</a>}
 
           {this.props.project.permission>2&&<a onClick={this.openGatewayTemplateModal} href="###"><Icon type="appstore-o" />网关格式</a>}
 

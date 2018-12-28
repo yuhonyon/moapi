@@ -55,6 +55,34 @@ class Interfase {
     req: null
   };
 
+  @computed get resModel() {
+    let model=JSON.parse(JSON.stringify(this.data.res));
+    function removeKey(data){
+      for(let item of data){
+        delete item.key;
+        if(item.children){
+          item.children=removeKey(item.children)
+        }
+      }
+      return data;
+    }
+    
+    return JSON.stringify(removeKey(model),null,2);
+  }
+  @computed get reqModel() {
+    let model=JSON.parse(JSON.stringify(this.data.req));
+    function removeKey(data){
+      for(let item of data){
+        delete item.key;
+        if(item.children){
+          item.children=removeKey(item.children)
+        }
+      }
+      return data;
+    }
+    return JSON.stringify(removeKey(model),null,2);
+  }
+
   @computed get remarks() {
     return this.data.remarks
   }
@@ -97,20 +125,32 @@ class Interfase {
     for (let item of this.data.headers) {
       data.push({"enabled": true, "key": item.name, "value": item.value})
     }
+
     if(project.info.gateway&&project.info.gatewayTemplate.headers){
       for(let i in project.info.gatewayTemplate.headers){
         data.push({"enabled": true, "key": i, "value": project.info.gatewayTemplate.headers[i]})
       }
     }
     if(project.info.checkInfo.type===1&&project.info.checkInfo.key){
-      let index=data.findIndex(item=>project.info.checkInfo.key);
+      let index=data.findIndex(item=>item.key===project.info.checkInfo.key);
       if(index>=0){
         data[index].value=project.info.checkInfo.value
       }else{
         data.push({"enabled": true, "key": project.info.checkInfo.key, "value": project.info.checkInfo.value})
       }
     }
-    return encodeURI(JSON.stringify(data));
+
+    if(project.info.checkInfo.type===3&&project.info.checkInfo.cookieKey){
+      let index=data.findIndex(item=>item.key==="cookie");
+      let value=project.info.checkInfo.cookieKey+"="+project.info.checkInfo.cookieValue;
+      if(index>=0){
+        data[index].value=value
+      }else{
+        data.push({"enabled": true, "key": "cookie", "value": value})
+      }
+    }
+
+    return encodeURIComponent(JSON.stringify(data));
   }
 
   @computed get reqTest() {
@@ -138,7 +178,7 @@ class Interfase {
           data.push({"enabled": true, "key": key, "value": mockData[key]})
         }
       }
-      return "&queryParameters=" + encodeURI(JSON.stringify(data));
+      return "&queryParameters=" + encodeURIComponent(JSON.stringify(data));
     }
 
   }
@@ -152,7 +192,7 @@ class Interfase {
       url=url.replace(`{${item.name}}`,item.value||1)
     })
     let proxy=project.info.gateway?project.info.gatewayProxy||'':project.info.proxy
-    return (`${Config.baseURL}project/test/${project.projectId}/${url}#!url=${proxy}&method=${this.data.method.toUpperCase()}&headers=${this.headerTest}${this.reqTest}`).replace(/([^:])\/\//, "$1/");
+    return (`${Config.baseURL}project/test/${project.projectId}/${url}#!title=${encodeURIComponent(this.data.name)}&url=${proxy}&method=${this.data.method.toUpperCase()}&headers=${this.headerTest}${this.reqTest}`).replace(/([^:])\/\//, "$1/");
 
   }
 
@@ -255,7 +295,7 @@ class Interfase {
     return data;
   }
 
-  @action.bound leadInRes(code) {
+  @action.bound leadInRes(code,target=[]) {
     if (typeof code === 'string') {
       code = parseStrToObj(code)
     }
@@ -264,16 +304,35 @@ class Interfase {
     }
     let newCode = [];
     let id = Date.now()
-    for (let i in code) {
-      newCode.push(this.formatCode(i, code[i], id+parseInt(Math.random()*10000000000) + i.replace(/-/g,'_')))
+    
+    if(target&&target.length){
+      let targetObj=target.reduce((total,item)=>{
+        if(!total||!total.children||!total.children.length){
+          return total
+        }
+        let data=total.children.find(val=>val.name===item);
+        return data||null;
+      },{children:this.data.res})
+      
+      if(targetObj){
+        for (let i in code) {
+          newCode.push(this.formatCode(i, code[i], targetObj.key+"-"+id+parseInt(Math.random()*10000000000) + i.replace(/-/g,'_')))
+        }
+        targetObj.children=(targetObj.children||[]).concat(newCode)
+      }
+    }else{
+      for (let i in code) {
+        newCode.push(this.formatCode(i, code[i], id+parseInt(Math.random()*10000000000) + i.replace(/-/g,'_')))
+      }
+      this.data.res = this.data.res.toJS().concat(newCode)
     }
-    this.data.res = this.data.res.toJS().concat(newCode)
+    
     this.changeCode('res')
   }
 
 
 
-  @action.bound leadInReq(code) {
+  @action.bound leadInReq(code,target=[]) {
     if (typeof code === 'string') {
       code = parseStrToObj(code)
     }
@@ -282,14 +341,34 @@ class Interfase {
     }
     let newCode = [];
     let id = Date.now()
-    for (let i in code) {
-      newCode.push(this.formatCode(i, code[i], id+parseInt(Math.random()*10000000000) + i.replace(/-/g,'_')))
+
+    if(target&&target.length){
+      let targetObj=target.reduce((total,item)=>{
+        if(!total||!total.children||!total.children.length){
+          return total
+        }
+        let data=total.children.find(val=>val.name===item);
+        return data||null;
+      },{children:this.data.req})
+      
+      if(targetObj){
+        for (let i in code) {
+          newCode.push(this.formatCode(i, code[i], targetObj.key+"-"+id+parseInt(Math.random()*10000000000) + i.replace(/-/g,'_')))
+        }
+        targetObj.children=(targetObj.children||[]).concat(newCode)
+      }
+    }else{
+      for (let i in code) {
+        newCode.push(this.formatCode(i, code[i], id+parseInt(Math.random()*10000000000) + i.replace(/-/g,'_')))
+      }
+      this.data.req = this.data.req.slice().concat(newCode)
     }
-    this.data.req = this.data.req.slice().concat(newCode)
+
+    
     this.changeCode('req')
   }
 
-  @action.bound leadInModel(type,code) {
+  @action.bound leadInModel(type,code,target) {
     if (typeof code === 'string') {
       code = parseStrToObj(code)
     }
@@ -309,21 +388,47 @@ class Interfase {
       }
     }
 
-    for(let item of code){
-      let newId=id+parseInt(Math.random()*10000000000)+item.name.replace(/-/g,'_')
-      item.key=newId;
-      if(item.children){
-        addKey(item.children,newId)
+
+    if(target&&target.length){
+      let targetObj=target.reduce((total,item)=>{
+        if(!total||!total.children||!total.children.length){
+          return total
+        }
+        let data=total.children.find(val=>val.name===item);
+        return data||null;
+      },{children:this.data[type]})
+      
+      if(targetObj){
+        for(let item of code){
+          let newId=targetObj.key+"-"+id+parseInt(Math.random()*10000000000)+item.name.replace(/-/g,'_')
+          item.key=newId;
+          if(item.children){
+            addKey(item.children,newId)
+          }
+        }
+        targetObj.children=(targetObj.children||[]).concat(code)
+      }
+    }else{
+      for(let item of code){
+        let newId=id+parseInt(Math.random()*10000000000)+item.name.replace(/-/g,'_')
+        item.key=newId;
+        if(item.children){
+          addKey(item.children,newId)
+        }
+      }
+     
+      if(type==='res'){
+        this.data.res = this.data.res.toJS().concat(code)
+        this.changeCode('res')
+      }else{
+        this.data.req = this.data.req.toJS().concat(code)
+        this.changeCode('req')
       }
     }
-   
-    if(type==='res'){
-      this.data.res = this.data.res.toJS().concat(code)
-      this.changeCode('res')
-    }else{
-      this.data.req = this.data.req.toJS().concat(code)
-      this.changeCode('req')
-    }
+
+    
+
+    
     
   }
 

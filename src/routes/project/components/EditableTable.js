@@ -214,14 +214,20 @@ class EditableTable extends React.Component{
     dataIndex: 'description',
     key: 'description',
     render:(text,record)=>this.renderColumns(text,record,'description','textarea')
-  }]
-
-  operate={
+  },
+  {
     title: '操作',
     dataIndex: 'operate',
     key: 'operate',
     render:(text,record)=>this.renderOperate(text,record)
-  }
+  }]
+
+  // operate={
+  //   title: '操作',
+  //   dataIndex: 'operate',
+  //   key: 'operate',
+  //   render:(text,record)=>this.renderOperate(text,record)
+  // }
   state = { data };
 
   components = {
@@ -245,13 +251,14 @@ class EditableTable extends React.Component{
 
   renderOperate(text,record){
     if(!this.props.interfases.editable){
-      return null
+      return <Button shape="circle" icon="copy" onClick={()=>{this.props.onCopy(record)}} />
     }
     return (
       <div>
         <Button type="danger" shape="circle" icon="delete" onClick={()=>{
             this.handleDel(record.key)
           }} />
+        <Button shape="circle" icon="copy" onClick={()=>{this.props.onCopy(record)}} />
       {(record.type==='Array'||record.type==='Object')&&<Button type="primary" shape="circle" icon="plus-circle-o" onClick={()=>{this.props.onOpenAddValue(this.props.isReq?'req':'res',record.key)}} />}
       </div>
     )
@@ -287,13 +294,13 @@ class EditableTable extends React.Component{
     //   this.columns.splice(2,1);
     // }
   }
-  componentWillUpdate(nextProps){
-      if(this.props.interfases.editable&&this.columns[this.columns.length-1].key!=='operate'){
-        this.columns.push(this.operate)
-      }else if(!this.props.interfases.editable&&this.columns[this.columns.length-1].key==='operate'){
-        this.columns.splice(-1,1);
-      }
-  }
+  // componentWillUpdate(nextProps){
+  //     if(this.props.interfases.editable&&this.columns[this.columns.length-1].key!=='operate'){
+  //       this.columns.push(this.operate)
+  //     }else if(!this.props.interfases.editable&&this.columns[this.columns.length-1].key==='operate'){
+  //       this.columns.splice(-1,1);
+  //     }
+  // }
   render(){
 
     // if(this.props.isReq&&this.columns[2].key==="required"){

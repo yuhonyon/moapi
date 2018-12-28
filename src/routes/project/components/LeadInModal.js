@@ -1,10 +1,12 @@
-import { Modal, Button,message } from 'antd';
+import { Modal, Button,message ,Cascader} from 'antd';
 import React from 'react'
 import AceEditor from 'react-ace';
 import 'brace/mode/json';
 import 'brace/theme/github';
 import 'brace/ext/language_tools';
 import 'brace/ext/searchbox';
+import {inject, observer} from 'mobx-react';
+
 const ace = require('brace');
 const mockSnippets = require('./snippers/mock.snippers')
 ace.define('ace/snippets/json', ['require', 'exports', 'module'], function (e, t) {
@@ -12,8 +14,27 @@ ace.define('ace/snippets/json', ['require', 'exports', 'module'], function (e, t
   t.scope = 'json'
 })
 const code=`{}`
+
+function getOptions(arr=[]){
+  return arr.reduce((total,item)=>{
+    if(item.type==="Object"||item.type==="Array"&&!item.mockValue){
+      let data={
+        value:item.name,
+        label:item.name
+      }
+      if(item.children&&item.children.length){
+        data.children=getOptions(item.children)
+      }
+      total.push(data)
+    }
+    return total;
+  },[])
+}
+
+@inject("interfases")
+@observer
 class LeadInModal extends React.Component {
-  state={code:code}
+  state={code:code,target:[]}
   handleOk = (e) => {
     if(/^\[[\s\S]*\]$/m.test(this.state.code)){
       message.warning('不建议用数组格式数据');
@@ -24,8 +45,8 @@ class LeadInModal extends React.Component {
        message.warning('格式错误');
        return;
     }
-    this.props.onOk(this.state.code);
-    this.setState({code:`{}`});
+    this.props.onOk({code:this.state.code,target:this.state.target});
+    this.setState({code:`{}`,target:[]});
     this.props.onClose();
   }
   handleCancel = (e) => {
@@ -34,6 +55,9 @@ class LeadInModal extends React.Component {
   }
   handleChange=(newValue)=> {
     this.setState({code:newValue})
+  }
+  handleOptionsChange=(value)=>{
+    this.setState({target:value})
   }
   evil(fn) {
     const Fn = Function;
@@ -65,12 +89,18 @@ class LeadInModal extends React.Component {
       console.log(err)
     }
   }
+
   render() {
+  
+    const options=getOptions(this.props.interfases.data[this.props.type])
     return (
       <div>
         <Modal maskClosable={false}
           width={640}
-          title={<span>{this.props.title} <Button onClick={this.handleFormat} size="small">格式化</Button></span>}
+          title={(<div>{this.props.title} &nbsp;
+          <Button onClick={this.handleFormat} size="small">格式化</Button>
+          &emsp;<Cascader changeOnSelect onChange={this.handleOptionsChange} options={options} placeholder="插入节点 默认跟节点"></Cascader>
+          </div>)}
           visible={this.props.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}

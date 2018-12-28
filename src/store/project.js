@@ -32,7 +32,8 @@ class Project {
     record: []
 
   }
-
+  
+  
   @computed
   get module() {
     return this.modules.find(item=>item.id===this.moduleId)||{}
