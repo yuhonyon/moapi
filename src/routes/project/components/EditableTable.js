@@ -142,7 +142,7 @@ const editablePermission=(editable,permission,isReq,column)=>{
 const EditableCell = ({ editable, value, onChange,identify,column }) => {
   let cell;
   if(!editable){
-    if(typeof value==='boolean'){
+    if(typeof value==='boolean'&&identify==="switch"){
       value=value?'是':'否';
     }
     cell= value
