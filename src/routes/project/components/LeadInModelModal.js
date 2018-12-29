@@ -86,7 +86,7 @@ class LeadInModal extends React.Component {
         <Modal maskClosable={false}
           width={640}
           title={(<div>{this.props.title} &nbsp;<Button onClick={this.handleFormat} size="small">格式化</Button>
-          &emsp;<Cascader changeOnSelect onChange={this.handleOptionsChange} options={options} placeholder="插入节点 默认跟节点"></Cascader></div>)}
+          &emsp;<Cascader value={this.state.target}  changeOnSelect onChange={this.handleOptionsChange} options={options} placeholder="插入节点 默认跟节点"></Cascader></div>)}
           visible={this.props.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
