@@ -186,7 +186,7 @@ class Interfase extends React.Component {
       for(let item of data){
         delete item.key;
         if(item.children){
-          item.children=removeKey(data.children)
+          item.children=removeKey(item.children)
         }
       }
       return data;
