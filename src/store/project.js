@@ -126,6 +126,16 @@ class Project {
       return data;
     })
   }
+
+  @action.bound
+  uploadDocFile(fileData,projectId=this.projectId) {
+    return fetchApi.fetchUploadDocFile(projectId,fileData).then(data => {
+      runInAction(() => {
+        this.getProjectInfo()
+      })
+      return data;
+    })
+  }
   
   @action.bound
   changeDocMenu(data){
