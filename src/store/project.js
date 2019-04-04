@@ -73,7 +73,7 @@ class Project {
   }
   @computed
   get docUrl() {
-    return Config.baseURL + 'project/doc/' + this.projectId
+    return Config.baseURL + 'project/doc/' + this.projectId+'?cache=false'
   }
 
   @computed
