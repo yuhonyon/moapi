@@ -127,6 +127,10 @@ const fetchApi={
     return http.delete(`/doc/${id}`)
   },
 
+  fetchUploadDocFile(projectId,params){
+    return http.post(`/doc/file/upload/${projectId}`,params)
+  },
+
   fetchImportSwagger(id,params){
     return http.post(`/project/${id}/swagger`,params)
   },

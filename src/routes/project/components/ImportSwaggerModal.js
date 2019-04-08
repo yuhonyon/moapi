@@ -91,7 +91,7 @@ class ImportSwaggerModal extends React.Component {
       <div>
         <Modal maskClosable={false}
           width={640}
-          title="导入Swagger"
+          title={<div>导入Swagger<small>(仅管理员可以同步)</small></div>}
           onCancel={this.handleCancel}
           visible={this.props.visible}
           footer={

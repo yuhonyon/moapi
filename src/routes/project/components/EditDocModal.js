@@ -3,6 +3,7 @@ import React from 'react'
 import {inject, observer} from 'mobx-react';
 import { Link  } from 'react-router-dom'
 import config from "@/config"
+import { Spin } from 'antd';
 
 const TreeNode = Tree.TreeNode;
 const formItemLayout = {
@@ -20,7 +21,8 @@ const formItemLayout = {
 class EditDocModal extends React.Component {
 
   state={
-    docMenu:[]
+    docMenu:[],
+    loading:false
   }
 
 
@@ -87,9 +89,11 @@ class EditDocModal extends React.Component {
 
 
   handleChange =({ file })=> {
+    
+    this.setState({loading:file.status==="uploading"})
     if (file.status === 'done') {
      message.success('上传成功')
-     this.props.project.getProjectInfo()
+     this.props.project.uploadDocFile(file.response.result)
    }
   }
   handleAddDoc=()=>{
@@ -266,7 +270,7 @@ class EditDocModal extends React.Component {
           title={<div><span>附件管理</span>&nbsp;<Upload
             showUploadList={false}
             onChange={this.handleChange}
-            action={`${config.baseURL}doc/upload?token=${this.props.user.userInfo.accessToken}&projectId=${this.props.project.projectId}`}
+            action={`${config.baseURL}common/file/upload`}
             >
              <Button>
                <Icon type="upload" /> 上传
@@ -281,7 +285,7 @@ class EditDocModal extends React.Component {
           onOk={this.handleOk}
           onCancel={this.handleCancel}
           okText="保存目录"
-        >
+        ><Spin tip="上传中..." spinning={this.state.loading}>
 
         <Tree
         showLine
@@ -294,18 +298,8 @@ class EditDocModal extends React.Component {
       </Tree>
 
       <Button onClick={this.handleAddMenu}><Icon type="plus" />添加目录</Button>
-        
-        {/* <h3>附件列表</h3>
-        <ul>
-          {this.props.project.docs.map(item=>(
-            <li key={item.id}>
-              &nbsp;
-              {(item.type==='md'||item.type==='markedown'||!item.type)?<Link to={`/doc/${item.id}`}><Icon type="form"></Icon></Link>:<a target="_blank" download href={`${config.baseURL}${item.url}`}><Icon type="download" /></a>}
+   </Spin>
 
-              <Icon onClick={this.handleDeleteDoc.bind(this,item.id)} type="delete"></Icon>
-            </li>
-          ))}
-        </ul> */}
 
         </Modal>
       </div>

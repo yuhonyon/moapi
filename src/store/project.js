@@ -73,7 +73,7 @@ class Project {
   }
   @computed
   get docUrl() {
-    return Config.baseURL + 'project/doc/' + this.projectId
+    return Config.baseURL + 'project/doc/' + this.projectId+'?cache=false'
   }
 
   @computed
@@ -123,6 +123,16 @@ class Project {
       if(data.checkInfo.type===3&&data.checkInfo.cookieKey){
         setCookie(data.checkInfo.cookieKey,data.checkInfo.cookieValue)
       }
+      return data;
+    })
+  }
+
+  @action.bound
+  uploadDocFile(fileData,projectId=this.projectId) {
+    return fetchApi.fetchUploadDocFile(projectId,fileData).then(data => {
+      runInAction(() => {
+        this.getProjectInfo()
+      })
       return data;
     })
   }
