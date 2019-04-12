@@ -256,7 +256,7 @@ class EditDocModal extends React.Component {
         {doc.title}
         </a>
         &nbsp;
-        {(doc.type==='md'||doc.type==='markedown'||!doc.type)?<Link to={`/doc/${doc.id}`}><Icon type="form"></Icon></Link>:<a target="_blank" download href={`${config.baseURL}${doc.url}`}><Icon type="download" /></a>}
+        {(doc.type==='md'||doc.type==='markedown'||!doc.type)?<Link to={`/doc/${doc.id}`}><Icon type="form"></Icon></Link>:<a target="_blank" download href={`${doc.url}`}><Icon type="download" /></a>}
         <Icon onClick={this.handleDeleteDoc.bind(this,doc.id)} type="delete"></Icon>
       </div>
       )}></TreeNode>;
