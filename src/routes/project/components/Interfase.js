@@ -286,6 +286,25 @@ class Interfase extends React.Component {
       </div>
 
 
+      <div className={Style.title}>
+        <h3>备注</h3>
+        {this.props.project.permission>2&&<Button onClick={this.handleAddRemark} className={Style.titleBtn} size="small" type="primary">添加</Button>}
+      </div>
+      <List
+      size="small"
+      bordered
+      dataSource={toJS(this.props.interfases.remarks.slice().reverse())}
+      renderItem={item => (
+        <List.Item actions={[<Icon onClick={this.handleUpdateRemark.bind(this,item)} type="edit"></Icon>,<Icon onClick={this.handleDeleteRemark.bind(this,item.id)} type="delete"></Icon>]}>
+          <List.Item.Meta
+                title={<div>{item.version}&emsp;{item.creator}</div>}
+                description={<div className={Style.remarkMessage}>{item.message}</div>}
+              />
+          <div>{parseDate(item.createdAt)}</div>
+        </List.Item>)}
+      />
+
+
 
       <div className={Style.title}>
         <h3>Headers</h3>
@@ -374,24 +393,9 @@ data={toJS(this.props.interfases.data.headers)}></HeadersTable>
         </div>
       }
 
-      <div className={Style.title}>
-        <h3>备注</h3>
-        {this.props.project.permission>2&&<Button onClick={this.handleAddRemark} className={Style.titleBtn} size="small" type="primary">添加</Button>}
-      </div>
-      <List
-      size="small"
-      bordered
-      dataSource={toJS(this.props.interfases.remarks.slice())}
-      renderItem={item => (
-        <List.Item actions={[<Icon onClick={this.handleUpdateRemark.bind(this,item)} type="edit"></Icon>,<Icon onClick={this.handleDeleteRemark.bind(this,item.id)} type="delete"></Icon>]}>
-          <List.Item.Meta
-                title={<div>{item.version}&emsp;{item.creator}</div>}
-                description={<div className={Style.remarkMessage}>{item.message}</div>}
-              />
-          <div>{parseDate(item.createdAt)}</div>
-        </List.Item>)}
-      />
-    </div>)
+      
+    </div>
+    )
   }
 }
 
