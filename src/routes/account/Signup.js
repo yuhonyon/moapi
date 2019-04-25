@@ -2,8 +2,9 @@ import React from "react";
 import { Form, Icon, Input, Button, message } from 'antd';
 import Style from "./LoginForm.less";
 import {inject, observer} from 'mobx-react';
-import {withRouter} from "react-router-dom";
+import {Link} from "react-router-dom";
 import intl from "react-intl-universal";
+import AccountLayout from './components/AccountLayout'
 const FormItem = Form.Item;
 
 @inject("user")
@@ -23,7 +24,9 @@ class LoginForm extends React.Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     return (
+      <AccountLayout>
       <div className={Style.wrapper}>
+      <h2 className={Style.title}>用户注册</h2>
         <Form onSubmit={this.handleSubmit} className={Style.from}>
           <FormItem>
             {getFieldDecorator('name', {
@@ -51,12 +54,16 @@ class LoginForm extends React.Component {
               {intl.get("login.signup").d("注册")}
             </Button>
           </FormItem>
+          <FormItem>
+            <Link to="/login">已有账号,去登录 </Link>
+          </FormItem>
         </Form>
       </div>
+      </AccountLayout>
     );
   }
 }
 
 const WrappedNormalLoginForm = Form.create()(LoginForm);
 
-export default withRouter(WrappedNormalLoginForm);
+export default WrappedNormalLoginForm;

@@ -39,6 +39,10 @@ class RecordModal extends React.Component {
   }
   componentWillReceiveProps(nextProps){
     if(nextProps.visible&&nextProps.visible!==this.props.visible){
+      this.params.page=1;
+      this.setState({
+        records:{data:[],total:0}
+      });
       this.fetchData()
     }
   }

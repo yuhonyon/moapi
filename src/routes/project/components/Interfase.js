@@ -20,7 +20,7 @@ const ButtonGroup = Button.Group;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const Option=Select.Option;
-
+const TextArea=Input.TextArea;
 @inject("interfases","project")
 @observer
 class Interfase extends React.Component {
@@ -45,8 +45,7 @@ class Interfase extends React.Component {
 
   saveInterfase = () => {
     this.props.interfases.closeEditable()
-    this.fetchSaveInterfase()
-    this.recordMessage=""
+    return this.fetchSaveInterfase()
   }
 
   handleAddRemarkOk=(info)=>{
@@ -83,21 +82,41 @@ class Interfase extends React.Component {
 
   addRecord=()=>{
     this.forceSave=false;
+    let remark="";
     Modal.confirm({
-      title:'添加修改记录',
+      title:'是否保存接口',
       okText:"保存",
-      content: <div><Input defaultValue={this.recordMessage} onChange={e=>this.recordMessage=e.target.value} ></Input><br/><Switch onChange={value=>this.forceSave=value} size="small" defaultChecked={this.forceSave} />强制保存</div>,
+      content: <div>
+        <br/>
+        <h5>修改记录:</h5>
+        <Input defaultValue={this.recordMessage} onChange={e=>this.recordMessage=e.target.value} ></Input>
+        <br/>
+        <br/>
+        <h5>备注:</h5>
+        <TextArea defaultValue={remark} onChange={e=>remark=e.target.value} ></TextArea>
+        <br/>
+        <br/>
+        <Switch onChange={value=>this.forceSave=value} size="small" defaultChecked={this.forceSave} />强制保存</div>,
       onOk:()=>{
-        this.saveInterfase()
+        this.saveInterfase().then(()=>{
+          if(remark){
+            this.handleAddRemarkOk({version:this.props.project.info.version,
+              message:remark})
+          }
+          remark='';
+          this.recordMessage="";
+        });
+        
       },
       onCancel:()=>{
         this.recordMessage="";
         this.forceSave=false;
+        remark='';
       }
     })
   }
   handlerAddVersion=()=>{
-    this.addVersion="";
+    this.addVersion=this.props.project.info.version;
     const ref =Modal.confirm({
       title: '添加版本标记',
       content: (
@@ -169,8 +188,9 @@ class Interfase extends React.Component {
     data.recordMessage=this.recordMessage;
     data.forceSave=this.forceSave
     this.forceSave=false;
-    this.props.project.updateInterfase(this.props.interfases.data.id,data).then(()=>{
+    return this.props.project.updateInterfase(this.props.interfases.data.id,data).then((data)=>{
         message.success('保存成功');
+        return data;
     })
   }
 

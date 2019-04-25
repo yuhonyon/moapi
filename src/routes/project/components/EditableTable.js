@@ -180,6 +180,7 @@ class EditableTable extends React.Component{
     title: '名称',
     dataIndex: 'name',
     key: 'name',
+    className: Style.flex,
     render:(text,record)=>this.renderColumns(text,record,'name')
   }, {
     title: '类型',

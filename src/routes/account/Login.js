@@ -2,8 +2,9 @@ import React from "react";
 import { Form, Icon, Input, Button, message } from 'antd';
 import Style from "./LoginForm.less";
 import { inject, observer } from 'mobx-react';
-import { withRouter } from "react-router-dom";
+import {Link} from "react-router-dom";
 import intl from "react-intl-universal";
+import AccountLayout from './components/AccountLayout'
 const FormItem = Form.Item;
 
 @inject("user")
@@ -23,7 +24,9 @@ class LoginForm extends React.Component {
   render () {
     const { getFieldDecorator } = this.props.form;
     return (
+      <AccountLayout>
       <div className={Style.wrapper}>
+        <h2 className={Style.title}>用户登录</h2>
         <Form onSubmit={this.handleSubmit} className={Style.from}>
           <FormItem>
             {getFieldDecorator('phone', {
@@ -45,14 +48,26 @@ class LoginForm extends React.Component {
             </Button>
           </FormItem>
           <FormItem>
-            <a href="http://employee.qa.91jkys.com/sso/login?redirect=http://mock.91jkys.com/">使用内网登陆</a>
+            <a href="http://employee.qa.91jkys.com/sso/login?redirect=http://mock.91jkys.com/">
+              <Button style={{ width: "100%" }} size="large" type="primary" htmlType="submit" className={Style.submit}>
+                  使用内网登陆
+              </Button>
+            </a>
           </FormItem>
+          <FormItem>
+            <Link to="/signup">没有账号?去注册 </Link>
+          </FormItem>
+          
+
+          
+          
         </Form>
       </div>
+      </AccountLayout>
     );
   }
 }
 
 const WrappedNormalLoginForm = Form.create()(LoginForm);
 
-export default withRouter(WrappedNormalLoginForm);
+export default WrappedNormalLoginForm;

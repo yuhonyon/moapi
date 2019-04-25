@@ -581,7 +581,7 @@ class Interfase {
       if(project.info.gateway&&project.info.gatewayTemplate.res){
         let resTemplate=JSON.stringify(project.info.gatewayTemplate.res)
         if(data==='{}'){
-          data=resTemplate;
+          data=resTemplate.replace(/"\$data"/,"null");
         }else if(resTemplate.search(/"\$data"/)>=0){
           data=resTemplate.replace(/"\$data"/,data)
         }else if(resTemplate!=="{}"){
@@ -601,7 +601,7 @@ class Interfase {
       if(project.info.gateway&&project.info.gatewayTemplate.req){
         let reqTemplate=JSON.stringify(project.info.gatewayTemplate.req)
         if(data==='{}'){
-          data=reqTemplate;
+          data=reqTemplate.replace(/"\$data"/,"null");
         }else if(reqTemplate.search(/"\$data"/)>=0){
           data=reqTemplate.replace(/"\$data"/,data)
         }else if(reqTemplate!=='{}'){
@@ -670,6 +670,7 @@ class Interfase {
     
     interfases.changeCode('req')
     interfases.changeCode('res')
+    window.history.pushState(null,null,`${window.location.pathname}?moduleId=${data.moduleId}&interfaseId=${data.id}`);
   }
 
   @action.bound refreshCode(type){

@@ -23,6 +23,7 @@
   tbody>tr>td:nth-child(1){
     .cell{
       display: inline-block;
+      width:100%;
     }
   }
   :global{
@@ -35,4 +36,14 @@
     }
   }
 
+}
+
+td.flex{
+  display: flex;
+  line-height: 32px;
+  :global{
+    .ant-table-row-expand-icon{
+      margin-top: 8px;
+    }
+  }
 }
