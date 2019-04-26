@@ -49,7 +49,7 @@ class LoginForm extends React.Component {
           </FormItem>
           <FormItem>
             <a href="http://employee.qa.91jkys.com/sso/login?redirect=http://mock.91jkys.com/">
-              <Button style={{ width: "100%" }} size="large" type="primary" htmlType="submit" className={Style.submit}>
+              <Button style={{ width: "100%" }} size="large" type="primary" className={Style.submit}>
                   使用内网登陆
               </Button>
             </a>
