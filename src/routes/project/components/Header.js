@@ -219,7 +219,7 @@ class Header extends React.Component {
         </div>
 
         <div style={{float:"right"}}>
-          <Select value={this.props.project.curVersion} onChange={this.handleChangeVersion}>
+          <Select style={{minWidth:100}} value={this.props.project.curVersion} onChange={this.handleChangeVersion}>
             <Option value="">所有版本</Option>
             {
               this.props.project.info.versions.slice().map(version=>(
