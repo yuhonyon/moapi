@@ -35,6 +35,7 @@ useStrict(true);
 
 class Interfase {
   @observable editable = false;
+  @observable loadRemarkMoreVisible = true;
   @observable showLeadInModal = false;
   @observable data = {
     name: '',
@@ -614,6 +615,11 @@ class Interfase {
     }
   }
 
+  
+
+  @action.bound loadRemarkMore() {
+    this.loadRemarkMoreVisible = false;
+  }
   @action.bound openEditable() {
     this.editable = true;
   }
@@ -635,6 +641,7 @@ class Interfase {
     return fetchApi.fetchGetInterfaseRemark(this.data.id).then((data) => {
       runInAction(() => {
         this.data.remarks=data.remarks;
+        project.interfase.remarks=data.remarks
       })
       return data;
     })
@@ -666,6 +673,7 @@ class Interfase {
     };
     if(!noflush){
       this.editable = false;
+      this.loadRemarkMoreVisible=true;
     }
     
     interfases.changeCode('req')

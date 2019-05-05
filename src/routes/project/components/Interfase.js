@@ -35,12 +35,13 @@ class Interfase extends React.Component {
     editRemarkInfo:{},
     recordModalShow:false,
     resPreview: true,
-    reqPreview: true,
+    reqPreview: true
   }
   addValue={}
   recordMessage=""
   forceSave=false
   addVersion=""
+  
 
 
   saveInterfase = () => {
@@ -293,7 +294,15 @@ class Interfase extends React.Component {
       <List
       size="small"
       bordered
-      dataSource={toJS(this.props.interfases.remarks.slice().reverse())}
+      loadMore={this.props.interfases.loadRemarkMoreVisible&&this.props.interfases.remarks.length>3?(
+        <div onClick={this.props.interfases.loadRemarkMore} style={{
+          textAlign: 'center', height: 32, lineHeight: '32px',cursor:'pointer'
+        }}
+        >
+          查看更多
+        </div>
+      ):null}
+      dataSource={this.props.interfases.remarks.slice(this.props.interfases.loadRemarkMoreVisible?-3:0).reverse()}
       renderItem={item => (
         <List.Item actions={[<Icon onClick={this.handleUpdateRemark.bind(this,item)} type="edit"></Icon>,<Icon onClick={this.handleDeleteRemark.bind(this,item.id)} type="delete"></Icon>]}>
           <List.Item.Meta
@@ -302,6 +311,7 @@ class Interfase extends React.Component {
               />
           <div>{parseDate(item.createdAt)}</div>
         </List.Item>)}
+
       />
 
 
