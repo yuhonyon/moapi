@@ -20,7 +20,7 @@ const ButtonGroup = Button.Group;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const Option=Select.Option;
-
+const TextArea=Input.TextArea;
 @inject("interfases","project")
 @observer
 class Interfase extends React.Component {
@@ -35,18 +35,18 @@ class Interfase extends React.Component {
     editRemarkInfo:{},
     recordModalShow:false,
     resPreview: true,
-    reqPreview: true,
+    reqPreview: true
   }
   addValue={}
   recordMessage=""
   forceSave=false
   addVersion=""
+  
 
 
   saveInterfase = () => {
     this.props.interfases.closeEditable()
-    this.fetchSaveInterfase()
-    this.recordMessage=""
+    return this.fetchSaveInterfase()
   }
 
   handleAddRemarkOk=(info)=>{
@@ -83,21 +83,41 @@ class Interfase extends React.Component {
 
   addRecord=()=>{
     this.forceSave=false;
+    let remark="";
     Modal.confirm({
-      title:'添加修改记录',
+      title:'是否保存接口',
       okText:"保存",
-      content: <div><Input defaultValue={this.recordMessage} onChange={e=>this.recordMessage=e.target.value} ></Input><br/><Switch onChange={value=>this.forceSave=value} size="small" defaultChecked={this.forceSave} />强制保存</div>,
+      content: <div>
+        <br/>
+        <h5>修改记录:</h5>
+        <Input defaultValue={this.recordMessage} onChange={e=>this.recordMessage=e.target.value} ></Input>
+        <br/>
+        <br/>
+        <h5>备注:</h5>
+        <TextArea defaultValue={remark} onChange={e=>remark=e.target.value} ></TextArea>
+        <br/>
+        <br/>
+        <Switch onChange={value=>this.forceSave=value} size="small" defaultChecked={this.forceSave} />强制保存</div>,
       onOk:()=>{
-        this.saveInterfase()
+        this.saveInterfase().then(()=>{
+          if(remark){
+            this.handleAddRemarkOk({version:this.props.project.info.version,
+              message:remark})
+          }
+          remark='';
+          this.recordMessage="";
+        });
+        
       },
       onCancel:()=>{
         this.recordMessage="";
         this.forceSave=false;
+        remark='';
       }
     })
   }
   handlerAddVersion=()=>{
-    this.addVersion="";
+    this.addVersion=this.props.project.info.version;
     const ref =Modal.confirm({
       title: '添加版本标记',
       content: (
@@ -169,8 +189,9 @@ class Interfase extends React.Component {
     data.recordMessage=this.recordMessage;
     data.forceSave=this.forceSave
     this.forceSave=false;
-    this.props.project.updateInterfase(this.props.interfases.data.id,data).then(()=>{
+    return this.props.project.updateInterfase(this.props.interfases.data.id,data).then((data)=>{
         message.success('保存成功');
+        return data;
     })
   }
 
@@ -266,6 +287,34 @@ class Interfase extends React.Component {
       </div>
 
 
+      <div className={Style.title}>
+        <h3>备注</h3>
+        {this.props.project.permission>2&&<Button onClick={this.handleAddRemark} className={Style.titleBtn} size="small" type="primary">添加</Button>}
+      </div>
+      <List
+      size="small"
+      bordered
+      loadMore={this.props.interfases.loadRemarkMoreVisible&&this.props.interfases.remarks.length>3?(
+        <div onClick={this.props.interfases.loadRemarkMore} style={{
+          textAlign: 'center', height: 32, lineHeight: '32px',cursor:'pointer'
+        }}
+        >
+          查看更多
+        </div>
+      ):null}
+      dataSource={this.props.interfases.remarks.slice(this.props.interfases.loadRemarkMoreVisible?-3:0).reverse()}
+      renderItem={item => (
+        <List.Item actions={[<Icon onClick={this.handleUpdateRemark.bind(this,item)} type="edit"></Icon>,<Icon onClick={this.handleDeleteRemark.bind(this,item.id)} type="delete"></Icon>]}>
+          <List.Item.Meta
+                title={<div>{item.version}&emsp;{item.creator}</div>}
+                description={<div className={Style.remarkMessage}>{item.message}</div>}
+              />
+          <div>{parseDate(item.createdAt)}</div>
+        </List.Item>)}
+
+      />
+
+
 
       <div className={Style.title}>
         <h3>Headers</h3>
@@ -354,24 +403,9 @@ data={toJS(this.props.interfases.data.headers)}></HeadersTable>
         </div>
       }
 
-      <div className={Style.title}>
-        <h3>备注</h3>
-        {this.props.project.permission>2&&<Button onClick={this.handleAddRemark} className={Style.titleBtn} size="small" type="primary">添加</Button>}
-      </div>
-      <List
-      size="small"
-      bordered
-      dataSource={toJS(this.props.interfases.remarks.slice())}
-      renderItem={item => (
-        <List.Item actions={[<Icon onClick={this.handleUpdateRemark.bind(this,item)} type="edit"></Icon>,<Icon onClick={this.handleDeleteRemark.bind(this,item.id)} type="delete"></Icon>]}>
-          <List.Item.Meta
-                title={<div>{item.version}&emsp;{item.creator}</div>}
-                description={<div className={Style.remarkMessage}>{item.message}</div>}
-              />
-          <div>{parseDate(item.createdAt)}</div>
-        </List.Item>)}
-      />
-    </div>)
+      
+    </div>
+    )
   }
 }
 

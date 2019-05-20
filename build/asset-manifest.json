@@ -1,6 +1,7 @@
 {
   "main.css": "static/css/main.51678922.css",
   "main.css.map": "static/css/main.51678922.css.map",
+<<<<<<< HEAD
   "main.js": "static/js/main.45b2bd8c.js",
   "main.js.map": "static/js/main.45b2bd8c.js.map",
   "static/js/0.977a75ea.chunk.js": "static/js/0.977a75ea.chunk.js",
@@ -13,6 +14,22 @@
   "static/js/3.9cef1329.chunk.js.map": "static/js/3.9cef1329.chunk.js.map",
   "static/js/4.36af110a.chunk.js": "static/js/4.36af110a.chunk.js",
   "static/js/4.36af110a.chunk.js.map": "static/js/4.36af110a.chunk.js.map",
+=======
+  "main.js": "static/js/main.b7f905eb.js",
+  "main.js.map": "static/js/main.b7f905eb.js.map",
+  "static/js/0.a9e24c33.chunk.js": "static/js/0.a9e24c33.chunk.js",
+  "static/js/0.a9e24c33.chunk.js.map": "static/js/0.a9e24c33.chunk.js.map",
+  "static/js/1.25bc80c7.chunk.js": "static/js/1.25bc80c7.chunk.js",
+  "static/js/1.25bc80c7.chunk.js.map": "static/js/1.25bc80c7.chunk.js.map",
+  "static/js/2.1c3bbb96.chunk.js": "static/js/2.1c3bbb96.chunk.js",
+  "static/js/2.1c3bbb96.chunk.js.map": "static/js/2.1c3bbb96.chunk.js.map",
+  "static/js/3.871d8857.chunk.js": "static/js/3.871d8857.chunk.js",
+  "static/js/3.871d8857.chunk.js.map": "static/js/3.871d8857.chunk.js.map",
+  "static/js/4.5b366b68.chunk.js": "static/js/4.5b366b68.chunk.js",
+  "static/js/4.5b366b68.chunk.js.map": "static/js/4.5b366b68.chunk.js.map",
+  "static/js/5.ba9f7985.chunk.js": "static/js/5.ba9f7985.chunk.js",
+  "static/js/5.ba9f7985.chunk.js.map": "static/js/5.ba9f7985.chunk.js.map",
+>>>>>>> qatest
   "static/media/iconfont.eot": "static/media/iconfont.9ec5e40e.eot",
   "static/media/iconfont.eot?t=1527252431704": "static/media/iconfont.132d8fd2.eot",
   "static/media/iconfont.svg": "static/media/iconfont.ca5d4588.svg",
@@ -20,5 +37,6 @@
   "static/media/iconfont.ttf": "static/media/iconfont.3a2ba315.ttf",
   "static/media/iconfont.ttf?t=1527252431704": "static/media/iconfont.07fa4ce3.ttf",
   "static/media/iconfont.woff": "static/media/iconfont.de3f28fd.woff",
+  "static/media/login_bg.jpg": "static/media/login_bg.58fab4dc.jpg",
   "static/media/mock.snippers": "static/media/mock.b94950ca.snippers"
 }

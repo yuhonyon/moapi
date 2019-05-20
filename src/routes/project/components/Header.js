@@ -1,5 +1,5 @@
 import React  from 'react';
-import {Icon,Select,Modal,Button,Input} from 'antd';
+import {Icon,Select,Modal,Button,Input,AutoComplete} from 'antd';
 import EditProjectModal from './EditProjectModal'
 import EditDocModal from './EditDocModal'
 import CheckModal from './CheckModal'
@@ -119,6 +119,40 @@ class Header extends React.Component {
    });
   }
 
+  handleShowSearch=()=>{
+    const dataSource=this.props.project.data.modules.reduce((total,item)=>{
+      return total.concat(item.interfases.slice())
+    },[])
+    let data=null;
+    Modal.info({
+     title: '查找接口',
+     content: (
+       <Select
+        showSearch
+        style={{ width: 300 }}
+        placeholder="请输入url或者接口名称"
+        onChange={(e,option)=>data=option}
+        filterOption={(input, option) => {
+          return option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 || option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0 
+        }}
+      >
+        {dataSource.map(item=>(
+          <Option moduleid={item.moduleId} interfaseid={item.id} key={item.id} value={item.url+item.id}>{item.name}</Option>
+        ))}
+        
+      </Select>
+     ),
+     iconType:"search",
+     onOk:()=>{
+      if(data){
+        this.props.project.selectInterfase(data.props.moduleid,data.props.interfaseid);
+        data=null;
+      }
+     },
+     okText:"查找"
+   });
+  }
+
   handleUpdateDocOk=(data)=>{
     this.props.project.updateProject(this.props.project.projectId,{docMenu:data}).then(()=>{
       this.props.project.getProjectInfo(this.props.project.projectId)
@@ -180,10 +214,12 @@ class Header extends React.Component {
           <a href={`${config.baseURL}project/export/${this.props.project.info.id}?token=${this.props.user.userInfo.accessToken}`} download={this.props.project.name+".json"} ><Icon type="file-markdown" />导出</a>
 
           {this.props.project.permission>2&&<a onClick={this.openImportSwaggerModal}><Icon type="file-markdown" />导入swagger</a>}
+
+          <a  onClick={this.handleShowSearch}><Icon type="search" />查找接口</a>
         </div>
 
         <div style={{float:"right"}}>
-          <Select value={this.props.project.curVersion} onChange={this.handleChangeVersion}>
+          <Select style={{minWidth:100}} value={this.props.project.curVersion} onChange={this.handleChangeVersion}>
             <Option value="">所有版本</Option>
             {
               this.props.project.info.versions.slice().map(version=>(
