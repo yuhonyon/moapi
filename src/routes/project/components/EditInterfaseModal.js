@@ -1,6 +1,7 @@
 import { Modal,Form, Input, Select } from 'antd';
 import React from 'react'
 import {inject, observer} from 'mobx-react';
+import config from '../../../config';
 const Option=Select.Option;
 const FormItem=Form.Item;
 const TextArea=Input.TextArea
@@ -99,7 +100,7 @@ class EditInterfaseModal extends React.Component {
                 <Input />
               )}
             </FormItem>
-            <FormItem
+            {config.isKS&&<FormItem
               {...formItemLayout}
               label="网关URL"
             >
@@ -121,7 +122,7 @@ class EditInterfaseModal extends React.Component {
               })(
                 <Input />
               )}
-            </FormItem>
+            </FormItem>}
             <FormItem
               {...formItemLayout}
               label="类型"

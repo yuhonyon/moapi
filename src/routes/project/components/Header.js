@@ -1,5 +1,5 @@
 import React  from 'react';
-import {Icon,Select,Modal,Button,Input,AutoComplete} from 'antd';
+import {Icon,Select,Modal,Button,Input,AutoComplete, Dropdown, Menu} from 'antd';
 import EditProjectModal from './EditProjectModal'
 import EditDocModal from './EditDocModal'
 import CheckModal from './CheckModal'
@@ -175,6 +175,23 @@ class Header extends React.Component {
   }
 
   render(){
+    const menu = (
+      <Menu>
+        <Menu.Item>
+        <a download href={this.props.project.mdDownloadUrl}><Icon type="file-markdown" />下载文档</a>
+        </Menu.Item>
+        <Menu.Item>
+        <a download  href={this.props.project.serverUrl}><Icon type="cloud-download-o" />生成server</a>
+        </Menu.Item>
+        <Menu.Item>
+        <a  onClick={this.handleShowMockUrl}><Icon type="link" />mock地址</a>
+        </Menu.Item>
+        <Menu.Item>
+        <a href={`${config.baseURL}project/export/${this.props.project.info.id}?token=${this.props.user.userInfo.accessToken}`} download={this.props.project.name+".json"} ><Icon type="file-markdown" />导出</a>
+        </Menu.Item>
+      </Menu>
+    );
+
     return(
       <div className={Style.wrapper}>
         <CheckModal onOk={this.handleCheckOk} onClose={this.closeCheckModal}  visible={this.state.checkModalShow}></CheckModal>
@@ -200,22 +217,19 @@ class Header extends React.Component {
 
           {this.props.project.permission>1&&<a onClick={this.openCheckModal} href="###"><Icon type="appstore-o" />鉴权</a>}
 
-
-          <a download href={this.props.project.mdDownloadUrl}><Icon type="file-markdown" />下载文档</a>
-
-          <a target="_blank" href={this.props.project.docUrl}><Icon type="file-text" />接口文档</a>
-
-          <a download  href={this.props.project.serverUrl}><Icon type="cloud-download-o" />生成server</a>
-
-          <a  onClick={this.handleShowMockUrl}><Icon type="link" />mock地址</a>
+          <a target="_blank" href={this.props.project.docUrl}><Icon type="file-text" />在线文档</a>
 
           <a onClick={this.openEditDocModal}><Icon type="file-markdown" />附件管理</a>
-
-          <a href={`${config.baseURL}project/export/${this.props.project.info.id}?token=${this.props.user.userInfo.accessToken}`} download={this.props.project.name+".json"} ><Icon type="file-markdown" />导出</a>
 
           {this.props.project.permission>2&&<a onClick={this.openImportSwaggerModal}><Icon type="file-markdown" />导入swagger</a>}
 
           <a  onClick={this.handleShowSearch}><Icon type="search" />查找接口</a>
+
+          <Dropdown overlay={menu}>
+            <a className="ant-dropdown-link" href="#">
+              更多<Icon type="down" />
+            </a>
+          </Dropdown>
         </div>
 
         <div style={{float:"right"}}>

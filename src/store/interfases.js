@@ -3,6 +3,7 @@ import Mock from 'mockjs';
 import project from './project'
 import Config from '@/config'
 import fetchApi from '@/api'
+import config from '../config';
 
 
 function parseStrToObj(str){
@@ -127,7 +128,7 @@ class Interfase {
       data.push({"enabled": true, "key": item.name, "value": item.value})
     }
 
-    if(project.info.gateway&&project.info.gatewayTemplate.headers){
+    if((project.info.gateway|| !config.isKS)&&project.info.gatewayTemplate.headers){
       for(let i in project.info.gatewayTemplate.headers){
         data.push({"enabled": true, "key": i, "value": project.info.gatewayTemplate.headers[i]})
       }
@@ -579,7 +580,7 @@ class Interfase {
         data=data.array_type_data
       }
       data=JSON.stringify(data, null, 2);
-      if(project.info.gateway&&project.info.gatewayTemplate.res){
+      if((project.info.gateway|| !config.isKS)&&project.info.gatewayTemplate.res){
         let resTemplate=JSON.stringify(project.info.gatewayTemplate.res)
         if(data==='{}'){
           data=resTemplate.replace(/"\$data"/,"null");
@@ -599,7 +600,7 @@ class Interfase {
         data=data.array_type_data
       }
       data=JSON.stringify(data, null, 2);
-      if(project.info.gateway&&project.info.gatewayTemplate.req){
+      if((project.info.gateway|| !config.isKS)&&project.info.gatewayTemplate.req){
         let reqTemplate=JSON.stringify(project.info.gatewayTemplate.req)
         if(data==='{}'){
           data=reqTemplate.replace(/"\$data"/,"null");

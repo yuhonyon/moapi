@@ -1,6 +1,7 @@
 import { Modal,Form, Input, Select,Radio,Switch } from 'antd';
 import React from 'react'
 import {inject, observer} from 'mobx-react';
+import config from '../../../config';
 
 
 
@@ -203,7 +204,7 @@ class EditProjectModal extends React.Component {
             </FormItem>
 
 
-            <FormItem
+            {config.isKS&&<FormItem
               {...formItemLayout}
               label="网关模式"
             >
@@ -215,10 +216,10 @@ class EditProjectModal extends React.Component {
                   disabled={this.props.project.info.permission<2}
                 />
               )}
-            </FormItem>
+            </FormItem>}
 
 
-            <FormItem
+            {config.isKS&&<FormItem
               {...formItemLayout}
               label="网关代理地址"
             >
@@ -227,7 +228,7 @@ class EditProjectModal extends React.Component {
               })(
                 <Input />
               )}
-            </FormItem>
+            </FormItem>}
 
 
 

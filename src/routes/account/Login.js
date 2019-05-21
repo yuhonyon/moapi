@@ -5,6 +5,7 @@ import { inject, observer } from 'mobx-react';
 import {Link} from "react-router-dom";
 import intl from "react-intl-universal";
 import AccountLayout from './components/AccountLayout'
+import config from "../../config";
 const FormItem = Form.Item;
 
 @inject("user")
@@ -47,13 +48,13 @@ class LoginForm extends React.Component {
               {intl.get("login.signin").d("登录")}
             </Button>
           </FormItem>
-          <FormItem>
+          {config.isKS&&<FormItem>
             <a href="http://employee.qa.91jkys.com/sso/login?redirect=http://mock.91jkys.com/">
               <Button style={{ width: "100%" }} size="large" type="primary" className={Style.submit}>
                   使用内网登陆
               </Button>
             </a>
-          </FormItem>
+          </FormItem>}
           <FormItem>
             <Link to="/signup">没有账号?去注册 </Link>
           </FormItem>

@@ -1,6 +1,7 @@
 import { Modal,Form, Input,Select ,Switch,Radio} from 'antd';
 import React from 'react'
 import {inject, observer} from 'mobx-react';
+import config from '../../../config';
 const FormItem=Form.Item;
 const TextArea=Input.TextArea
 const Option=Select.Option
@@ -167,7 +168,7 @@ class AddProjectModal extends React.Component {
             </FormItem>
 
 
-            <FormItem
+            {config.isKS&&<FormItem
               {...formItemLayout}
               label="网关模式"
             >
@@ -177,10 +178,10 @@ class AddProjectModal extends React.Component {
               })(
                 <Switch/>
               )}
-            </FormItem>
+            </FormItem>}
 
 
-            <FormItem
+            {config.isKS&&<FormItem
               {...formItemLayout}
               label="网关代理地址"
             >
@@ -189,7 +190,7 @@ class AddProjectModal extends React.Component {
               })(
                 <Input />
               )}
-            </FormItem>
+            </FormItem>}
 
             <FormItem
               {...formItemLayout}
