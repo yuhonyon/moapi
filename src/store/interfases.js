@@ -697,6 +697,10 @@ class Interfase {
       return data;
     })
   }
+  @action.bound 
+  recoveryRecord (history){
+    this.data=history;
+  }
 
 }
 

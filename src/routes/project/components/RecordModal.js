@@ -1,4 +1,4 @@
-import { Modal,List, Spin } from 'antd';
+import { Modal,List, Spin, Button } from 'antd';
 import React from 'react'
 import fetchApi from '@/api';
 
@@ -6,7 +6,7 @@ import Style from './RecordModal.less'
 import InfiniteScroll from 'react-infinite-scroller';
 import {inject, observer} from 'mobx-react';
 import {parseDate,recordType} from "@/filters"
-
+const confirm = Modal.confirm;
 @inject("interfases")
 @observer
 class RecordModal extends React.Component {
@@ -71,6 +71,17 @@ class RecordModal extends React.Component {
     }
     this.fetchData();
   }
+  handleRecovery=(history)=>{
+    confirm({
+      title: '提示',
+      content: '确定还原该记录',
+      onOk:()=> {
+        this.props.interfases.recoveryRecord(history);
+        this.props.onClose();
+      },
+      onCancel() {},
+    });
+  }
   render() {
     return (
       <div>
@@ -93,7 +104,7 @@ class RecordModal extends React.Component {
                 renderItem={item => (
                   <List.Item key={item.id}>
                     <List.Item.Meta
-                      title={<span>{item.creator}{recordType(item.type)}</span>}
+                      title={<span>{item.creator}{recordType(item.type)}&nbsp;{item.history&&<Button onClick={()=>this.handleRecovery(item.history)} size="small">还原</Button>}</span>}
                       description={<p>{item.type==="DELETE_REMARK"?<s>{item.message}</s>:(item.message||"直接保存")}</p>}
                     />
                     {this.formatDate(item.createdAt)}
