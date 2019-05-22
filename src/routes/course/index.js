@@ -8,14 +8,14 @@ class Course extends React.Component {
 # 图文教程
 
 ## 新建项目
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38pb5a4psj20x70mm40o.jpg)
+![](/doc/82eaf5a8ly1g38pb5a4psj20x70mm40o.jpg)
 
 ## 修改项目信息
 
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38pfl5hrxj20x00n50ve.jpg)
+![](/doc/82eaf5a8ly1g38pfl5hrxj20x00n50ve.jpg)
 
 ## 添加模块&接口
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38pikd9nej20xf0geabu.jpg)
+![](/doc/82eaf5a8ly1g38pikd9nej20xf0geabu.jpg)
 
 
 
@@ -23,21 +23,21 @@ class Course extends React.Component {
 
 ## 编辑接口
 ### 界面
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38qp54vxnj20xl0q70x1.jpg)
+![](/doc/82eaf5a8ly1g38qp54vxnj20xl0q70x1.jpg)
 
 ### 添加path参数,修改url即可
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g39wamxb72j20xx0l2wgw.jpg)
+![](/doc/82eaf5a8ly1g39wamxb72j20xx0l2wgw.jpg)
 
 ### 新建字段
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38wwgc2wvj20sg0lr40p.jpg)
+![](/doc/82eaf5a8ly1g38wwgc2wvj20sg0lr40p.jpg)
 
 ### 修改记录(可还原查看,编辑状态还原后可以保存)
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g39wcvukxzj20sq0dzmyj.jpg)
+![](/doc/82eaf5a8ly1g39wcvukxzj20sq0dzmyj.jpg)
 
 ### 导入json
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38qxh8t8yj20tb0o8mzg.jpg)
+![](/doc/82eaf5a8ly1g38qxh8t8yj20tb0o8mzg.jpg)
 数组格式没有key 会自动套一个key"array_type_data"来展示 最终使用会去掉
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38r1m8cu7j20qz0b3myg.jpg)
+![](/doc/82eaf5a8ly1g38r1m8cu7j20qz0b3myg.jpg)
 ### 导入模板
 操作同导入json 数据类型为平台储存接口数据的格式
 \`\`\`json
@@ -65,71 +65,71 @@ class Course extends React.Component {
 
 
 ## 导入Swagger
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38q5n5yhmj20wx0b8myx.jpg)
+![](/doc/82eaf5a8ly1g38q5n5yhmj20wx0b8myx.jpg)
 
 ## 同步Swagger入口
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38qhs5li1j20xj0cjq5k.jpg)
+![](/doc/82eaf5a8ly1g38qhs5li1j20xj0cjq5k.jpg)
 
 
 ## mock规则
 > mockJS文档[http://mockjs.com/examples.html]
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38rgudejdj21210pxael.jpg)
+![](/doc/82eaf5a8ly1g38rgudejdj21210pxael.jpg)
 
 
 ## 开启mock
 > 开启mock后走假数据,关闭则代理到真实接口
 ### 全局开启/关闭
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38s5fftewj20qg0jc40p.jpg)
+![](/doc/82eaf5a8ly1g38s5fftewj20qg0jc40p.jpg)
 ### 单个接口开启/关闭
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38s66c62pj20nz08ggmq.jpg)
+![](/doc/82eaf5a8ly1g38s66c62pj20nz08ggmq.jpg)
 ### 开启mock的接口会有小绿点标识
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38v2lvsfrj20pe05qq3v.jpg)
+![](/doc/82eaf5a8ly1g38v2lvsfrj20pe05qq3v.jpg)
 
 
 
 ## 拖拽
 * 接口列表可拖拽
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38rl8qxq4j212z06nwft.jpg)
+![](/doc/82eaf5a8ly1g38rl8qxq4j212z06nwft.jpg)
 * 接口字段顺序可拖拽排序(仅限同级,跨级请用复制模板导入模板功能修改)
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38rsnc3usj20f408xjs6.jpg)
+![](/doc/82eaf5a8ly1g38rsnc3usj20f408xjs6.jpg)
 * 附件目录
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38rulfxaoj20n50avmyb.jpg)
+![](/doc/82eaf5a8ly1g38rulfxaoj20n50avmyb.jpg)
 
 
 ## 接口测试(在线版postman,优点:自动填充参数)
 ### 入口
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38s1otultj20o908jt9u.jpg)
+![](/doc/82eaf5a8ly1g38s1otultj20o908jt9u.jpg)
 ### 界面
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38s34aclmj20y20fjq56.jpg)
+![](/doc/82eaf5a8ly1g38s34aclmj20y20fjq56.jpg)
 ### 鉴权
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38skcn81fj20wl0dkjt5.jpg)
+![](/doc/82eaf5a8ly1g38skcn81fj20wl0dkjt5.jpg)
 
 
 ## 版本标识
 * 目前版本控制只有标记和筛选功能
 * 默认版本V1.0.0 
 添加版本入口
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38v5naru2j20v60ayta4.jpg)
+![](/doc/82eaf5a8ly1g38v5naru2j20v60ayta4.jpg)
 接口添加版本标识入口
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38v68i55aj20wv0bx75u.jpg)
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38v6t1y9lj20um0drta7.jpg)
+![](/doc/82eaf5a8ly1g38v68i55aj20wv0bx75u.jpg)
+![](/doc/82eaf5a8ly1g38v6t1y9lj20um0drta7.jpg)
 
 ## 版本号应用
 * 标识接口版本
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38v98nq97j20la06lt9g.jpg)
+![](/doc/82eaf5a8ly1g38v98nq97j20la06lt9g.jpg)
 * 标识备注对应版本
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38v8nhj1fj20tj0c3q45.jpg)
+![](/doc/82eaf5a8ly1g38v8nhj1fj20tj0c3q45.jpg)
 * 筛选当前版本接口(比如项目有100个接口,2.0版本只修改了10个接口,筛选后只展示这10个)
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38vbrvlu4j20xy083abg.jpg)
+![](/doc/82eaf5a8ly1g38vbrvlu4j20xy083abg.jpg)
 
 
 ## 附件管理
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38vfcxfk2j20qq0kkdib.jpg)
+![](/doc/82eaf5a8ly1g38vfcxfk2j20qq0kkdib.jpg)
 * 支持markdown文档增删改
 * 拖拽目录结构
 * exec,word,ppt,img文件预览
 * 静态网站打包上传并可预览(比如marketch导出标注)
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38virxw83j20y1099wfo.jpg)
+![](/doc/82eaf5a8ly1g38virxw83j20y1099wfo.jpg)
 
 
 
@@ -151,15 +151,15 @@ class Course extends React.Component {
 }
 \`\`\`
 效果
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38src4589j20rh0crmyw.jpg)
+![](/doc/82eaf5a8ly1g38src4589j20rh0crmyw.jpg)
 
 
 ## 在线文档
 入口
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38su8u2rej20rh078jsg.jpg)
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38suvdtpdj20ni07pjs5.jpg)
+![](/doc/82eaf5a8ly1g38su8u2rej20rh078jsg.jpg)
+![](/doc/82eaf5a8ly1g38suvdtpdj20ni07pjs5.jpg)
 界面说明
-![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38staaaw6j20yq0n4tbg.jpg)
+![](/doc/82eaf5a8ly1g38staaaw6j20yq0n4tbg.jpg)
 
 
 
