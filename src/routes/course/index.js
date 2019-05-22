@@ -25,8 +25,14 @@ class Course extends React.Component {
 ### 界面
 ![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38qp54vxnj20xl0q70x1.jpg)
 
+### 添加path参数,修改url即可
+![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g39wamxb72j20xx0l2wgw.jpg)
+
 ### 新建字段
 ![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38wwgc2wvj20sg0lr40p.jpg)
+
+### 修改记录(可还原查看,编辑状态还原后可以保存)
+![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g39wcvukxzj20sq0dzmyj.jpg)
 
 ### 导入json
 ![](http://ww1.sinaimg.cn/large/82eaf5a8ly1g38qxh8t8yj20tb0o8mzg.jpg)
