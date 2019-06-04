@@ -50,6 +50,7 @@ changeLang=()=>{
             <Menu.Item key="/home"><Link to="/home" >首页</Link></Menu.Item>
             <Menu.Item key="/project"><Link to="/project" >仓库</Link></Menu.Item>
             <Menu.Item key="/course"><Link to="/course" >教程</Link></Menu.Item>
+            <Menu.Item key="/about"><Link to="/about" >关于</Link></Menu.Item>
           </Menu>
         </div>
         <div className={Style.right} >

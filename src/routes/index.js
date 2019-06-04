@@ -3,7 +3,7 @@ import RenderComponent from '../components/RenderComponent'
 import { Switch, Route, Redirect } from 'react-router-dom'
 import React from 'react'
 import Course from "./course"
-
+import About from "./about"
 
 const Routes = () => (
   <Switch>
@@ -14,6 +14,7 @@ const Routes = () => (
     <Route path="/doc/:docId" component={AsyncComponent(() => import('./doc'))} />
 
     <Route path="/course" component={Course} />
+    <Route path="/about" component={About} />
 
     <Redirect from="*" to="/project" />
   </Switch>

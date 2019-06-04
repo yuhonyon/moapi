@@ -252,9 +252,8 @@ class Project {
   addVersion(version) {
     const versions=this.info.versions;
     versions.push(version)
-    return fetchApi.fetchUpdateProject(this.projectId, {version:version,versions:versions}).then(data => {
-      this.saveDoc({projectId:this.projectId})
-      return data;
+    return this.saveDoc({projectId:this.projectId}).then(()=>{
+      return fetchApi.fetchUpdateProject(this.projectId, {version:version,versions:versions})
     })
   }
 
