@@ -168,29 +168,10 @@ class AddProjectModal extends React.Component {
             </FormItem>
 
 
-            {config.isKS&&<FormItem
-              {...formItemLayout}
-              label="网关模式"
-            >
-              {getFieldDecorator('gateway', {
-                initialValue: false,
-                valuePropName: 'checked'
-              })(
-                <Switch/>
-              )}
-            </FormItem>}
+            
 
 
-            {config.isKS&&<FormItem
-              {...formItemLayout}
-              label="网关代理地址"
-            >
-              {getFieldDecorator('gatewayProxy', {
-                initialValue: ''
-              })(
-                <Input />
-              )}
-            </FormItem>}
+            
 
             <FormItem
               {...formItemLayout}

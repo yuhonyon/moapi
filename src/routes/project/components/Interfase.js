@@ -262,12 +262,12 @@ class Interfase extends React.Component {
               {this.props.project.permission>1&&<RadioGroup buttonStyle="solid" onChange={this.handleProxyTypeChange} value={this.props.interfases.data.proxyType}>
                 <RadioButton value={0}>关闭mock</RadioButton>
                 <RadioButton value={1}>开启mock</RadioButton>
-                <RadioButton value={2}>合并mock</RadioButton>
+                {/* <RadioButton value={2}>合并mock</RadioButton> */}
               </RadioGroup>}
             </h3>
           </li>
           <li>地址:
-            <a target="_blank" href={this.props.interfases.testUrl}>{this.props.project.info.gateway?this.props.interfases.data.gatewayUrl:this.props.interfases.data.url}</a>&nbsp;<Button onClick={()=>{copy(this.props.project.info.gateway?this.props.interfases.data.gatewayUrl:this.props.interfases.data.url)}} size="small">复制</Button>
+            <a target="_blank" href={this.props.interfases.testUrl}>{this.props.interfases.data.url}</a>&nbsp;<Button onClick={()=>{copy(this.props.interfases.data.url)}} size="small">复制</Button>
           </li>
           <li>类型: {this.props.interfases.data.method}</li>
           <li>相关版本: {this.props.interfases.data.versions.slice().join("、")}&nbsp;{this.props.interfases.editable&&this.props.project.permission>2&&<Button onClick={this.handlerAddVersion} size="small">添加版本标记</Button>}</li>
@@ -327,7 +327,7 @@ data={toJS(this.props.interfases.data.headers)}></HeadersTable>
 
 
 
-      {/\{/.test(this.props.project.info.gateway?this.props.interfases.data.gatewayUrl:this.props.interfases.data.url)&&<div>
+      {/\{/.test(this.props.interfases.data.url)&&<div>
         <div className={Style.title}>
           <h3>Path参数</h3>
         </div>

@@ -44,7 +44,6 @@ class EditInterfaseModal extends React.Component {
       this.props.form.setFieldsValue({
         name: nextProps.interfase.name,
         url: nextProps.interfase.url,
-        gatewayUrl:nextProps.interfase.gatewayUrl,
         method: nextProps.interfase.method,
         description: nextProps.interfase.description,
         versions:nextProps.interfase.versions,
@@ -100,29 +99,7 @@ class EditInterfaseModal extends React.Component {
                 <Input />
               )}
             </FormItem>
-            {config.isKS&&<FormItem
-              {...formItemLayout}
-              label="网关URL"
-            >
-              {getFieldDecorator('gatewayUrl', {
-                initialValue:'',
-                rules: [{
-                  validator:(rule,value,callback)=>{
-                    let method=this.props.form.getFieldValue('method')
-                    if(value&&method){
-                      for(let module of this.props.project.modules){
-                        if(module.interfases.find(interfase=>interfase.gatewayUrl===value&&this.interfase.gatewayUrl!==value&&interfase.method===method)){
-                          callback(new Error("url已被占用"))
-                        }
-                      }
-                    }
-                    callback()
-                  }
-                }],
-              })(
-                <Input />
-              )}
-            </FormItem>}
+            
             <FormItem
               {...formItemLayout}
               label="类型"
@@ -133,7 +110,7 @@ class EditInterfaseModal extends React.Component {
                   required: true, message: '必选',
                 }],
               })(
-                <Select  onChange={()=>{setTimeout(()=>this.props.form.validateFields(['gatewayUrl','url'], { force: true } ),0)}}>
+                <Select  onChange={()=>{setTimeout(()=>this.props.form.validateFields(['url'], { force: true } ),0)}}>
                   <Option value="GET">GET</Option>
                   <Option value="POST">POST</Option>
                   <Option value="DELETE">DELETE</Option>

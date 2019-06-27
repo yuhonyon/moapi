@@ -41,13 +41,7 @@ class AddInterfaseModal extends React.Component {
     this.props.onClose();
   }
 
-  handleUrlChange=(e)=>{
-    let gatewayUrl=this.props.form.getFieldValue("gatewayUrl")
-    if(gatewayUrl){
-      return
-    }
-    this.props.form.setFieldsValue({gatewayUrl:e.target.value})
-  }
+
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -94,37 +88,10 @@ class AddInterfaseModal extends React.Component {
                   }
                 }],
               })(
-                <Input onBlur={this.handleUrlChange} />
-              )}
-            </FormItem>
-            {config.isKS&&<FormItem
-              {...formItemLayout}
-              label="网关URL"
-            >
-              {getFieldDecorator('gatewayUrl', {
-                initialValue: '',
-                rules:[
-                  {
-                    validator:(rule,value,callback)=>{
-                      let method=this.props.form.getFieldValue('method')
-                      if(!value||!method){
-                        callback()
-                        return;
-                      }
-                      for(let module of this.props.project.modules){
-                        if(module.interfases.find(interfase=>interfase.gatewayUrl===value&&interfase.method===method)){
-                          callback(new Error("url已被占用"))
-                          return
-                        }
-                      }
-                      callback()
-                    }
-                  }
-                ]
-              })(
                 <Input />
               )}
-            </FormItem>}
+            </FormItem>
+            
             <FormItem
               {...formItemLayout}
               label="类型"
@@ -135,7 +102,7 @@ class AddInterfaseModal extends React.Component {
                   required: true, message: '必选',
                 }],
               })(
-                <Select  onChange={()=>{setTimeout(()=>this.props.form.validateFields(['gatewayUrl','url'], { force: true } ),0)}}>
+                <Select  onChange={()=>{setTimeout(()=>this.props.form.validateFields(['url'], { force: true } ),0)}}>
                   <Option value="GET">GET</Option>
                   <Option value="POST">POST</Option>
                   <Option value="DELETE">DELETE</Option>

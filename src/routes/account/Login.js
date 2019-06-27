@@ -55,9 +55,9 @@ class LoginForm extends React.Component {
               </Button>
             </a>
           </FormItem>}
-          <FormItem>
+          {!config.isKS&&<FormItem>
             <Link to="/signup">没有账号?去注册 </Link>
-          </FormItem>
+          </FormItem>}
           
 
           

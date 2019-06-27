@@ -30,6 +30,30 @@ class ImportSwaggerModal extends React.Component {
     }
   }
 
+  handleAddOk=(e)=>{
+    this.props.form.validateFields((err, values) => {
+      if (err) {
+        return
+      }
+      this.setState({
+        confirmLoading: true,
+      });
+      values.increment=true; //增量同步
+      this.props.project.importSwagger(values).then(data=>{
+        this.props.form.resetFields()
+        this.props.onClose();
+        this.setState({
+          confirmLoading: false,
+        });
+      }).catch(e=>{
+        message.error("同步失败")
+        this.setState({
+          confirmLoading: false,
+        });
+      })
+    });
+  }
+
   handleOk = (e) => {
     Modal.confirm({
       title: '警告',
@@ -97,7 +121,8 @@ class ImportSwaggerModal extends React.Component {
           footer={
           <div>
             <Button onClick={this.handleCancel}>取消</Button>
-            {this.props.project.permission>3&&<Button loading={this.state.confirmLoading} type="primary" onClick={this.handleOk}>立即同步</Button>}
+            {this.props.project.permission>3&&<Button loading={this.state.confirmLoading} type="primary" onClick={this.handleOk}>全局同步</Button>}
+            {this.props.project.permission>2&&<Button loading={this.state.confirmLoading} type="primary" onClick={this.handleAddOk}>增量同步</Button>}
             <Button type="primary" onClick={this.handleSubmit}>提交</Button>
           </div>
           }

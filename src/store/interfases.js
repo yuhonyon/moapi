@@ -128,7 +128,7 @@ class Interfase {
       data.push({"enabled": true, "key": item.name, "value": item.value})
     }
 
-    if((project.info.gateway|| !config.isKS)&&project.info.gatewayTemplate.headers){
+    if(project.info.gatewayTemplate.headers){
       for(let i in project.info.gatewayTemplate.headers){
         data.push({"enabled": true, "key": i, "value": project.info.gatewayTemplate.headers[i]})
       }
@@ -189,11 +189,11 @@ class Interfase {
     if (!this.data.id) {
       return ""
     }
-    let url=project.info.gateway?this.data.gatewayUrl||'':this.data.url
+    let url=this.data.url;
     this.data.paths.forEach(item=>{
       url=url.replace(`{${item.name}}`,item.value||1)
     })
-    let proxy=project.info.gateway?project.info.gatewayProxy||'':project.info.proxy
+    let proxy=project.info.proxy;
     return (`${Config.baseURL}project/test/${project.projectId}/${url}#!title=${encodeURIComponent(this.data.name)}&url=${proxy}&method=${this.data.method.toUpperCase()}&headers=${this.headerTest}${this.reqTest}`).replace(/([^:])\/\//, "$1/");
 
   }
@@ -580,7 +580,7 @@ class Interfase {
         data=data.array_type_data
       }
       data=JSON.stringify(data, null, 2);
-      if((project.info.gateway|| !config.isKS)&&project.info.gatewayTemplate.res){
+      if(project.info.gatewayTemplate.res){
         let resTemplate=JSON.stringify(project.info.gatewayTemplate.res)
         if(data==='{}'){
           data=resTemplate.replace(/"\$data"/,"null");
@@ -600,7 +600,7 @@ class Interfase {
         data=data.array_type_data
       }
       data=JSON.stringify(data, null, 2);
-      if((project.info.gateway|| !config.isKS)&&project.info.gatewayTemplate.req){
+      if(project.info.gatewayTemplate.req){
         let reqTemplate=JSON.stringify(project.info.gatewayTemplate.req)
         if(data==='{}'){
           data=reqTemplate.replace(/"\$data"/,"null");

@@ -38,8 +38,6 @@ class EditProjectModal extends React.Component {
       this.props.form.setFieldsValue({
         name: this.props.project.info.name,
         mockType: this.props.project.info.mockType,
-        gateway:this.props.project.info.gateway,
-        gatewayProxy:this.props.project.info.gatewayProxy,
         admin: this.props.project.info.admin.id,
         developers: this.props.project.info.developers.toJS().map(item=>item.id),
         guests: this.props.project.info.guests.toJS().map(item=>item.id),
@@ -204,31 +202,9 @@ class EditProjectModal extends React.Component {
             </FormItem>
 
 
-            {config.isKS&&<FormItem
-              {...formItemLayout}
-              label="网关模式"
-            >
-              {getFieldDecorator('gateway', {
-                initialValue: false,
-                valuePropName: 'checked'
-              })(
-                <Switch
-                  disabled={this.props.project.info.permission<2}
-                />
-              )}
-            </FormItem>}
+        
 
 
-            {config.isKS&&<FormItem
-              {...formItemLayout}
-              label="网关代理地址"
-            >
-              {getFieldDecorator('gatewayProxy', {
-                initialValue: ''
-              })(
-                <Input />
-              )}
-            </FormItem>}
 
 
 

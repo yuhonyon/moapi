@@ -1,4 +1,4 @@
 export default {
     "baseURL": "auto",
-    "isKS":false
+    "isKS":true
 }
