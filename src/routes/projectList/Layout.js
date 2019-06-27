@@ -1,11 +1,13 @@
 import React from "react";
-import { Tabs,Button,message,Modal } from 'antd';
+import { Tabs,Button,message,Modal,Select } from 'antd';
 import Style from "./Layout.less";
 import {inject, observer} from 'mobx-react';
 import Pane from "./components/Pane"
 import AddProjectModal from "./components/AddProjectModal"
 import EditProjectModal from "./../project/components/EditProjectModal"
+import fetchApi from '../../api'
 const TabPane=Tabs.TabPane;
+const Option=Select.Option;
 
 @inject("projectList","project","doc")
 @observer
@@ -13,6 +15,7 @@ class Layout extends React.Component {
   state={
     addProjectModalShow:false,
     editProjectModalShow:false,
+    interfaseList:[],
     tabsKey:"all"
   }
   componentDidMount(){
@@ -95,6 +98,16 @@ class Layout extends React.Component {
   });
   }
 
+  handleSearch=(value)=>{
+    this.props.history.push("/project/"+value);
+  }
+
+  handleSearchInterfase=(text)=>{
+    fetchApi.fetchSearchInterfase(text).then(data=>{
+      this.setState({interfaseList:data});
+    })
+  }
+
   render(){
     return (
       <div >
@@ -102,6 +115,42 @@ class Layout extends React.Component {
         <AddProjectModal  onOk={this.handleAddProjectOk} onClose={this.handleAddProjectClose}  visible={this.state.addProjectModalShow}></AddProjectModal>
         <Tabs activeKey={this.state.tabsKey} onChange={this.handleChange} tabBarExtraContent={<Button onClick={this.handleAddProject}>添加项目</Button>}>
         <TabPane tab="所有项目" key="all">
+            <div>
+            <Select
+              showSearch
+              style={{ width: 300 }}
+              placeholder="输入项目名快速查找项目"
+              optionFilterProp="children"
+              onChange={this.handleSearch}
+              filterOption={(input, option) =>{
+                return option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+              }
+            > 
+            {this.props.projectList.all.map(item=><Option key={item.id} value={item.id}>{item.name}</Option>)}
+              
+            </Select>
+            &emsp;
+
+            <Select
+              showSearch
+              style={{ width: 300 }}
+              placeholder="输入url或者接口名称快速查找接口"
+              onChange={(e,option)=>{
+                this.props.history.push(`project/${option.props.projectid}?moduleId=${option.props.moduleid}&interfaseId=${option.props.interfaseid}`);
+              }}
+              onSearch={this.handleSearchInterfase}
+              filterOption={(input, option) => {
+                return option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0 || option.props.value.toLowerCase().indexOf(input.toLowerCase()) >= 0 
+              }}
+            >
+              {this.state.interfaseList.map(item=>(
+                <Option moduleid={item.moduleId} interfaseid={item.id} projectid={item.projectId} key={item.id} value={item.url+item.id}>{item.name}</Option>
+              ))}
+              
+            </Select>
+            <br/>
+            <br/>
+            </div>
             {this.props.projectList.all.map(project=>(
               <Pane onMockUrl={this.handleShowMockUrl} key={project.id} project={project}></Pane>
             ))}

@@ -10,9 +10,9 @@ const EditableCell = ({ editable, value, onChange,identify,column }) => {
   if(!editable){
     cell= value
   }else if(!identify){
-    cell= <Input value={value} onChange={e => onChange(e.target.value)} />
+    cell= <Input defaultValue={value} onBlur={e => onChange(e.target.value)} />
   }else{
-    cell= <TextArea value={value} onChange={e => onChange(e.target.value)} autosize />
+    cell= <TextArea defaultValue={value} onBlur={e => onChange(e.target.value)} autosize />
   }
   return <div className={Style.cell}>{cell}</div>
 }

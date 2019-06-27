@@ -157,7 +157,10 @@ const fetchApi={
   },
   fetchUserInfo(params){
     return http.get(`/users/userInfo`,params)
-  }
+  },
+  fetchSearchInterfase(text){
+    return http.get(`/interfase/search`,{keyword:text})
+  },
 
 }
 

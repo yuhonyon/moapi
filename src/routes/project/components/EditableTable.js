@@ -152,11 +152,11 @@ const EditableCell = ({ editable, value, onChange,identify,column }) => {
     }
     cell= value
   }else if(!identify){
-    cell= <Input value={value}  onChange={e => onChange(e.target.value)} />
+    cell= <Input defaultValue={value}  onBlur={e => onChange(e.target.value)} />
   }else if(identify==='switch'){
     cell= <Switch size="small" checked={value} onChange={value => onChange(value)} />
   }else if(identify==='textarea'){
-    cell= <TextArea value={value} onChange={e => onChange(e.target.value)} autosize />
+    cell= <TextArea defaultValue={value} onBlur={e => onChange(e.target.value)} autosize />
 
   }else{
     cell= <Select value={value} onChange={value => onChange(value)}>
