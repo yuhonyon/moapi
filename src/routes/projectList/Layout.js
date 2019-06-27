@@ -13,7 +13,7 @@ class Layout extends React.Component {
   state={
     addProjectModalShow:false,
     editProjectModalShow:false,
-    tabsKey:"self"
+    tabsKey:"all"
   }
   componentDidMount(){
     this.fetchProjectList()
@@ -101,6 +101,12 @@ class Layout extends React.Component {
         <EditProjectModal  onOk={this.handleUpdateProjectOk} onClose={this.closeEditProjectModal}  visible={this.state.editProjectModalShow} ></EditProjectModal>
         <AddProjectModal  onOk={this.handleAddProjectOk} onClose={this.handleAddProjectClose}  visible={this.state.addProjectModalShow}></AddProjectModal>
         <Tabs activeKey={this.state.tabsKey} onChange={this.handleChange} tabBarExtraContent={<Button onClick={this.handleAddProject}>添加项目</Button>}>
+        <TabPane tab="所有项目" key="all">
+            {this.props.projectList.all.map(project=>(
+              <Pane onMockUrl={this.handleShowMockUrl} key={project.id} project={project}></Pane>
+            ))}
+            {this.props.projectList.all.length===0&&<div className={Style.noDataNote}>暂无项目</div>}
+          </TabPane>
           <TabPane tab="我的项目" key="self">
             {this.props.projectList.self.map(project=>(
               <Pane onMockUrl={this.handleShowMockUrl} onDelete={this.handleDeleteProject} onUpdate={this.openEditProjectModal} onDeleteDoc={this.handleDeleteDoc} self editable key={project.id} project={project}></Pane>
@@ -119,12 +125,7 @@ class Layout extends React.Component {
             ))}
             {this.props.projectList.relate.length===0&&<div className={Style.noDataNote}>暂无项目</div>}
           </TabPane>
-          <TabPane tab="所有项目" key="all">
-            {this.props.projectList.all.map(project=>(
-              <Pane onMockUrl={this.handleShowMockUrl} key={project.id} project={project}></Pane>
-            ))}
-            {this.props.projectList.all.length===0&&<div className={Style.noDataNote}>暂无项目</div>}
-          </TabPane>
+          
         </Tabs>
       </div>
     )
