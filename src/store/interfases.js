@@ -4,6 +4,7 @@ import project from './project'
 import Config from '@/config'
 import fetchApi from '@/api'
 import config from '../config';
+import { mergeData } from '../utils';
 
 
 function parseStrToObj(str){
@@ -297,7 +298,7 @@ class Interfase {
     return data;
   }
 
-  @action.bound leadInRes(code,target=[]) {
+  @action.bound leadInRes(code,target=[],increment=false) {
     if (typeof code === 'string') {
       code = parseStrToObj(code)
     }
@@ -320,13 +321,21 @@ class Interfase {
         for (let i in code) {
           newCode.push(this.formatCode(i, code[i], targetObj.key+"-"+id+parseInt(Math.random()*10000000000) + i.replace(/-/g,'_')))
         }
-        targetObj.children=(targetObj.children||[]).concat(newCode)
+        if(increment){
+          targetObj.children=mergeData((targetObj.children||[]),newCode,targetObj.key);
+        } else {
+          targetObj.children=(targetObj.children||[]).concat(newCode)
+        }
       }
     }else{
       for (let i in code) {
         newCode.push(this.formatCode(i, code[i], id+parseInt(Math.random()*10000000000) + i.replace(/-/g,'_')))
       }
-      this.data.res = this.data.res.toJS().concat(newCode)
+      if(increment){
+        this.data.res=mergeData(this.data.res.slice(),newCode,'')
+      }else{
+        this.data.res = this.data.res.slice().concat(newCode)
+      }
     }
     
     this.changeCode('res')
@@ -334,7 +343,7 @@ class Interfase {
 
 
 
-  @action.bound leadInReq(code,target=[]) {
+  @action.bound leadInReq(code,target=[],increment=false) {
     if (typeof code === 'string') {
       code = parseStrToObj(code)
     }
@@ -357,13 +366,23 @@ class Interfase {
         for (let i in code) {
           newCode.push(this.formatCode(i, code[i], targetObj.key+"-"+id+parseInt(Math.random()*10000000000) + i.replace(/-/g,'_')))
         }
-        targetObj.children=(targetObj.children||[]).concat(newCode)
+        
+        if(increment){
+          targetObj.children=mergeData((targetObj.children||[]),newCode)
+        }else{
+          targetObj.children=(targetObj.children||[]).concat(newCode)
+        }
       }
     }else{
       for (let i in code) {
         newCode.push(this.formatCode(i, code[i], id+parseInt(Math.random()*10000000000) + i.replace(/-/g,'_')))
       }
-      this.data.req = this.data.req.slice().concat(newCode)
+      if(increment){
+        this.data.req=mergeData(this.data.req.slice(),newCode)
+      }else{
+        this.data.req = this.data.req.slice().concat(newCode)
+      }
+      
     }
 
     

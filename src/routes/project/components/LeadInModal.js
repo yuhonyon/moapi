@@ -35,7 +35,7 @@ function getOptions(arr=[]){
 @observer
 class LeadInModal extends React.Component {
   state={code:code,target:[]}
-  handleOk = (e) => {
+  handleOk = (increment) => {
     if(/^\[[\s\S]*\]$/m.test(this.state.code)){
       message.warning('不建议用数组格式数据');
       this.setState({'code':`{"array_type_data":${this.state.code}}`})
@@ -45,7 +45,7 @@ class LeadInModal extends React.Component {
        message.warning('格式错误');
        return;
     }
-    this.props.onOk({code:this.state.code,target:this.state.target});
+    this.props.onOk({code:this.state.code,target:this.state.target,increment});
     this.setState({code:`{}`,target:[]});
     this.props.onClose();
   }
@@ -102,8 +102,13 @@ class LeadInModal extends React.Component {
           &emsp;<Cascader value={this.state.target} changeOnSelect onChange={this.handleOptionsChange} options={options} placeholder="插入节点 默认跟节点"></Cascader>
           </div>)}
           visible={this.props.visible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
+          footer={
+            <div>
+              <Button onClick={this.handleCancel}>取消</Button>
+              <Button onClick={()=>this.handleOk(true)}>增量导入</Button>
+              <Button type="primary" onClick={()=>this.handleOk(false)}>提交</Button>
+            </div>
+          }
         >
           <AceEditor
                 mode="json"

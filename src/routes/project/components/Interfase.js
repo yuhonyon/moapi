@@ -151,8 +151,8 @@ class Interfase extends React.Component {
     this.props.interfases.closeEditable()
     this.props.project.getProjectData()
   }
-  resLeadInOk=({code,target})=>{
-    this.props.interfases.leadInRes(code,target);
+  resLeadInOk=({code,target,increment})=>{
+    this.props.interfases.leadInRes(code,target,increment);
   }
   resLeadInModelOk=({code,target})=>{
     this.props.interfases.leadInModel('res',code,target);
@@ -160,8 +160,8 @@ class Interfase extends React.Component {
   reqLeadInModelOk=({code,target})=>{
     this.props.interfases.leadInModel('req',code,target);
   }
-  reqLeadInOk=({code,target})=>{
-    this.props.interfases.leadInReq(code,target);
+  reqLeadInOk=({code,target,increment})=>{
+    this.props.interfases.leadInReq(code,target,increment);
   }
   addValueSuccess=(value)=>{
     this.addValue.value=value;

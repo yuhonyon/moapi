@@ -28,3 +28,41 @@ export function setCookie(name, value) {
       + ";expires=" + exp.toGMTString() + ";path=/";
   return true;
 }
+
+export function mergeData(oldData,newData,pKey){
+  function changeKey(data,key){
+    if(!key){
+      key=pKey||Date.now();
+    }
+    for(let i in data){
+      key=key+"-"+data[i].name.replace(/-/g,'_');
+      data[i].key=key;
+      if(data[i].children&&data[i].children.length>0){
+        data[i].children=changeKey(data[i].children.slice(),key)
+      }
+    }
+    return data;
+  }
+  function merge(a,b){
+    if(!b||b.length===0){
+      return a;
+    }
+    if(!a){
+      return changeKey(b,Date.now()+parseInt(Math.random()*10000000000));
+    }
+    for(let i in b){
+      const index=a.findIndex(item=>(item.name===b[i].name));
+      if(index>=0){
+        if(a[index].children&&a[index].children.length>0){
+          a[index].children=merge(a[index].children.slice(),b[i].children);
+        }else{
+          a[index].children=changeKey(b[i].children, a[index].key)
+        }
+      }else{
+        a.push(changeKey([b[i]]),a.key);
+      }
+    }
+    return a;
+  }
+  return merge(oldData,newData);
+}
