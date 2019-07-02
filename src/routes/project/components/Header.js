@@ -236,7 +236,7 @@ class Header extends React.Component {
           <Select style={{minWidth:100}} value={this.props.project.curVersion} onChange={this.handleChangeVersion}>
             <Option value="">所有版本</Option>
             {
-              this.props.project.info.versions.slice().map(version=>(
+              this.props.project.info.versions.slice().reverse().map(version=>(
                 <Option key={version} value={version}>{version}</Option>
               ))
             }

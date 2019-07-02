@@ -5,7 +5,7 @@ import ReactMarkdown from 'react-markdown'
 class About extends React.Component {
   md=`
 ## 开发人员
-  * 刘灯 如遇bug或有功能需求 请钉钉联系我(15555555555)
+  * 刘灯&&余方杨 如遇bug或有功能需求 请钉钉联系我(18010835850)
 
 
 ## Tech Arch

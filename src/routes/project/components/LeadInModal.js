@@ -36,6 +36,9 @@ function getOptions(arr=[]){
 class LeadInModal extends React.Component {
   state={code:code,target:[]}
   handleOk = (increment) => {
+    if(increment){
+      alert("未开发完成")
+    }
     if(/^\[[\s\S]*\]$/m.test(this.state.code)){
       message.warning('不建议用数组格式数据');
       this.setState({'code':`{"array_type_data":${this.state.code}}`})
