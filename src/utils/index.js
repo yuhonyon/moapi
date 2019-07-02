@@ -13,7 +13,9 @@ export function mergePath(url1,url2) {
 
 export function getApiUrl(search,name) {
   let host=window.location.host;
-  if(!/127|localhost/.test(host)){
+  if(/test/.test(host)){
+    return "http://test.qa.91jkys.com:9215"
+  }else if(!/127|localhost/.test(host)){
     return window.location.origin+"/api"
   }else{
     return "http://127.0.0.1:9215"
@@ -43,26 +45,26 @@ export function mergeData(oldData,newData,pKey){
     }
     return data;
   }
-  function merge(a,b){
+  function merge(a,b,key){
     if(!b||b.length===0){
       return a;
     }
     if(!a){
-      return changeKey(b,Date.now()+parseInt(Math.random()*10000000000));
+      return changeKey(b,key);
     }
     for(let i in b){
       const index=a.findIndex(item=>(item.name===b[i].name));
       if(index>=0){
         if(a[index].children&&a[index].children.length>0){
-          a[index].children=merge(a[index].children.slice(),b[i].children);
+          a[index].children=merge(a[index].children.slice(),b[i].children,a[index].key);
         }else{
           a[index].children=changeKey(b[i].children, a[index].key)
         }
       }else{
-        a.push(changeKey([b[i]]),a.key);
+        a.push(changeKey([b[i]]),key);
       }
     }
     return a;
   }
-  return merge(oldData,newData);
+  return merge(oldData,newData,pKey);
 }
