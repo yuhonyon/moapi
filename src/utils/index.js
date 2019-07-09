@@ -34,7 +34,7 @@ export function setCookie(name, value) {
 export function mergeData(oldData,newData,pKey){
   function changeKey(data,key){
     if(!key){
-      key=pKey||Date.now();
+      return data;
     }
     for(let i in data){
       key=key+"-"+data[i].name.replace(/-/g,'_');
@@ -55,13 +55,15 @@ export function mergeData(oldData,newData,pKey){
     for(let i in b){
       const index=a.findIndex(item=>(item.name===b[i].name));
       if(index>=0){
-        if(a[index].children&&a[index].children.length>0){
+        if(a[index].children&&a[index].children.length>0&&b[i].children&&b[i].children.length){
           a[index].children=merge(a[index].children.slice(),b[i].children,a[index].key);
-        }else{
+        }else if(b[i].children&&b[i].children.length){
+          a[index].mockType=b[i].mockType;
+          a[index].type=b[i].type;
           a[index].children=changeKey(b[i].children, a[index].key)
         }
       }else{
-        a.push(changeKey([b[i]]),key);
+        a=a.concat(changeKey([b[i]],key));
       }
     }
     return a;
