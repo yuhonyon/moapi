@@ -36,21 +36,11 @@ function getOptions(arr=[]){
 class LeadInModal extends React.Component {
   state={code:code,target:[]}
   handleOk = (increment) => {
-    this.handleFormat()
-    if(/^\[[\s\S]*\]$/m.test(this.state.code)){
-      message.warning('不建议用数组格式数据');
-      this.setState({'code':`{"array_type_data":${this.state.code}}`})
-      this.handleFormat()
-      return;
-    }
-
-    if(!this.isJSON(this.state.code)){
-       message.warning('格式错误');
-       return;
-    }
-    this.props.onOk({code:this.state.code,target:this.state.target,increment});
-    this.setState({code:`{}`,target:[]});
-    this.props.onClose();
+    this.handleFormat(()=>{  
+      this.props.onOk({code:this.state.code,target:this.state.target,increment});
+      this.setState({code:`{}`,target:[]});
+      this.props.onClose();
+    })
   }
   handleCancel = (e) => {
     this.setState({code:`{}`})
@@ -80,16 +70,19 @@ class LeadInModal extends React.Component {
       }
       return false;
   }
-  handleFormat=()=>{
+  handleFormat=(cb=()=>{},err=()=>{})=>{
     try{
       let format=this.evil('(' + this.state.code + ')')
       if(format&&format.constructor===Array){
         format={"array_type_data":format}
+        message.warning('array_type_data填充数组KEY,方便平台操作数据,mock数据会清除(不建议用数组格式数据)');
       }
       format=JSON.stringify(format,'',2)
-      this.setState({code:format})
-    }catch(err){
-      console.log(err)
+      this.setState({code:format},cb)
+    }catch(e){
+      console.log(e)
+      message.warning('格式错误');
+      err();
     }
   }
 
@@ -101,15 +94,16 @@ class LeadInModal extends React.Component {
         <Modal maskClosable={false}
           width={640}
           title={(<div>{this.props.title} &nbsp;
-          <Button onClick={this.handleFormat} size="small">格式化</Button>
+          <Button onClick={()=>this.handleFormat()} size="small">格式化</Button>
           &emsp;<Cascader value={this.state.target} changeOnSelect onChange={this.handleOptionsChange} options={options} placeholder="插入节点 默认跟节点"></Cascader>
           </div>)}
           visible={this.props.visible}
+          onCancel={this.handleCancel}
           footer={
             <div>
               <Button onClick={this.handleCancel}>取消</Button>
               <Button onClick={()=>this.handleOk(true)}>增量导入</Button>
-              <Button type="primary" onClick={()=>this.handleOk(false)}>提交</Button>
+              <Button type="primary" onClick={()=>this.handleOk(false)}>导入</Button>
             </div>
           }
         >
