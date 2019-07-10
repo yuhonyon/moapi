@@ -48,14 +48,14 @@ class LoginForm extends React.Component {
               {intl.get("login.signin").d("登录")}
             </Button>
           </FormItem>
-          {config.isKS&&<FormItem>
+          <FormItem>
             <a href={`http://employee.qa.91jkys.com/sso/login?redirect=${config.baseURL}users/single-sign-on`}>
               <Button style={{ width: "100%" }} size="large" type="primary" className={Style.submit}>
                   使用内网登陆
               </Button>
             </a>
-          </FormItem>}
-          {!config.isKS&&<FormItem>
+          </FormItem>
+          {config.canSignup&&<FormItem>
             <Link to="/signup">没有账号?去注册 </Link>
           </FormItem>}
           

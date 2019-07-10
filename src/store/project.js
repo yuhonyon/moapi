@@ -107,6 +107,8 @@ class Project {
       runInAction(() => {
        
         this.data = data;
+        this.moduleId=Number(getQuery(window.location.search, "moduleId"));
+        this.interfaseId=Number(getQuery(window.location.search, "interfaseId"));
         //v
         this.selectInterfase(Number(getQuery(window.location.search, "moduleId")), Number(getQuery(window.location.search, "interfaseId")));
       })
@@ -262,7 +264,7 @@ class Project {
   @action.bound
   changeCurVersion(version) {
     this.curVersion=version;
-    if(!this.interfase.id||!this.interfase.versions.includes(version)){
+    if(version&&(!this.interfase.id||!this.interfase.versions.includes(version))){
       setTimeout(()=>{
         this.selectInterfase()
       },0)
