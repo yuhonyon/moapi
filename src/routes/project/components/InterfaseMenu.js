@@ -15,15 +15,12 @@ import InterfaseMenuItem from "./InterfaseMenuItem"
 @WithDragDropContext
 class InterfaseMenu extends React.Component {
   state = {
-    selectedKey:this.props.project.interfaseId+'',
     addInterfaseModalShow:false,
     editInterfaseModalShow:false,
     editInterfaseInfo:{}
   }
 
-  componentWillReceiveProps(){
-    this.setState({'selectedKey':this.props.project.interfaseId+''});
-  }
+
 
   openAddInterfaseModal=()=>{
     if(this.props.interfases.editable){
@@ -71,18 +68,19 @@ class InterfaseMenu extends React.Component {
 
   handleMenuClick = (e) => {
     const search=`?moduleId=${e.item.props.interfase.moduleId}&interfaseId=${e.item.props.interfase.id}`;
-    this.props.history.push({
-                pathname: `/project/${this.props.project.data.id}`,
-                search
-              })
+    
 
-    setTimeout(()=>{
-      if(this.props.location.search===search){
-        this.setState({'selectedKey':e.key});
+
+      if(this.props.location.search!==search){
+        this.props.history.push({
+          pathname: `/project/${this.props.project.data.id}`,
+          search
+        })
         const interfaseInfo=e.item.props.interfase;
         this.props.project.selectInterfase(interfaseInfo.moduleId,interfaseInfo.id);
       }
-    },0)
+      
+
   }
 
   handleInterfaseEdit=(interfase,e)=>{
@@ -120,7 +118,7 @@ class InterfaseMenu extends React.Component {
         <Menu className={Style.menu}
           onClick={this.handleMenuClick}
           style={{ width: 200 }}
-          selectedKeys={[this.state.selectedKey]}
+          selectedKeys={[this.props.project.interfaseId+'']}
           mode="inline"
         >
           {

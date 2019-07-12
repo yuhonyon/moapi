@@ -162,15 +162,13 @@ class Project {
     } else if (moduleId) {
       this.moduleId = moduleId;
     }
+    this.interfaseId = this.inVersionInterfases.length&&this.inVersionInterfases[0].id;
 
     setTimeout(()=>{
       runInAction(()=>{
-        this.interfaseId = this.inVersionInterfases.length&&this.inVersionInterfases[0].id;
-        setTimeout(()=>{
           if(this.interfase.id){
             interfases.getInterfaseData(this.interfase)
           }
-        },0)
       })
     },0)
 

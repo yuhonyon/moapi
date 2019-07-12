@@ -11,15 +11,13 @@ import {withRouter} from "react-router-dom";
 @observer
 class MoudleMenu extends React.Component {
   state = {
-    selectedKey:this.props.project.moduleId+'',
+
     addModuleModalShow:false,
     editModuleModalShow:false,
     editModuleInfo:{}
   }
 
-  componentWillReceiveProps(){
-    this.setState({'selectedKey':this.props.project.moduleId+''});
-  }
+
 
 
   openAddModuleModal=()=>{
@@ -84,13 +82,10 @@ class MoudleMenu extends React.Component {
       pathname: `/project/${this.props.project.projectId}`,
       search
     })
-    setTimeout(()=>{
-      if(this.props.location.search===search){
-        this.setState({'selectedKey':e.key});
-        let module=e.item.props.module;
-        this.props.project.selectInterfase(module.id)
-      }
-    },0)
+    if(this.props.location.search!==search){
+      let module=e.item.props.module;
+      this.props.project.selectInterfase(module.id)
+    }
   }
   render() {
     return (
@@ -99,7 +94,7 @@ class MoudleMenu extends React.Component {
         <EditModuleModal module={this.state.editModuleInfo}  onClose={this.closeEditModuleModal} onOk={this.handleEditModuleModalOk} visible={this.state.editModuleModalShow}></EditModuleModal>
         <Menu
           onClick={this.handleMenuClick}
-          selectedKeys={[this.state.selectedKey]}
+          selectedKeys={[this.props.project.moduleId+'']}
           mode="horizontal"
         >
           {
