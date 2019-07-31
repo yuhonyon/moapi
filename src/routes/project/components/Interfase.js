@@ -274,7 +274,7 @@ class Interfase extends React.Component {
             {mergePath(this.props.project.mockUrl,this.props.interfases.data.url)}&nbsp;<Button onClick={()=>{copy(mergePath(this.props.project.mockUrl,this.props.interfases.data.url))}} size="small">复制</Button>
           </li>
           <li>代理地址:&nbsp;
-            {mergePath(this.props.project.info.proxy,this.props.interfases.data.url)}&nbsp;<Button onClick={()=>{copy(mergePath(this.props.project.info.proxy,this.props.interfases.data.url))}} size="small">复制</Button>
+            {mergePath(this.props.interfases.realProxyUrl,this.props.interfases.data.url)}&nbsp;<Button onClick={()=>{copy(mergePath(this.props.interfases.realProxyUrl,this.props.interfases.data.url))}} size="small">复制</Button>
           </li>
           <li>类型:&nbsp; {this.props.interfases.data.method}</li>
           <li>相关版本:&nbsp; {this.props.interfases.data.versions.slice().join("、")}&nbsp;{this.props.interfases.editable&&this.props.project.permission>2&&<Button onClick={this.handlerAddVersion} size="small">添加版本标记</Button>}</li>
