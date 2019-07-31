@@ -108,7 +108,7 @@ class Header extends React.Component {
   }
 
   handleShowMockUrl=()=>{
-    let path=mergePath(this.props.project.mockUrl,this.props.interfases.data.url);
+    let path=this.props.project.mockUrl;
     Modal.info({
      title: '在线mock地址',
      content: path,
