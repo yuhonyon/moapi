@@ -203,80 +203,84 @@ class EditProjectModal extends React.Component {
               {getFieldDecorator('public', {
                 initialValue: true,
                 valuePropName: 'checked'
-              })(<Switch disabled={this.props.project.info.permission > 3} />)}
+              })(<Switch disabled={this.props.project.info.permission < 3} />)}
             </FormItem>
 
-            <FormItem {...formItemLayout} label="开发者">
-              {getFieldDecorator('developers', {
-                initialValue: []
-              })(
-                <Select
-                  showSearch
-                  disabled={this.props.project.info.permission < 3}
-                  mode="multiple"
-                  optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    option.props.children
-                      .toLowerCase()
-                      .indexOf(input.toLowerCase()) >= 0
-                  }
-                >
-                  {this.props.user.userList.map(user => (
-                    <Option key={user.id} value={user.id}>
-                      {user.name}
-                    </Option>
-                  ))}
-                </Select>
-              )}
-            </FormItem>
+            {!this.props.form.getFieldValue('public') && (
+              <div>
+                <FormItem {...formItemLayout} label="开发者">
+                  {getFieldDecorator('developers', {
+                    initialValue: []
+                  })(
+                    <Select
+                      showSearch
+                      disabled={this.props.project.info.permission < 3}
+                      mode="multiple"
+                      optionFilterProp="children"
+                      filterOption={(input, option) =>
+                        option.props.children
+                          .toLowerCase()
+                          .indexOf(input.toLowerCase()) >= 0
+                      }
+                    >
+                      {this.props.user.userList.map(user => (
+                        <Option key={user.id} value={user.id}>
+                          {user.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  )}
+                </FormItem>
 
-            <FormItem {...formItemLayout} label="使用者">
-              {getFieldDecorator('reporters', {
-                initialValue: []
-              })(
-                <Select
-                  showSearch
-                  disabled={this.props.project.info.permission < 2}
-                  mode="multiple"
-                  optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    option.props.children
-                      .toLowerCase()
-                      .indexOf(input.toLowerCase()) >= 0
-                  }
-                >
-                  {this.props.user.userList.map(user => (
-                    <Option key={user.id} value={user.id}>
-                      {user.name}
-                    </Option>
-                  ))}
-                </Select>
-              )}
-            </FormItem>
+                <FormItem {...formItemLayout} label="使用者">
+                  {getFieldDecorator('reporters', {
+                    initialValue: []
+                  })(
+                    <Select
+                      showSearch
+                      disabled={this.props.project.info.permission < 2}
+                      mode="multiple"
+                      optionFilterProp="children"
+                      filterOption={(input, option) =>
+                        option.props.children
+                          .toLowerCase()
+                          .indexOf(input.toLowerCase()) >= 0
+                      }
+                    >
+                      {this.props.user.userList.map(user => (
+                        <Option key={user.id} value={user.id}>
+                          {user.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  )}
+                </FormItem>
 
-            <FormItem {...formItemLayout} label="游客">
-              {getFieldDecorator('guests', {
-                initialValue: []
-              })(
-                <Select
-                  showSearch
-                  disabled={this.props.project.info.permission < 2}
-                  mode="multiple"
-                  optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    option.props.children
-                      .toLowerCase()
-                      .indexOf(input.toLowerCase()) >= 0
-                  }
-                >
-                  {this.props.user.userList.map(user => (
-                    <Option key={user.id} value={user.id}>
-                      {user.name}
-                    </Option>
-                  ))}
-                </Select>
-              )}
-            </FormItem>
+                <FormItem {...formItemLayout} label="游客">
+                  {getFieldDecorator('guests', {
+                    initialValue: []
+                  })(
+                    <Select
+                      showSearch
+                      disabled={this.props.project.info.permission < 2}
+                      mode="multiple"
+                      optionFilterProp="children"
+                      filterOption={(input, option) =>
+                        option.props.children
+                          .toLowerCase()
+                          .indexOf(input.toLowerCase()) >= 0
+                      }
+                    >
+                      {this.props.user.userList.map(user => (
+                        <Option key={user.id} value={user.id}>
+                          {user.name}
+                        </Option>
+                      ))}
+                    </Select>
+                  )}
+                </FormItem>
+              </div>
+            )}
 
             <FormItem {...formItemLayout} label="全局mock">
               {getFieldDecorator('mockType', {

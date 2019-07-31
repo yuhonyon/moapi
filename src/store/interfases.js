@@ -228,7 +228,7 @@ class Interfase {
     this.data.paths.forEach(item => {
       url = url.replace(`{${item.name}}`, item.value || 1)
     })
-    let proxy = project.info.proxy
+    let proxy = this.realProxyUrl
     return `${Config.baseURL}project/test/${
       project.projectId
     }/${url}#!title=${encodeURIComponent(
