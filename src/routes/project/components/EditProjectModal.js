@@ -62,6 +62,7 @@ class EditProjectModal extends React.Component {
         proxys: this.props.project.info.proxys.toJS(),
         keys: this.props.project.info.proxys.map((i, index) => index),
         public: this.props.project.info.public,
+        visible: this.props.project.info.visible,
         description: this.props.project.info.description,
         useGlobalProxy: this.props.project.info.useGlobalProxy
       })
@@ -199,12 +200,23 @@ class EditProjectModal extends React.Component {
               )}
             </FormItem>
 
-            <FormItem {...formItemLayout} label="公开">
+            <FormItem {...formItemLayout} label="无权限管理">
               {getFieldDecorator('public', {
-                initialValue: true,
+                initialValue: false,
                 valuePropName: 'checked'
               })(<Switch disabled={this.props.project.info.permission < 3} />)}
             </FormItem>
+
+            {!this.props.form.getFieldValue('public') && (
+              <FormItem {...formItemLayout} label="所有人可见">
+                {getFieldDecorator('visible', {
+                  initialValue: false,
+                  valuePropName: 'checked'
+                })(
+                  <Switch disabled={this.props.project.info.permission < 3} />
+                )}
+              </FormItem>
+            )}
 
             {!this.props.form.getFieldValue('public') && (
               <div>

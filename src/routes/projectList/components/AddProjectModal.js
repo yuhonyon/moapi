@@ -73,8 +73,21 @@ class AddProjectModal extends React.Component {
               })(<Input />)}
             </FormItem>
 
+            <FormItem {...formItemLayout} label="无权限管理">
+              {getFieldDecorator('public', {
+                initialValue: true,
+                valuePropName: 'checked'
+              })(<Switch />)}
+            </FormItem>
+
             {!this.props.form.getFieldValue('public') && (
               <div>
+                <FormItem {...formItemLayout} label="所有人可见">
+                  {getFieldDecorator('visible', {
+                    initialValue: true,
+                    valuePropName: 'checked'
+                  })(<Switch />)}
+                </FormItem>
                 <FormItem {...formItemLayout} label="开发者">
                   {getFieldDecorator('developers', {
                     initialValue: []
@@ -149,13 +162,6 @@ class AddProjectModal extends React.Component {
               </div>
             )}
 
-            <FormItem {...formItemLayout} label="公开">
-              {getFieldDecorator('public', {
-                initialValue: true,
-                valuePropName: 'checked'
-              })(<Switch />)}
-            </FormItem>
-
             <FormItem {...formItemLayout} label="全局mock">
               {getFieldDecorator('mockType', {
                 initialValue: 1
@@ -170,7 +176,7 @@ class AddProjectModal extends React.Component {
 
             <FormItem {...formItemLayout} label="代理地址">
               {getFieldDecorator('proxy', {
-                initialValue: '',
+                initialValue: 'http://',
                 rules: [
                   {
                     required: true,
