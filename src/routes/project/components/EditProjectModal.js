@@ -1,14 +1,4 @@
-import {
-  Modal,
-  message,
-  Form,
-  Icon,
-  Button,
-  Input,
-  Select,
-  Radio,
-  Switch
-} from 'antd'
+import { Modal, message, Form, Icon, Button, Input, Select, Radio, Switch } from 'antd'
 import React from 'react'
 import { inject, observer } from 'mobx-react'
 import config from '../../../config'
@@ -51,20 +41,17 @@ class EditProjectModal extends React.Component {
         name: this.props.project.info.name,
         mockType: this.props.project.info.mockType,
         admin: this.props.project.info.admin.id,
-        developers: this.props.project.info.developers
-          .toJS()
-          .map(item => item.id),
+        developers: this.props.project.info.developers.toJS().map(item => item.id),
         guests: this.props.project.info.guests.toJS().map(item => item.id),
-        reporters: this.props.project.info.reporters
-          .toJS()
-          .map(item => item.id),
+        reporters: this.props.project.info.reporters.toJS().map(item => item.id),
         proxy: this.props.project.info.proxy,
         proxys: this.props.project.info.proxys.toJS(),
         keys: this.props.project.info.proxys.map((i, index) => index),
         public: this.props.project.info.public,
         visible: this.props.project.info.visible,
         description: this.props.project.info.description,
-        useGlobalProxy: this.props.project.info.useGlobalProxy
+        useGlobalProxy: this.props.project.info.useGlobalProxy,
+        webhook: this.props.project.info.webhook
       })
       id = this.props.project.info.proxys.length
     }
@@ -139,19 +126,8 @@ class EditProjectModal extends React.Component {
               message: '请填写或者删除该表单'
             }
           ]
-        })(
-          <Input
-            placeholder="请输入代理地址"
-            style={{ width: '90%', marginRight: 8 }}
-          />
-        )}
-        {keys.length > 1 ? (
-          <Icon
-            className="dynamic-delete-button"
-            type="minus-circle-o"
-            onClick={() => this.remove(k)}
-          />
-        ) : null}
+        })(<Input placeholder="请输入代理地址" style={{ width: '90%', marginRight: 8 }} />)}
+        {keys.length > 1 ? <Icon className="dynamic-delete-button" type="minus-circle-o" onClick={() => this.remove(k)} /> : null}
       </FormItem>
     ))
 
@@ -185,11 +161,7 @@ class EditProjectModal extends React.Component {
                   disabled={this.props.project.info.permission < 4}
                   showSearch
                   optionFilterProp=""
-                  filterOption={(input, option) =>
-                    option.props.children
-                      .toLowerCase()
-                      .indexOf(input.toLowerCase()) >= 0
-                  }
+                  filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                 >
                   {this.props.user.userList.map(user => (
                     <Option key={user.id} value={user.id}>
@@ -212,9 +184,7 @@ class EditProjectModal extends React.Component {
                 {getFieldDecorator('visible', {
                   initialValue: false,
                   valuePropName: 'checked'
-                })(
-                  <Switch disabled={this.props.project.info.permission < 3} />
-                )}
+                })(<Switch disabled={this.props.project.info.permission < 3} />)}
               </FormItem>
             )}
 
@@ -229,11 +199,7 @@ class EditProjectModal extends React.Component {
                       disabled={this.props.project.info.permission < 3}
                       mode="multiple"
                       optionFilterProp="children"
-                      filterOption={(input, option) =>
-                        option.props.children
-                          .toLowerCase()
-                          .indexOf(input.toLowerCase()) >= 0
-                      }
+                      filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                     >
                       {this.props.user.userList.map(user => (
                         <Option key={user.id} value={user.id}>
@@ -253,11 +219,7 @@ class EditProjectModal extends React.Component {
                       disabled={this.props.project.info.permission < 2}
                       mode="multiple"
                       optionFilterProp="children"
-                      filterOption={(input, option) =>
-                        option.props.children
-                          .toLowerCase()
-                          .indexOf(input.toLowerCase()) >= 0
-                      }
+                      filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                     >
                       {this.props.user.userList.map(user => (
                         <Option key={user.id} value={user.id}>
@@ -277,11 +239,7 @@ class EditProjectModal extends React.Component {
                       disabled={this.props.project.info.permission < 2}
                       mode="multiple"
                       optionFilterProp="children"
-                      filterOption={(input, option) =>
-                        option.props.children
-                          .toLowerCase()
-                          .indexOf(input.toLowerCase()) >= 0
-                      }
+                      filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
                     >
                       {this.props.user.userList.map(user => (
                         <Option key={user.id} value={user.id}>
@@ -313,9 +271,7 @@ class EditProjectModal extends React.Component {
 
             <FormItem {...formItemLayout} label="代理地址">
               {getFieldDecorator('proxyKey', {
-                initialValue: this.props.project.info.proxys.findIndex(
-                  item => item === this.props.project.info.proxy
-                )
+                initialValue: this.props.project.info.proxys.findIndex(item => item === this.props.project.info.proxy)
               })(
                 <Select>
                   {this.props.form
@@ -347,6 +303,12 @@ class EditProjectModal extends React.Component {
               <Button type="dashed" onClick={this.add} style={{ width: '60%' }}>
                 <Icon type="plus" /> 添加代理地址
               </Button>
+            </FormItem>
+
+            <FormItem {...formItemLayout} label="钉钉群webhook">
+              {getFieldDecorator('webhook', {
+                initialValue: ''
+              })(<Input />)}
             </FormItem>
 
             <FormItem {...formItemLayout} label="简介">

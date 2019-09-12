@@ -186,11 +186,18 @@ class AddProjectModal extends React.Component {
               })(<Input />)}
             </FormItem>
 
+            <FormItem {...formItemLayout} label="钉钉群webhook">
+              {getFieldDecorator('webhook', {
+                initialValue: '',
+              })(<Input />)}
+            </FormItem>
+
             <FormItem {...formItemLayout} label="简介">
               {getFieldDecorator('description', {
                 initialValue: ''
               })(<TextArea />)}
             </FormItem>
+            
           </Form>
         </Modal>
       </div>

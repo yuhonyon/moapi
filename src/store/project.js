@@ -59,12 +59,7 @@ class Project {
     }
     return this.data.modules
       .slice()
-      .filter(
-        item =>
-          !!item.interfases.find(interfase =>
-            interfase.versions.includes(this.curVersion)
-          )
-      )
+      .filter(item => !!item.interfases.find(interfase => interfase.versions.includes(this.curVersion)))
   }
 
   @computed
@@ -72,9 +67,7 @@ class Project {
     if (!this.curVersion) {
       return this.interfases
     }
-    return this.interfases
-      .slice()
-      .filter(item => item.versions.includes(this.curVersion))
+    return this.interfases.slice().filter(item => item.versions.includes(this.curVersion))
   }
   @computed
   get mdDownloadUrl() {
@@ -96,6 +89,11 @@ class Project {
   }
 
   @computed
+  get postmanUrl() {
+    return Config.baseURL + 'project/postman/' + this.projectId
+  }
+
+  @computed
   get modules() {
     return this.data.modules
   }
@@ -112,23 +110,19 @@ class Project {
 
   @action.bound
   getProjectData(projectId) {
-    return fetchApi
-      .fetchGetProjectData(projectId || this.projectId)
-      .then(data => {
-        runInAction(() => {
-          this.data = data
-          this.moduleId = Number(getQuery(window.location.search, 'moduleId'))
-          this.interfaseId = Number(
-            getQuery(window.location.search, 'interfaseId')
-          )
-          //v
-          this.selectInterfase(
-            Number(getQuery(window.location.search, 'moduleId')),
-            Number(getQuery(window.location.search, 'interfaseId'))
-          )
-        })
-        return data
+    return fetchApi.fetchGetProjectData(projectId || this.projectId).then(data => {
+      runInAction(() => {
+        this.data = data
+        this.moduleId = Number(getQuery(window.location.search, 'moduleId'))
+        this.interfaseId = Number(getQuery(window.location.search, 'interfaseId'))
+        //v
+        this.selectInterfase(
+          Number(getQuery(window.location.search, 'moduleId')),
+          Number(getQuery(window.location.search, 'interfaseId'))
+        )
       })
+      return data
+    })
   }
 
   @action.bound
@@ -173,13 +167,11 @@ class Project {
     }
 
     if (!moduleId) {
-      this.moduleId =
-        this.inVersionModules.length && this.inVersionModules[0].id
+      this.moduleId = this.inVersionModules.length && this.inVersionModules[0].id
     } else if (moduleId) {
       this.moduleId = moduleId
     }
-    this.interfaseId =
-      this.inVersionInterfases.length && this.inVersionInterfases[0].id
+    this.interfaseId = this.inVersionInterfases.length && this.inVersionInterfases[0].id
 
     setTimeout(() => {
       runInAction(() => {
@@ -279,10 +271,7 @@ class Project {
   @action.bound
   changeCurVersion(version) {
     this.curVersion = version
-    if (
-      version &&
-      (!this.interfase.id || !this.interfase.versions.includes(version))
-    ) {
+    if (version && (!this.interfase.id || !this.interfase.versions.includes(version))) {
       setTimeout(() => {
         this.selectInterfase()
       }, 0)
@@ -315,12 +304,10 @@ class Project {
 
   @action.bound
   changeInterfaseSort(from, to) {
-    return fetchApi
-      .fetchChangeInterfaseSort({ moduleId: this.moduleId, from, to })
-      .then(data => {
-        this.getProjectData(this.projectId)
-        return data
-      })
+    return fetchApi.fetchChangeInterfaseSort({ moduleId: this.moduleId, from, to }).then(data => {
+      this.getProjectData(this.projectId)
+      return data
+    })
   }
 }
 
