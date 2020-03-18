@@ -1,4 +1,4 @@
 export default {
-    "baseURL": "auto",
+    "baseURL": "http://mock.qa.91jkys.com/api",
     "canSignup":false
 }
