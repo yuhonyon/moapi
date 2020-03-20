@@ -71,6 +71,10 @@ class Layout extends React.Component {
     this.setState({ addProjectModalShow: true })
   }
 
+  handleAddProjectGroup=()=>{
+    
+  }
+
   handleAddProjectOk = info => {
     info.proxys = [info.proxy]
     this.props.projectList.addProject(info).then(data => {
@@ -127,7 +131,10 @@ class Layout extends React.Component {
           activeKey={this.state.tabsKey}
           onChange={this.handleChange}
           tabBarExtraContent={
+            <div>
+            <Button onClick={this.handleAddProjectGroup}>添加项目组</Button>&nbsp;
             <Button onClick={this.handleAddProject}>添加项目</Button>
+            </div>
           }
         >
           <TabPane tab="所有项目" key="all">
