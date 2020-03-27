@@ -5,6 +5,7 @@ import Config from "@/config";
 import fetchApi from "@/api";
 import config from "../config";
 import { mergeData } from "../utils";
+import { message } from "antd";
 
 function parseStrToObj(str) {
   try {
@@ -240,6 +241,12 @@ class Interfase {
 
   formatMock(item) {
     try {
+      if(/^\d+-?\d{4}\d*$/.test(item.mockNum)&&(item.mockType !== "Number" &&
+      item.mockType !== "Float" &&
+      item.mockType !== "Integer")){
+        message.error('规则量不合理,请仔细阅读mock规则文档')
+        return;
+      }
       if (!item.children || item.children.length === 0 || item.mockValue) {
         let mockValue = item.mockValue;
         if (mockValue||mockValue===0) {

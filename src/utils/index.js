@@ -8,7 +8,10 @@ export function getQuery(search,name) {
 }
 
 export function mergePath(url1,url2) {
-  return url1.replace(/\/$/,'')+'/'+url2.replace(/^\//,'')
+  if(url1&&url1){
+    return url1.replace(/\/$/,'')+'/'+url2.replace(/^\//,'')
+  }
+  return url1||url2
 }
 
 export function getApiUrl(search,name) {
