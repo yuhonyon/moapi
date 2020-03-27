@@ -59,6 +59,18 @@ class AddModuleModal extends React.Component {
 
             <FormItem
               {...formItemLayout}
+              label="code"
+            >
+              {getFieldDecorator('code', {
+                
+              })(
+                <Input />
+              )}
+            </FormItem>
+
+
+            <FormItem
+              {...formItemLayout}
               label="简介"
             >
               {getFieldDecorator('description', {

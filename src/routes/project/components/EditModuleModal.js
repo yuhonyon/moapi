@@ -38,6 +38,7 @@ class EditModuleModal extends React.Component {
     if(nextProps.visible&&nextProps.visible!==this.props.visible){
       this.props.form.setFieldsValue({
         name: nextProps.module.name,
+        code:nextProps.module.code,
         description: nextProps.module.description
       })
     }
@@ -63,6 +64,17 @@ class EditModuleModal extends React.Component {
                 rules: [{
                   required: true, message: '必填',
                 }],
+              })(
+                <Input />
+              )}
+            </FormItem>
+
+            <FormItem
+              {...formItemLayout}
+              label="code"
+            >
+              {getFieldDecorator('code', {
+                
               })(
                 <Input />
               )}

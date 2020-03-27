@@ -242,7 +242,7 @@ class Interfase {
     try {
       if (!item.children || item.children.length === 0 || item.mockValue) {
         let mockValue = item.mockValue;
-        if (mockValue) {
+        if (mockValue||mockValue===0) {
           if (/^@/.test(mockValue)) {
             mockValue = Mock.mock(mockValue);
             if (

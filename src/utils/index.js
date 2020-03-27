@@ -70,3 +70,46 @@ export function mergeData(oldData,newData,pKey){
   }
   return merge(oldData,newData,pKey);
 }
+
+function uppperCaseFirst(name){
+  return name.replace(/^([a-z])(.*)$/,($,$1,$2)=>{
+    return $1.toUpperCase()+$2
+  })
+}
+
+function getType(name,item){
+  if(item.type==='String'||item.type==='Boolean'||item.type==='Number'){
+    return item.type.toLowerCase()+";"
+  }else if(item.type==='Float'||item.type==='Integer'){
+    return "number;"
+  }else if(item.type==='Object'&&item.children&&item.children.length){
+    return "I"+uppperCaseFirst(name)+uppperCaseFirst(item.name)
+  }else if(item.type==='Array'&&item.mockValue){
+    return /'|"/.test(item.mockValue)?'string[]':'number[]'
+  }else if(item.type==='Array'&&item.children&&item.children.length){
+    return "I"+uppperCaseFirst(name)+uppperCaseFirst(item.name)+'[]'
+  }else if(item.type==='Array'){
+    return 'any[]'
+  }else{
+    return 'any'
+  }
+
+}
+
+export function getInterface(name,code,type){
+  type +=`\nexport interface I${uppperCaseFirst(name)} `;
+  const json={};
+  const childrens=[];
+  for(let item of code){
+    json[item.name+(item.required?'':'?')]=getType(name,item)
+    if(item.children&&item.children.length){
+      childrens.push(item);
+    }
+  }
+  type+=JSON.stringify(json,null,2).replace(/[,"]/g,'');
+  
+  for(let item of childrens){
+    type=getInterface(name+uppperCaseFirst(item.name),item.children,type)
+  }
+  return type;
+}

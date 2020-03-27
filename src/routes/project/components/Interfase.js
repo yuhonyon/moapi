@@ -16,7 +16,7 @@ import {toJS} from 'mobx';
 import { Prompt } from 'react-router'
 import {parseDate} from '@/filters'
 import copy from 'copy-to-clipboard';
-import {mergePath} from '@/utils'
+import {mergePath,getInterface} from '@/utils'
 const ButtonGroup = Button.Group;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -225,6 +225,73 @@ class Interfase extends React.Component {
     }
   }
 
+  handleDev=()=>{
+    message.info('开发中...')
+  }
+
+  handleGenerateTS=()=>{
+  const name=this.props.interfases.data.method.replace(/^(\w)(\w*)$/,($,$1,$2)=>$1+$2.toLowerCase())+this.props.interfases.data.url.replace(/([0-9.])|(\/{0,1}\{.*\})/g,'').replace(/[\_/\-]+(\w)/g,($,$1)=>{
+    return $1.toUpperCase()
+}).replace(/^[a-z]/g,($)=>{
+    return $.toUpperCase()
+})
+  const hasParam=this.props.interfases.reqModel!=='[]';
+  const hasReponse=this.props.interfases.resModel!=='[]';
+  let urlParam=/{(.*)\}/.test(this.props.interfases.data.url)?((hasParam?',':'')+this.props.interfases.data.url.match(/\{(.*)\}/)[1])+':string':'';
+  let code ='';
+  if(hasParam){
+    code+=getInterface(name+'Param',JSON.parse(this.props.interfases.reqModel),'')
+  }
+  if(hasReponse){
+    code+=getInterface(name,JSON.parse(this.props.interfases.resModel),'')
+  }
+  code+=`
+// ${this.props.interfases.data.name}
+export function fetch${name}(${hasParam?'param: I'+name+'Param':''}${urlParam}) {
+  return fetch.${this.props.interfases.data.method.toLowerCase()}${hasReponse?'<I'+name+'>':''}('${this.props.interfases.data.url.replace(/\{/g,'${')}'${hasParam?',param':''});
+}
+  `
+  Modal.info({
+    title: 'TS代码(头部菜单可生成所有接口代码)',
+    width:680,
+    content: <pre>{code}</pre>,
+    onOk: () => {
+      copy(code)
+    },
+    okText: '复制'
+  })
+  }
+
+
+
+  handleGenerateJS=()=>{
+    const name=this.props.interfases.data.method.replace(/^(\w)(\w*)$/,($,$1,$2)=>$1+$2.toLowerCase())+this.props.interfases.data.url.replace(/([0-9.])|(\/{0,1}\{.*\})/g,'').replace(/[\_/\-]+(\w)/g,($,$1)=>{
+      return $1.toUpperCase()
+  }).replace(/^[a-z]/g,($)=>{
+      return $.toUpperCase()
+  })
+    const hasParam=this.props.interfases.reqModel!=='[]';
+    let urlParam=/{(.*)\}/.test(this.props.interfases.data.url)?((hasParam?',':'')+this.props.interfases.data.url.match(/\{(.*)\}/)[1]):'';
+
+    let code ='';
+    code+=`
+  // ${this.props.interfases.data.name}
+  export function fetch${name}(${hasParam?'param':''}${urlParam}) {
+    return fetch.${this.props.interfases.data.method.toLowerCase()}(\`${this.props.interfases.data.url.replace(/\{/g,'${')}\`${hasParam?',param':''});
+  }
+    `
+    Modal.info({
+      title: 'JS代码(头部菜单可生成所有接口代码)',
+      width:680,
+      content: <pre>{code}</pre>,
+      onOk: () => {
+        copy(code)
+      },
+      okText: '复制'
+    })
+    }
+    
+
   render() {
     //console.log(this.props.interfases.resMock)
     return (<div className={Style.wrapper}>
@@ -292,6 +359,23 @@ class Interfase extends React.Component {
           }
         </div>}
       </div>
+
+
+      <div className={Style.title}>
+        <h3>实验功能</h3>
+      </div>
+
+      <div>
+        <Button onClick={this.handleGenerateJS}>生成JS代码</Button>&nbsp;
+        <Button onClick={this.handleGenerateTS}>生成TS代码</Button>&nbsp;
+        <a target="_blank" href={this.props.interfases.testUrl}><Button >测试接口</Button></a>&nbsp;
+        <Button onClick={this.handleDev}>生成DtoClass</Button>&nbsp;
+        <Button onClick={this.handleDev}>生成curl</Button>&nbsp;
+        <Button onClick={this.handleDev}>复制接口</Button>
+      </div>
+
+
+
 
 
       <div className={Style.title}>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Icon, Select, Modal, Button, Input, AutoComplete, Dropdown, Menu } from 'antd'
+import { Icon, Select, Modal, Button, Input, AutoComplete, Dropdown, Menu, message } from 'antd'
 import EditProjectModal from './EditProjectModal'
 import EditDocModal from './EditDocModal'
 import CheckModal from './CheckModal'
@@ -129,6 +129,21 @@ class Header extends React.Component {
     })
   }
 
+  handleShowCode=()=>{
+    Modal.info({
+      title: '生成代码',
+      content: (
+        <div>
+          <Button>生成JS代码</Button>&nbsp;
+          <Button>生成TS代码</Button>&nbsp;
+          <Button>生成d.ts代码</Button>&nbsp;
+          <Button>生成DTOClass代码</Button>
+        </div>
+      ),
+      iconType: 'code'
+    })
+  }
+
   handleShowSearch = () => {
     const dataSource = this.props.project.data.modules.reduce((total, item) => {
       return total.concat(item.interfases.slice())
@@ -187,8 +202,39 @@ class Header extends React.Component {
   closeImportSwaggerModal = () => {
     this.setState({ importSwaggerModalShow: false })
   }
-
+  handleDev=()=>{
+    message.info('开发中...')
+  }
   render() {
+    const codeMenu=(
+      <Menu>          
+        <Menu.Item>
+          <a href={`${config.baseURL}project/code/js?projectId=${this.props.project.info.id}`}>
+            <Icon type="cloud-download-o" />
+            生成JS代码
+          </a>
+        </Menu.Item>
+        <Menu.Item>
+        <a href={`${config.baseURL}project/code/ts?projectId=${this.props.project.info.id}`}>
+            <Icon type="cloud-download-o" />
+            生成TS代码
+          </a>
+        </Menu.Item>
+        <Menu.Item>
+        <a href={`${config.baseURL}project/code/dts?projectId=${this.props.project.info.id}`}>
+            <Icon type="cloud-download-o" />
+            生成d.ts代码
+          </a>
+        </Menu.Item>
+        <Menu.Item>
+          <a onClick={this.handleDev}>
+            <Icon type="cloud-download-o" />
+            生成DtoClass代码
+          </a>
+        </Menu.Item>
+      </Menu>
+    )
+
     const menu = (
       <Menu>
         <Menu.Item>
@@ -314,6 +360,15 @@ class Header extends React.Component {
             <Icon type="search" />
             查找接口
           </a>
+
+    
+
+          <Dropdown overlay={codeMenu}>
+            <a className="ant-dropdown-link" href="#">
+             生成代码
+              <Icon type="down" />
+            </a>
+          </Dropdown>
 
           <Dropdown overlay={menu}>
             <a className="ant-dropdown-link" href="#">
