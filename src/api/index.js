@@ -161,6 +161,9 @@ const fetchApi={
   fetchSearchInterfase(text){
     return http.get(`/interfase/search`,{keyword:text})
   },
+  fetchGetInterfases(id){
+    return http.get(`/interfase`,{relevanceId:id})
+  },
 
 }
 

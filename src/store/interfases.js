@@ -36,6 +36,7 @@ function byIndexFind(index, num, data) {
 useStrict(true);
 
 class Interfase {
+  @observable relevanceData = [];
   @observable editable = false;
   @observable loadRemarkMoreVisible = true;
   @observable showLeadInModal = false;
@@ -48,7 +49,8 @@ class Interfase {
     paths: [],
     remarks: [],
     req: [],
-    versions: []
+    versions: [],
+    relevanceId:null
   };
 
   @observable resCode = "";
@@ -58,6 +60,9 @@ class Interfase {
     req: null
   };
 
+  @computed get relevanceId(){
+    return this.data.relevanceId;
+  }
   @computed get resModel() {
     let model = JSON.parse(JSON.stringify(this.data.res));
     function removeKey(data) {
@@ -811,6 +816,10 @@ class Interfase {
       null,
       `${window.location.pathname}?moduleId=${data.moduleId}&interfaseId=${data.id}`
     );
+    if(interfases.relevanceId){
+      this.getRelevanceData()
+    }
+    
   }
 
   @action.bound refreshCode(type) {
@@ -832,7 +841,17 @@ class Interfase {
   recoveryRecord(history) {
     this.data = history;
   }
+
+  @action.bound getRelevanceData(){
+    return fetchApi.fetchGetInterfases(this.data.relevanceId).then(data => {
+      runInAction(() => {
+        this.relevanceData=data;
+      });
+      return data;
+    });
+  }
 }
+
 
 const interfases = new Interfase();
 

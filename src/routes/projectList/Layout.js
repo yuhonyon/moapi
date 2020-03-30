@@ -191,7 +191,7 @@ class Layout extends React.Component {
                     key={item.id}
                     value={item.url + item.id}
                   >
-                    {item.name}
+                    {item.project.name+'>'+item.name}
                   </Option>
                 ))}
               </Select>

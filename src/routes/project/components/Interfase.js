@@ -17,6 +17,7 @@ import { Prompt } from 'react-router'
 import {parseDate} from '@/filters'
 import copy from 'copy-to-clipboard';
 import {mergePath,getInterface} from '@/utils'
+import {Link} from "react-router-dom";
 const ButtonGroup = Button.Group;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -225,6 +226,26 @@ class Interfase extends React.Component {
     }
   }
 
+  handleGetRelevanceData=()=>{
+    this.props.interfases.getRelevanceData()
+  }
+
+  handleRemoveRelevance=()=>{
+    Modal.confirm({
+      title:'警告?',
+      content:'确定取消关联?',
+      onOk:()=>{
+        const data=toJS(this.props.interfases.data);
+          return this.props.project.updateInterfase(this.props.interfases.data.id,{...data,relevanceId:null}).then((data)=>{
+            message.success('保存成功');
+            return data;
+        })
+      },
+    })
+  
+    
+  }
+
   handleDev=()=>{
     message.info('开发中...')
   }
@@ -290,6 +311,7 @@ export function fetch${name}(${hasParam?'param: I'+name+'Param':''}${urlParam}) 
       okText: '复制'
     })
     }
+
     
 
   render() {
@@ -348,6 +370,7 @@ export function fetch${name}(${hasParam?'param: I'+name+'Param':''}${urlParam}) 
           <li>简介:&nbsp; {this.props.interfases.data.description}</li>
         </ul>
         {this.props.project.permission>1&&<div>
+         
           {
             this.props.interfases.editable
               ? <ButtonGroup >
@@ -359,6 +382,30 @@ export function fetch${name}(${hasParam?'param: I'+name+'Param':''}${urlParam}) 
           }
         </div>}
       </div>
+
+
+      
+
+      {
+        this.props.interfases.relevanceId&&this.props.interfases.relevanceData.length>1&&(
+          <div className={Style.title}>
+            <h3>关联接口 <Button size="small" onClick={this.handleRemoveRelevance}>解除关联关系</Button></h3> 
+          </div>
+        )
+        
+      }
+      {
+        this.props.interfases.relevanceData.length&&this.props.interfases.relevanceData[0].relevanceId===this.props.interfases.relevanceId?(
+          <div>
+            <ul>
+              {
+                this.props.interfases.relevanceData.filter(item=>item.id!==this.props.interfases.data.id).map(item=><li key={item.id}><a href={`/project/${item.projectId}?moduleId=${item.moduleId}&interfaseId=${item.id}`}>{`项目:${item.project.name}>模块:${item.module.name}>接口:${item.name}`}</a></li>)
+              }
+            </ul>
+
+          </div>
+        ):''
+      }
 
 
       <div className={Style.title}>
